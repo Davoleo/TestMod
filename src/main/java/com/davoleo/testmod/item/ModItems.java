@@ -15,13 +15,17 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModItems {
 
     //Istanza dell'oggetto
-    public static ItemBase ingotCopper = new ItemBase("ingot_copper").setCreativeTab(CreativeTabs.MATERIALS);
+    public static ItemBase ingotCopper = new ItemBase("ingot_copper").setCreativeTab(CreativeTabs.MISC);
+    public static ItemCornSeeds cornSeeds = new ItemCornSeeds();
+    public static ItemBase corn = new ItemBase("corn").setCreativeTab(CreativeTabs.MISC);
 
     //Registra gli oggetti nel registro di Forge
     public static void register(IForgeRegistry<Item> registry)
     {
         registry.registerAll(
-                ingotCopper
+                ingotCopper,
+                cornSeeds,
+                corn
         );
     }
 
@@ -29,5 +33,7 @@ public class ModItems {
     public static void registerModels()
     {
         ingotCopper.registerItemModel();
+        cornSeeds.registerItemModel(cornSeeds);
+        corn.registerItemModel();
     }
 }

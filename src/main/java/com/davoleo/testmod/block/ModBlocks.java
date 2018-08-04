@@ -18,13 +18,15 @@ public class ModBlocks {
 
     public static BlockOre oreCopper = new BlockOre("ore_copper").setCreativeTab(CreativeTabs.MATERIALS);
     public static BlockBase blockCopper = new BlockBase(Material.IRON ,"block_copper").setCreativeTab(CreativeTabs.MATERIALS);
+    public static BlockCropCorn cropCorn = new BlockCropCorn();
 
     //Registra i blocchi in versione piazzata
     public static void register(IForgeRegistry<Block> registry)
     {
         registry.registerAll(
                 oreCopper,
-                blockCopper
+                blockCopper,
+                cropCorn
         );
     }
 
