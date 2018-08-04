@@ -13,7 +13,10 @@ import net.minecraftforge.client.model.ModelLoader;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class ClientProxy {
+public class ClientProxy extends CommonProxy {
+
+    //Implementato poiché client side
+    //Registrazione dei rendering degli oggetti
     public void registerItemRenderer(Item item, int meta, String id)
     {
         ModelLoader.setCustomModelResourceLocation(item,meta, new ModelResourceLocation(TestMod.MODID + ":" + id + "inventory"));

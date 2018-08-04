@@ -14,8 +14,10 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModItems {
 
+    //Istanza dell'oggetto
     public static ItemBase ingotCopper = new ItemBase("ingot_copper").setCreativeTab(CreativeTabs.MATERIALS);
 
+    //Registra gli oggetti nel registro di Forge
     public static void register(IForgeRegistry<Item> registry)
     {
         registry.registerAll(
@@ -23,6 +25,7 @@ public class ModItems {
         );
     }
 
+    //Registra i modelli degli oggetti
     public static void registerModels()
     {
         ingotCopper.registerItemModel();

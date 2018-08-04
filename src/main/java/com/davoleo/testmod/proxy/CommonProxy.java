@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 
 public class CommonProxy {
 
+    //Vuoto perché dal lato server
     public void registerItemRenderer(Item item, int meta, String id)
     {}
 

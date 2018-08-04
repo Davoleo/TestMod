@@ -16,17 +16,20 @@ public class ItemBase extends Item {
 
     protected String name;
 
+    //Automatizza la definizione del nome Unlocalized e Registry per tutti gli oggetti creati
     public ItemBase(String name){
         this.name = name;
         setUnlocalizedName(name);
         setRegistryName(name);
     }
 
+    //Automatizza la registrazione del modello per tutti gli oggetti creati
     public void registerItemModel()
     {
         TestMod.proxy.registerItemRenderer(this, 0, name);
     }
 
+    //Semi-Automatizza l'inserimento in una Creative tab dell'oggetto creato
     @Override
     public ItemBase setCreativeTab(CreativeTabs tab)
     {
