@@ -1,0 +1,6 @@
+#Items
+item.ingot_copper.name=Copper Ingot
+
+#Blocks
+tile.block_copper.name=Copper Block
+tile.ore_copper.name=Copper Ore
