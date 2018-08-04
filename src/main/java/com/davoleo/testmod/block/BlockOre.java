@@ -1,5 +1,6 @@
 package com.davoleo.testmod.block;
 
+import com.davoleo.testmod.TestMod;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
@@ -20,12 +21,12 @@ public class BlockOre extends BlockBase {
 
         setHardness(3F);
         setResistance(5F);
+
+        setCreativeTab(TestMod.creativeTab);
     }
 
-    //Inserimento semi-automatico nelle Creative tab degli ore
     @Override
-    public BlockOre setCreativeTab(CreativeTabs tab)
-    {
+    public BlockOre setCreativeTab(CreativeTabs tab) {
         super.setCreativeTab(tab);
         return this;
     }

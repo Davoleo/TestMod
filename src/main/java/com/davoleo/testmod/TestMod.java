@@ -1,6 +1,7 @@
 package com.davoleo.testmod;
 
 import com.davoleo.testmod.block.ModBlocks;
+import com.davoleo.testmod.client.TestTab;
 import com.davoleo.testmod.item.ModItems;
 import com.davoleo.testmod.proxy.CommonProxy;
 import net.minecraft.block.Block;
@@ -29,6 +30,8 @@ public class TestMod {
     public static final String MODID = "testmod";
     public static final String MODNAME = "Test Mod";
     public static final String VERSION = "1.0.0";
+
+    public static final TestTab creativeTab = new TestTab();
 
     //Crea un istanza per la mod
     @Mod.Instance(MODID)

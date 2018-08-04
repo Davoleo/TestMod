@@ -29,6 +29,8 @@ public class BlockBase extends Block {
 
         setUnlocalizedName(name);
         setRegistryName(name);
+
+        setCreativeTab(TestMod.creativeTab);
     }
 
     //Registrazione dei modelli dei blocchi in versione Item
@@ -43,12 +45,9 @@ public class BlockBase extends Block {
         return new ItemBlock(this).setRegistryName(getRegistryName());
     }
 
-    //Inserimento semi-automatico nelle creative tab dei blocchi creati
     @Override
-    public BlockBase setCreativeTab(CreativeTabs tab)
-    {
+    public BlockBase setCreativeTab(CreativeTabs tab) {
         super.setCreativeTab(tab);
         return this;
     }
-
 }

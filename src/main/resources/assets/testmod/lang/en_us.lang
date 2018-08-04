@@ -6,3 +6,6 @@ item.corn.name=Corn
 #Blocks
 tile.block_copper.name=Copper Block
 tile.ore_copper.name=Copper Ore
+
+#Creative Tab
+itemGroup.testmod=Davoleo's Testing Mod

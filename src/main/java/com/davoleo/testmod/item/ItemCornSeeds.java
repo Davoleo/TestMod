@@ -21,6 +21,8 @@ public class ItemCornSeeds extends ItemSeeds {
         super(ModBlocks.cropCorn, Blocks.FARMLAND);
         setUnlocalizedName("corn_seed");
         setRegistryName("corn_seed");
+
+        setCreativeTab(TestMod.creativeTab);
     }
 
     public void registerItemModel(Item item)

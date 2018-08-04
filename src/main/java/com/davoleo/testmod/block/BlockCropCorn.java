@@ -1,5 +1,6 @@
 package com.davoleo.testmod.block;
 
+import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.item.ModItems;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.item.Item;
@@ -18,6 +19,8 @@ public class BlockCropCorn extends BlockCrops {
     {
         setUnlocalizedName("crop_corn");
         setRegistryName("crop_corn");
+
+        setCreativeTab(TestMod.creativeTab);
     }
 
     @Override

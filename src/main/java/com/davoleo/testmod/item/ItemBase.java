@@ -21,6 +21,8 @@ public class ItemBase extends Item {
         this.name = name;
         setUnlocalizedName(name);
         setRegistryName(name);
+
+        setCreativeTab(TestMod.creativeTab);
     }
 
     //Automatizza la registrazione del modello per tutti gli oggetti creati
@@ -33,7 +35,7 @@ public class ItemBase extends Item {
     @Override
     public ItemBase setCreativeTab(CreativeTabs tab)
     {
-        super.setCreativeTab(tab);
+        super.setCreativeTab(TestMod.creativeTab);
         return this;
     }
 

@@ -16,8 +16,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModBlocks {
 
-    public static BlockOre oreCopper = new BlockOre("ore_copper").setCreativeTab(CreativeTabs.MATERIALS);
-    public static BlockBase blockCopper = new BlockBase(Material.IRON ,"block_copper").setCreativeTab(CreativeTabs.MATERIALS);
+    public static BlockOre oreCopper = new BlockOre("ore_copper");
+    public static BlockBase blockCopper = new BlockBase(Material.IRON ,"block_copper");
     public static BlockCropCorn cropCorn = new BlockCropCorn();
 
     //Registra i blocchi in versione piazzata
