@@ -18,12 +18,18 @@ public class TestTab extends CreativeTabs {
     public TestTab()
     {
         super(TestMod.MODID);
-        //setBackgroundImageName("testmod.png");
+        setBackgroundImageName("tab_testmod.png");
     }
 
     @Override
     public ItemStack getTabIconItem() {
         return new ItemStack(ModItems.ingotCopper);
+    }
+
+    @Override
+    public boolean hasSearchBar()
+    {
+        return false;
     }
 
 }

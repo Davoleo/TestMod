@@ -37,3 +37,5 @@ Test_mod\.iml
 Test_mod\.ipr
 
 Test_mod\.iws
+
+*.iml
