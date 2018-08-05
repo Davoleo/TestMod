@@ -4,6 +4,7 @@ import com.davoleo.testmod.block.ModBlocks;
 import com.davoleo.testmod.client.TestTab;
 import com.davoleo.testmod.item.ModItems;
 import com.davoleo.testmod.proxy.CommonProxy;
+import com.davoleo.testmod.recipe.ModRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -49,8 +50,10 @@ public class TestMod {
     }
 
     @Mod.EventHandler
-    public void Init (FMLInitializationEvent event)
-    { }
+    public void init (FMLInitializationEvent event)
+    {
+        ModRecipes.init();
+    }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
