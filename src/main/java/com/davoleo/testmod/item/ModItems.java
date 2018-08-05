@@ -15,9 +15,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModItems {
 
     //Istanza dell'oggetto
-    public static ItemBase ingotCopper = new ItemBase("ingot_copper");
+    public static ItemOre ingotCopper = new ItemOre("ingot_copper","ingotCopper");
     public static ItemCornSeeds cornSeeds = new ItemCornSeeds();
-    public static ItemBase corn = new ItemBase("corn");
+    public static ItemOre corn = new ItemOre("corn","cropCorn");
 
     //Registra gli oggetti nel registro di Forge
     public static void register(IForgeRegistry<Item> registry)

@@ -15,17 +15,20 @@ import net.minecraft.item.ItemStack;
 
 public class TestTab extends CreativeTabs {
 
+    //Costruisce una creative tab utilizzando il MODID e un immagine per la GUI
     public TestTab()
     {
         super(TestMod.MODID);
         setBackgroundImageName("tab_testmod.png");
     }
 
+    //Inserisce un oggetto come icona della Creative Tab
     @Override
     public ItemStack getTabIconItem() {
         return new ItemStack(ModItems.ingotCopper);
     }
 
+    //Decide se la Creative Tab avrà o no una barra di ricerca
     @Override
     public boolean hasSearchBar()
     {

@@ -64,6 +64,7 @@ public class TestMod {
     @Mod.EventBusSubscriber
     public static class RegistrationHandler
     {
+        //Items
         @SubscribeEvent
         public static void registerItems(RegistryEvent.Register<Item> event)
         {
@@ -71,12 +72,14 @@ public class TestMod {
             ModBlocks.registerItemBlocks(event.getRegistry());
         }
 
+        //Blocks
         @SubscribeEvent
         public static void registerBlocks(RegistryEvent.Register<Block> event)
         {
             ModBlocks.register(event.getRegistry());
         }
 
+        //Models
         @SubscribeEvent
         public static void registerModels(ModelRegistryEvent event)
         {
