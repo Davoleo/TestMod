@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBB",
+    " B ",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "block": "minecraft:stone_bricks"
+    }
+  },
+  "result": {
+    "block": "testmod:pedestal"
+  }
+}

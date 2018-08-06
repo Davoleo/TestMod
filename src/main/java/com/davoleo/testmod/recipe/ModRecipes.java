@@ -21,7 +21,11 @@ public class ModRecipes {
         GameRegistry.addSmelting(ModBlocks.oreCopper, new ItemStack(ModItems.ingotCopper), 5F);
 
         //Ore Dict
+        //Blocks
         ModBlocks.oreCopper.initOreDict();
+        ModBlocks.blockCopper.initOreDict();
+
+        //Items
         ModItems.ingotCopper.initOreDict();
         ModItems.corn.initOreDict();
     }

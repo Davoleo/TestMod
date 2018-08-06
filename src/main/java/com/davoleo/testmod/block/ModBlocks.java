@@ -1,8 +1,6 @@
 package com.davoleo.testmod.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -17,8 +15,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModBlocks {
 
     public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
-    public static BlockBase blockCopper = new BlockBase(Material.IRON ,"block_copper");
+    public static BlockOre blockCopper = new BlockOre("block_copper", "blockCopper");
     public static BlockCropCorn cropCorn = new BlockCropCorn();
+    public static BlockPedestal pedestal = new BlockPedestal();
 
     //Registra i blocchi in versione piazzata
     public static void register(IForgeRegistry<Block> registry)
@@ -26,7 +25,8 @@ public class ModBlocks {
         registry.registerAll(
                 oreCopper,
                 blockCopper,
-                cropCorn
+                cropCorn,
+                pedestal
         );
     }
 
@@ -35,7 +35,8 @@ public class ModBlocks {
     {
         registry.registerAll(
                 oreCopper.createItemBlock(),
-                blockCopper.createItemBlock()
+                blockCopper.createItemBlock(),
+                pedestal.createItemBlock()
         );
 
     }
@@ -45,6 +46,7 @@ public class ModBlocks {
     {
         oreCopper.registerItemModel(Item.getItemFromBlock(oreCopper));
         blockCopper.registerItemModel(Item.getItemFromBlock(blockCopper));
+        pedestal.registerItemModel(Item.getItemFromBlock(pedestal));
     }
 
 }

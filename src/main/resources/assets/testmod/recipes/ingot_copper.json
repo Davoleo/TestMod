@@ -1,0 +1,12 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [ {
+    "ore": "blockCopper"
+  }
+  ],
+  "result": {
+    "item":"testmod:ingot_copper",
+    "count": 9
+  }
+
+}
