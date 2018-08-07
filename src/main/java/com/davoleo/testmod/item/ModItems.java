@@ -1,6 +1,6 @@
 package com.davoleo.testmod.item;
 
-import net.minecraft.creativetab.CreativeTabs;
+
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -17,7 +17,8 @@ public class ModItems {
     //Istanza dell'oggetto
     public static ItemOre ingotCopper = new ItemOre("ingot_copper","ingotCopper");
     public static ItemCornSeeds cornSeeds = new ItemCornSeeds();
-    public static ItemOre corn = new ItemOre("corn","cropCorn");
+    public static ItemCorn corn = new ItemCorn();
+    public static ItemPaninazzo paninazzo = new ItemPaninazzo();
 
     //Registra gli oggetti nel registro di Forge
     public static void register(IForgeRegistry<Item> registry)
@@ -25,7 +26,8 @@ public class ModItems {
         registry.registerAll(
                 ingotCopper,
                 cornSeeds,
-                corn
+                corn,
+                paninazzo
         );
     }
 
@@ -34,6 +36,7 @@ public class ModItems {
     {
         ingotCopper.registerItemModel();
         cornSeeds.registerItemModel(cornSeeds);
-        corn.registerItemModel();
+        corn.registerItemModel(corn);
+        paninazzo.registerItemModel();
     }
 }

@@ -12,6 +12,6 @@
     }
   },
   "result":{
-    "block": "testmod:block_copper"
+    "item": "testmod:block_copper"
   }
 }

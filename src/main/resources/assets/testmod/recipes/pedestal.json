@@ -7,10 +7,11 @@
   ],
   "key": {
     "B": {
-      "block": "minecraft:stone_bricks"
+      "item": "minecraft:stonebrick",
+      "data": 0
     }
   },
   "result": {
-    "block": "testmod:pedestal"
+    "item": "testmod:pedestal"
   }
 }

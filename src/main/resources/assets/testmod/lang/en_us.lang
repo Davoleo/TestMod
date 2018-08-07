@@ -2,6 +2,7 @@
 item.ingot_copper.name=Copper Ingot
 item.corn_seed.name=Corn Seeds
 item.corn.name=Corn
+item.paninazzo.name=ER PANINAZZO
 
 #Blocks
 tile.block_copper.name=Copper Block
@@ -9,4 +10,4 @@ tile.ore_copper.name=Copper Ore
 tile.pedestal.name=Pedestal
 
 #Creative Tab
-itemGroup.testmod=§0Davoleo's Testing Mod
+itemGroup.testmod=§1Davoleo's Testing Mod
