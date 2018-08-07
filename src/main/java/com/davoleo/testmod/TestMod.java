@@ -6,7 +6,9 @@ import com.davoleo.testmod.item.ModItems;
 import com.davoleo.testmod.proxy.CommonProxy;
 import com.davoleo.testmod.recipe.ModRecipes;
 import net.minecraft.block.Block;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
@@ -36,6 +38,8 @@ public class TestMod {
     public static final TestTab creativeTab = new TestTab();
 
     public static final Item.ToolMaterial copperToolMaterial = EnumHelper.addToolMaterial("COPPER", 2, 500, 6,2, 14);
+    public static final ItemArmor.ArmorMaterial copperArmorMaterial = EnumHelper.addArmorMaterial("COPPER", MODID + ":copper", 15, new int[]{2,5,6,2},9, SoundEvents.ITEM_ARMOR_EQUIP_IRON , 0.0F);
+
 
     //Crea un istanza per la mod
     @Mod.Instance(MODID)
