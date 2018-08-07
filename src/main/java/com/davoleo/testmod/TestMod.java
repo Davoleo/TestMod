@@ -8,6 +8,7 @@ import com.davoleo.testmod.recipe.ModRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -33,6 +34,8 @@ public class TestMod {
     public static final String VERSION = "1.0.0";
 
     public static final TestTab creativeTab = new TestTab();
+
+    public static final Item.ToolMaterial copperToolMaterial = EnumHelper.addToolMaterial("COPPER", 2, 500, 6,2, 14);
 
     //Crea un istanza per la mod
     @Mod.Instance(MODID)

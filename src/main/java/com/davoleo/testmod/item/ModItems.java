@@ -1,6 +1,7 @@
 package com.davoleo.testmod.item;
 
-
+import com.davoleo.testmod.item.tool.*;
+import com.davoleo.testmod.TestMod;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -20,6 +21,14 @@ public class ModItems {
     public static ItemCorn corn = new ItemCorn();
     public static ItemPaninazzo paninazzo = new ItemPaninazzo();
 
+    //Istanza Tools
+    public static ItemSword copperSword = new ItemSword(TestMod.copperToolMaterial, "copper_sword");
+    public static ItemPickaxe copperPickaxe = new ItemPickaxe(TestMod.copperToolMaterial, "copper_pickaxe");
+    public static ItemAxe copperAxe = new ItemAxe(TestMod.copperToolMaterial, "copper_axe");
+    public static ItemShovel copperShovel = new ItemShovel(TestMod.copperToolMaterial,  "copper_shovel");
+    public static ItemHoe copperHoe = new ItemHoe(TestMod.copperToolMaterial, "copper_hoe");
+
+
     //Registra gli oggetti nel registro di Forge
     public static void register(IForgeRegistry<Item> registry)
     {
@@ -27,7 +36,12 @@ public class ModItems {
                 ingotCopper,
                 cornSeeds,
                 corn,
-                paninazzo
+                paninazzo,
+                copperSword,
+                copperPickaxe,
+                copperAxe,
+                copperShovel,
+                copperHoe
         );
     }
 
@@ -38,5 +52,12 @@ public class ModItems {
         cornSeeds.registerItemModel(cornSeeds);
         corn.registerItemModel(corn);
         paninazzo.registerItemModel();
+
+        // Modelli tools
+        copperSword.registerItemModel(copperSword);
+        copperPickaxe.registerItemModel(copperPickaxe);
+        copperAxe.registerItemModel(copperAxe);
+        copperShovel.registerItemModel(copperShovel);
+        copperHoe.registerItemModel(copperHoe);
     }
 }
