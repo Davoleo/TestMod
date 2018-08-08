@@ -5,6 +5,7 @@ import com.davoleo.testmod.client.TestTab;
 import com.davoleo.testmod.item.ModItems;
 import com.davoleo.testmod.proxy.CommonProxy;
 import com.davoleo.testmod.recipe.ModRecipes;
+import com.davoleo.testmod.world.ModWorldGeneration;
 import net.minecraft.block.Block;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /*************************************************
  * Author: Davoleo
@@ -53,7 +55,8 @@ public class TestMod {
     @Mod.EventHandler
     public void preInit (FMLPreInitializationEvent event)
     {
-        System.out.println(MODNAME + "IS LOADING!");
+        System.out.println(MODNAME + " is loading!");
+        GameRegistry.registerWorldGenerator(new ModWorldGeneration(), 3);
     }
 
     @Mod.EventHandler
