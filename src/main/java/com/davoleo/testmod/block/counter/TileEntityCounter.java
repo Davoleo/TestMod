@@ -47,4 +47,16 @@ public class TileEntityCounter extends TileEntity {
         markDirty();
     }
 
+    public void incrementCountEx()
+    {
+        count = count + 10;
+        markDirty();
+    }
+
+    public void decrementCountEx()
+    {
+        count = count - 10;
+        markDirty();
+    }
+
 }

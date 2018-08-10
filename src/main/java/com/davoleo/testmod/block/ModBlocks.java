@@ -3,6 +3,7 @@ package com.davoleo.testmod.block;
 import com.davoleo.testmod.block.counter.BlockCounter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /*************************************************
@@ -31,6 +32,9 @@ public class ModBlocks {
                 pedestal,
                 counter
         );
+
+        GameRegistry.registerTileEntity(counter.getTileEntityClass(), counter.getRegistryName());
+
     }
 
     //Registra i blocchi in versione Item
