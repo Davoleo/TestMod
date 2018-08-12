@@ -20,7 +20,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 /*************************************************
  * Author: Davoleo
@@ -43,6 +45,7 @@ public class TestMod {
     public static final Item.ToolMaterial copperToolMaterial = EnumHelper.addToolMaterial("COPPER", 2, 500, 6,2, 14);
     public static final ItemArmor.ArmorMaterial copperArmorMaterial = EnumHelper.addArmorMaterial("COPPER", MODID + ":copper", 15, new int[]{2,5,6,2},9, SoundEvents.ITEM_ARMOR_EQUIP_IRON , 0.0F);
 
+    public static SimpleNetworkWrapper wrapper;
 
     //Crea un istanza per la mod
     @Mod.Instance(MODID)
@@ -58,7 +61,11 @@ public class TestMod {
     {
         System.out.println(MODNAME + " is loading!");
         GameRegistry.registerWorldGenerator(new ModWorldGeneration(), 3);
+
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
+        network.registerMessage(new PacketUpdatePedestal.Handler(), PacketUpdatePedestal.class, 0, Side.CLIENT);
+        network.registerMessage(new PacketRequestUpdatePedestal.Handler(), PacketRequestUpdatePedestal.class, 1, Side.SERVER);
     }
 
     @Mod.EventHandler

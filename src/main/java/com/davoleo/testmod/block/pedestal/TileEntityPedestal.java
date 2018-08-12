@@ -1,9 +1,12 @@
 package com.davoleo.testmod.block.pedestal;
 
-import net.minecraft.nbt.NBTTagCompound;
+import com.davoleo.testmod.TestMod;
+import net.minecraft.nbt.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -19,12 +22,39 @@ import javax.annotation.Nullable;
 
 public class TileEntityPedestal extends TileEntity {
 
-    private ItemStackHandler inventory = new ItemStackHandler(1);
+    public ItemStackHandler inventory = new ItemStackHandler(1);
+    public long lastChangeTime;
+
+    @Override
+    protected void onContentChanged(int slot)
+    {
+        if(!world.isRemote)
+        {
+            lastChangeTime = world.getWorldTime();
+            TestMod.network.sendToAllAround(new PacketUpdatedPedestal(TileEntityPedestal.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+        }
+    }
+
+    @Override
+    public void onLoad()
+    {
+        if (world.isRemote)
+        {
+            TestMod.network.sendToServer(new PacketRequestUpdatePedestal(this));
+        }
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return new AxisAlignedBB(getPos(), getPos().add(1,2,2));
+    }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setTag("inventory", inventory.serializeNBT());
+        compound.setLong("lastChangeTime", lastChangeTime);
         return super.writeToNBT(compound);
     }
 
@@ -32,6 +62,7 @@ public class TileEntityPedestal extends TileEntity {
     public void readFromNBT(NBTTagCompound compound)
     {
         inventory.deserializeNBT(compound.getCompoundTag("inventory"));
+        lastChangeTime = compound.getLong("lastChangeTime");
         super.readFromNBT(compound);
     }
 
