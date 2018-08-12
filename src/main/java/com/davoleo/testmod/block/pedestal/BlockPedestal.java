@@ -1,5 +1,6 @@
 package com.davoleo.testmod.block.pedestal;
 
+import com.davoleo.testmod.ModGuiHandler;
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTileEntity;
 import net.minecraft.block.material.Material;
@@ -52,7 +53,11 @@ public class BlockPedestal extends BlockTileEntity<TileEntityPedestal> {
                     tile.markDirty();
                 } else
                 {
-                    ItemStack stack = itemHandler.getStackInSlot(0);
+
+                    player.openGui(TestMod.instance, ModGuiHandler.PEDESTAL, world, pos.getX(), pos.getY(), pos.getZ());
+
+                    //Old PEDESTAL
+                    /*ItemStack stack = itemHandler.getStackInSlot(0);
                     if (!stack.isEmpty())
                     {
                         String localized = TestMod.proxy.localize(stack.getUnlocalizedName() + ".name");
@@ -60,7 +65,7 @@ public class BlockPedestal extends BlockTileEntity<TileEntityPedestal> {
                     } else
                     {
                         player.sendMessage(new TextComponentString("Il Pedestallo è vuoto"));
-                    }
+                    }*/
                 }
             }
             return true;
