@@ -1,6 +1,8 @@
 package com.davoleo.testmod.block.pedestal;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.network.PacketRequestUpdatePedestal;
+import com.davoleo.testmod.network.PacketUpdatePedestal;
 import net.minecraft.nbt.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -22,24 +24,33 @@ import javax.annotation.Nullable;
 
 public class TileEntityPedestal extends TileEntity {
 
-    public ItemStackHandler inventory = new ItemStackHandler(1);
+    public ItemStackHandler inventory = new ItemStackHandler(1){
+    @Override
+    protected void onContentsChanged(int slot) {
+        if (!world.isRemote) {
+            lastChangeTime = world.getTotalWorldTime();
+            TestMod.network.sendToAllAround(new PacketUpdatePedestal(TileEntityPedestal.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+        }
+    }
+};
+
     public long lastChangeTime;
 
-    @Override
+
     protected void onContentChanged(int slot)
     {
         if(!world.isRemote)
         {
             lastChangeTime = world.getWorldTime();
-            TestMod.network.sendToAllAround(new PacketUpdatedPedestal(TileEntityPedestal.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+            TestMod.network.sendToAllAround(new PacketUpdatePedestal(TileEntityPedestal.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
         }
     }
 
+
+
     @Override
-    public void onLoad()
-    {
-        if (world.isRemote)
-        {
+    public void onLoad() {
+        if (world.isRemote) {
             TestMod.network.sendToServer(new PacketRequestUpdatePedestal(this));
         }
     }
@@ -51,16 +62,14 @@ public class TileEntityPedestal extends TileEntity {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
-    {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setTag("inventory", inventory.serializeNBT());
         compound.setLong("lastChangeTime", lastChangeTime);
         return super.writeToNBT(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
+    public void readFromNBT(NBTTagCompound compound) {
         inventory.deserializeNBT(compound.getCompoundTag("inventory"));
         lastChangeTime = compound.getLong("lastChangeTime");
         super.readFromNBT(compound);

@@ -3,6 +3,8 @@ package com.davoleo.testmod;
 import com.davoleo.testmod.block.ModBlocks;
 import com.davoleo.testmod.client.TestTab;
 import com.davoleo.testmod.item.ModItems;
+import com.davoleo.testmod.network.PacketRequestUpdatePedestal;
+import com.davoleo.testmod.network.PacketUpdatePedestal;
 import com.davoleo.testmod.proxy.CommonProxy;
 import com.davoleo.testmod.recipe.ModRecipes;
 import com.davoleo.testmod.world.ModWorldGeneration;
@@ -45,7 +47,7 @@ public class TestMod {
     public static final Item.ToolMaterial copperToolMaterial = EnumHelper.addToolMaterial("COPPER", 2, 500, 6,2, 14);
     public static final ItemArmor.ArmorMaterial copperArmorMaterial = EnumHelper.addArmorMaterial("COPPER", MODID + ":copper", 15, new int[]{2,5,6,2},9, SoundEvents.ITEM_ARMOR_EQUIP_IRON , 0.0F);
 
-    public static SimpleNetworkWrapper wrapper;
+    public static SimpleNetworkWrapper network;
 
     //Crea un istanza per la mod
     @Mod.Instance(MODID)
@@ -62,10 +64,14 @@ public class TestMod {
         System.out.println(MODNAME + " is loading!");
         GameRegistry.registerWorldGenerator(new ModWorldGeneration(), 3);
 
+        //Networking
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
         network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
         network.registerMessage(new PacketUpdatePedestal.Handler(), PacketUpdatePedestal.class, 0, Side.CLIENT);
         network.registerMessage(new PacketRequestUpdatePedestal.Handler(), PacketRequestUpdatePedestal.class, 1, Side.SERVER);
+
+        //TESR
+        proxy.registerRenderers();
     }
 
     @Mod.EventHandler
