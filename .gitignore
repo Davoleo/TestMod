@@ -4,7 +4,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -12,8 +11,6 @@
 hs_err_pid*
 
 \.idea/
-
-\.gradle/
 
 build/
 
@@ -25,13 +22,8 @@ run/
 
 eula\.txt
 
-gradlew\.bat
-
 gradlew
 
-gradle\.properties
-
-build\.gradle
 Test_mod\.iml
 
 Test_mod\.ipr
