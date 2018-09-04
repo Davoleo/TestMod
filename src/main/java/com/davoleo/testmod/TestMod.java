@@ -7,7 +7,7 @@ import com.davoleo.testmod.network.PacketRequestUpdatePedestal;
 import com.davoleo.testmod.network.PacketUpdatePedestal;
 import com.davoleo.testmod.proxy.CommonProxy;
 import com.davoleo.testmod.recipe.ModRecipes;
-import com.davoleo.testmod.world.ModWorldGeneration;
+import com.davoleo.testmod.world.ModWorldGen;
 import net.minecraft.block.Block;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -62,7 +62,7 @@ public class TestMod {
     public void preInit (FMLPreInitializationEvent event)
     {
         System.out.println(MODNAME + " is loading!");
-        GameRegistry.registerWorldGenerator(new ModWorldGeneration(), 3);
+        GameRegistry.registerWorldGenerator(new ModWorldGen(), 3);
 
         //Networking
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());

@@ -1,18 +1,13 @@
 package com.davoleo.testmod;
 
-import com.davoleo.testmod.block.ModBlocks;
 import com.davoleo.testmod.block.pedestal.ContainerPedestal;
 import com.davoleo.testmod.block.pedestal.GuiPedestal;
 import com.davoleo.testmod.block.pedestal.TileEntityPedestal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import javax.annotation.Nullable;
 
 /*************************************************
  * Author: Davoleo
