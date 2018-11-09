@@ -1,5 +1,5 @@
 #Items
-item.ingot_copper.name=Copper Ingot
+item.copper_ingot.name=Copper Ingot
 item.corn_seed.name=Corn Seeds
 item.corn.name=Corn
 item.paninazzo.name=ER PANINAZZO
@@ -17,9 +17,12 @@ item.copper_boots.name=Copper Boots
 
 
 #Blocks
-tile.block_copper.name=Copper Block
-tile.ore_copper.name=Copper Ore
+tile.copper_block.name=Copper Block
+tile.copper_ore.name=Copper Ore
+tile.nether_gold_ore.name=Nether Gold Ore
+tile.end_zephyrite_ore=Zephyrite Ore
+tile.counter.name=Counter
 tile.pedestal.name=Pedestal
 
 #Creative Tab
-itemGroup.testmod=§1Davoleo's Testing Mod
+itemGroup.testmod=§1Davoleo's Test Mod

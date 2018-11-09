@@ -1,7 +1,7 @@
 package com.davoleo.testmod.item;
 
-import com.davoleo.testmod.item.tool.*;
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.item.tool.*;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -17,7 +17,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModItems {
 
     //Istanza dell'oggetto
-    public static ItemOre ingotCopper = new ItemOre("ingot_copper","ingotCopper");
+    public static ItemOre ingotCopper = new ItemOre("copper_ingot","ingotCopper");
     public static ItemCornSeeds cornSeeds = new ItemCornSeeds();
     public static ItemCorn corn = new ItemCorn();
     public static ItemPaninazzo paninazzo = new ItemPaninazzo();

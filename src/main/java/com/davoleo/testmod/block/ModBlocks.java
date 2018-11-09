@@ -17,8 +17,10 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModBlocks {
 
-    public static BlockOre oreCopper = new BlockOre("ore_copper", "oreCopper");
-    public static BlockOre blockCopper = new BlockOre("block_copper", "blockCopper");
+    public static BlockOre oreCopper = new BlockOre("copper_ore", "oreCopper");
+    public static BlockOre oreGold = new BlockOre("nether_gold_ore", "oreGold");
+    public static BlockOre oreZephyrite = new BlockOre("end_zephyrite_ore", "oreZephyrite");
+    public static BlockOre blockCopper = new BlockOre("copper_block", "blockCopper");
     public static BlockCropCorn cropCorn = new BlockCropCorn();
     public static BlockPedestal pedestal = new BlockPedestal();
     public static BlockCounter counter = new BlockCounter();
@@ -28,6 +30,8 @@ public class ModBlocks {
     {
         registry.registerAll(
                 oreCopper,
+                oreGold,
+                oreZephyrite,
                 blockCopper,
                 cropCorn,
                 pedestal,
@@ -44,6 +48,8 @@ public class ModBlocks {
     {
         registry.registerAll(
                 oreCopper.createItemBlock(),
+                oreGold.createItemBlock(),
+                oreZephyrite.createItemBlock(),
                 blockCopper.createItemBlock(),
                 pedestal.createItemBlock(),
                 counter.createItemBlock()
@@ -55,6 +61,8 @@ public class ModBlocks {
     public static void registerModels()
     {
         oreCopper.registerItemModel(Item.getItemFromBlock(oreCopper));
+        oreGold.registerItemModel(Item.getItemFromBlock(oreGold));
+        oreZephyrite.registerItemModel(Item.getItemFromBlock(oreZephyrite));
         blockCopper.registerItemModel(Item.getItemFromBlock(blockCopper));
         pedestal.registerItemModel(Item.getItemFromBlock(pedestal));
         counter.registerItemModel(Item.getItemFromBlock(counter));
