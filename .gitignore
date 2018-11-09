@@ -1,4 +1,5 @@
 *.class
+*.db
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -20,11 +21,7 @@ out/
 
 run/
 
-eula\.txt
-
 gradlew
-
-Test_mod\.iml
 
 Test_mod\.ipr
 

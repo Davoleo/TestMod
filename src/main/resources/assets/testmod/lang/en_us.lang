@@ -17,10 +17,9 @@ item.copper_boots.name=Copper Boots
 
 
 #Blocks
-tile.copper_block.name=Copper Block
-tile.copper_ore.name=Copper Ore
-tile.nether_gold_ore.name=Nether Gold Ore
-tile.end_zephyrite_ore=Zephyrite Ore
+tile.overworld_aluminum_ore.name=Aluminum Ore
+tile.overworld_copper_ore.name=Copper Ore
+
 tile.counter.name=Counter
 tile.pedestal.name=Pedestal
 
