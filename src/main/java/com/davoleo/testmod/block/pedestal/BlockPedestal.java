@@ -1,8 +1,8 @@
 package com.davoleo.testmod.block.pedestal;
 
-import com.davoleo.testmod.ModGuiHandler;
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTileEntity;
+import com.davoleo.testmod.util.handlers.ModGuiHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;

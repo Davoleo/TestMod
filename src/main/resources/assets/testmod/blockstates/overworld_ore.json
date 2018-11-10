@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "variant=copper": {"model": "testmod:overworld_copper_ore"},
-    "variant=aluminum": {"model": "testmod:overworld_aluminum_ore"}
-  }
-}

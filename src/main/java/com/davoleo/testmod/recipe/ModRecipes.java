@@ -27,6 +27,5 @@ public class ModRecipes {
 
         //Items
         ModItems.ingotCopper.initOreDict();
-        ModItems.corn.initOreDict();
     }
 }

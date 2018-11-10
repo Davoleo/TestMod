@@ -1,7 +1,7 @@
 package com.davoleo.testmod.client;
 
-import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.item.ModItems;
+import com.davoleo.testmod.util.Reference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
@@ -18,7 +18,7 @@ public class TestTab extends CreativeTabs {
     //Costruisce una creative tab utilizzando il MODID e un immagine per la GUI
     public TestTab()
     {
-        super(TestMod.MODID);
+        super(Reference.MODID);
         setBackgroundImageName("tab_testmod.png");
     }
 

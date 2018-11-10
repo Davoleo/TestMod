@@ -1,8 +1,8 @@
 package com.davoleo.testmod.proxy;
 
-import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.pedestal.TESRPedestal;
 import com.davoleo.testmod.block.pedestal.TileEntityPedestal;
+import com.davoleo.testmod.util.Reference;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -24,13 +24,13 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerItemRenderer(Item item, int meta, String id)
     {
-        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(TestMod.MODID + ":" + id, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), id));
     }
 
     @Override
     public void registerVariantRenderer(Item item, int meta, String fileName, String id)
     {
-        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(new ResourceLocation(TestMod.MODID, fileName), id));
+        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(new ResourceLocation(Reference.MODID, fileName), id));
     }
 
     @Override

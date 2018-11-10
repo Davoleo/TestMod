@@ -1,7 +1,7 @@
 package com.davoleo.testmod.block.pedestal;
 
-import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.ModBlocks;
+import com.davoleo.testmod.util.Reference;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -45,6 +45,6 @@ public class GuiPedestal extends GuiContainer {
         fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8 ,ySize- 94, 0x404040);
     }
 
-    public static final ResourceLocation BG_TEXTURE = new ResourceLocation(TestMod.MODID, "textures/gui/pedestal.png");
+    public static final ResourceLocation BG_TEXTURE = new ResourceLocation(Reference.MODID, "textures/gui/pedestal.png");
 
 }

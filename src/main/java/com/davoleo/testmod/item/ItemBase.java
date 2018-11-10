@@ -1,6 +1,7 @@
 package com.davoleo.testmod.item;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.util.interfaces.IHasModel;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -12,7 +13,7 @@ import net.minecraft.item.Item;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class ItemBase extends Item {
+public class ItemBase extends Item implements IHasModel {
 
     protected String name;
 
@@ -23,9 +24,18 @@ public class ItemBase extends Item {
         setRegistryName(name);
 
         setCreativeTab(TestMod.creativeTab);
+
+        ModItems.ITEMS.add(this);
+    }
+
+    @Override
+    public void registerModels()
+    {
+        TestMod.proxy.registerItemRenderer(this, 0, "inventory");
     }
 
     //Automatizza la registrazione del modello per tutti gli oggetti creati
+    @Deprecated
     public void registerItemModel()
     {
         TestMod.proxy.registerItemRenderer(this, 0, name);

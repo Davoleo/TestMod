@@ -1,4 +1,4 @@
-package com.davoleo.testmod;
+package com.davoleo.testmod.util.handlers;
 
 import com.davoleo.testmod.block.pedestal.ContainerPedestal;
 import com.davoleo.testmod.block.pedestal.GuiPedestal;
