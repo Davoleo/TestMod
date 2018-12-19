@@ -37,7 +37,7 @@ public class BlockBase extends Block implements IHasModel {
         this.name = name;
         this.oreName = oreName;
 
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
 
         setCreativeTab(TestMod.creativeTab);

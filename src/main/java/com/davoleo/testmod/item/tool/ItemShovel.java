@@ -20,7 +20,7 @@ public class ItemShovel extends ItemSpade {
     public ItemShovel(ToolMaterial material, String name)
     {
         super(material);
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         this.name = name;
     }

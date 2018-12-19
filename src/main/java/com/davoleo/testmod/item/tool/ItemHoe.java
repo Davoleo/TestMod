@@ -19,7 +19,7 @@ public class ItemHoe extends net.minecraft.item.ItemHoe {
     public ItemHoe(ToolMaterial material, String name)
     {
         super(material);
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         this.name = name;
     }

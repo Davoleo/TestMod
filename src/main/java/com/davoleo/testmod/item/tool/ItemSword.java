@@ -19,7 +19,7 @@ public class ItemSword extends net.minecraft.item.ItemSword {
     public ItemSword (ToolMaterial material, String name)
     {
         super(material);
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         this.name = name;
     }

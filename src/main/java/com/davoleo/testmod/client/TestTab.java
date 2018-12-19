@@ -24,7 +24,7 @@ public class TestTab extends CreativeTabs {
 
     //Inserisce un oggetto come icona della Creative Tab
     @Override
-    public ItemStack getTabIconItem() {
+    public ItemStack createIcon() {
         return new ItemStack(ModItems.ingotCopper);
     }
 

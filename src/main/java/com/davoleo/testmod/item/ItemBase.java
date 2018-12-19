@@ -20,7 +20,7 @@ public class ItemBase extends Item implements IHasModel {
     //Automatizza la definizione del nome Unlocalized e Registry per tutti gli oggetti creati
     public ItemBase(String name){
         this.name = name;
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
 
         setCreativeTab(TestMod.creativeTab);

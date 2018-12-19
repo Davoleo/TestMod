@@ -1,12 +1,12 @@
 package com.davoleo.testmod;
 
 import com.davoleo.testmod.client.TestTab;
+import com.davoleo.testmod.handler.ModGuiHandler;
 import com.davoleo.testmod.network.PacketRequestUpdatePedestal;
 import com.davoleo.testmod.network.PacketUpdatePedestal;
 import com.davoleo.testmod.proxy.CommonProxy;
 import com.davoleo.testmod.recipe.ModRecipes;
 import com.davoleo.testmod.util.Reference;
-import com.davoleo.testmod.util.handlers.ModGuiHandler;
 import com.davoleo.testmod.world.ModWorldGen;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.Logger;
 
 /*************************************************
  * Author: Davoleo
@@ -33,7 +34,10 @@ import net.minecraftforge.fml.relauncher.Side;
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION)
 public class TestMod {
 
-    //TODO : Make block and items constant instead of static variables
+    //Definisce il nome l'ID e la versione della mod
+    public static final String MODID = "testmod";
+    public static final String MODNAME = "Test Mod";
+    public static final String VERSION = "0.0.1";
 
     public static final TestTab creativeTab = new TestTab();
 
@@ -46,15 +50,18 @@ public class TestMod {
     @Mod.Instance(Reference.MODID)
     public static TestMod instance;
 
-    //Proxy declaration
-    @SidedProxy(serverSide = Reference.COMMON, clientSide = Reference.CLIENT)
+    public static Logger logger;
+
+    //Definisce quale proxy sta da quale parte
+    @SidedProxy(serverSide = "com.davoleo.testmod.proxy.CommonProxy", clientSide = "com.davoleo.testmod.proxy.ClientProxy")
     public static CommonProxy proxy;
 
     //Mod Initialization steps
     @Mod.EventHandler
     public void preInit (FMLPreInitializationEvent event)
     {
-        System.out.println(Reference.NAME + " is loading!");
+        logger = event.getModLog();
+        System.out.println(MODNAME + " is loading!");
         GameRegistry.registerWorldGenerator(new ModWorldGen(), 3);
 
         //Networking

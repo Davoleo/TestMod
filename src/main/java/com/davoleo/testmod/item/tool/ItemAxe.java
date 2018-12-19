@@ -19,7 +19,7 @@ public class ItemAxe extends net.minecraft.item.ItemAxe {
     public ItemAxe (ToolMaterial material, String name)
     {
         super(material, 8F, -3.1F);
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         this.name = name;
     }

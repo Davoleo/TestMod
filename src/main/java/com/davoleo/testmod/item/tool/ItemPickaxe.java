@@ -19,7 +19,7 @@ public class ItemPickaxe extends net.minecraft.item.ItemPickaxe {
     public ItemPickaxe (ToolMaterial material, String name)
     {
         super(material);
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         this.name = name;
     }

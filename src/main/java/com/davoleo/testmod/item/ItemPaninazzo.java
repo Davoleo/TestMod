@@ -17,7 +17,7 @@ public class ItemPaninazzo extends ItemFood {
     {
 
         super(16, 6F,true);
-        setUnlocalizedName("paninazzo");
+        setTranslationKey("paninazzo");
         setRegistryName("paninazzo");
         setCreativeTab(TestMod.creativeTab);
 
