@@ -3,7 +3,7 @@ package com.davoleo.testmod.block.pedestal;
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.network.PacketRequestUpdatePedestal;
 import com.davoleo.testmod.network.PacketUpdatePedestal;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /*************************************************
@@ -36,7 +37,7 @@ public class TileEntityPedestal extends TileEntity {
 
     public long lastChangeTime;
 
-
+    @SuppressWarnings("unused")
     protected void onContentChanged(int slot)
     {
         if(!world.isRemote)
@@ -55,12 +56,14 @@ public class TileEntityPedestal extends TileEntity {
         }
     }
 
+    @Nonnull
     @Override
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(getPos(), getPos().add(1,2,2));
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setTag("inventory", inventory.serializeNBT());
@@ -76,14 +79,15 @@ public class TileEntityPedestal extends TileEntity {
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T)inventory : super.getCapability(capability,facing);
     }

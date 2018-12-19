@@ -5,6 +5,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 /*************************************************
  * Author: Leonardo
  * Date: 09/11/2018
@@ -28,9 +30,10 @@ public class ItemBlockVariants extends ItemBlock {
         return damage;
     }
 
+    @Nonnull
     @Override
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
-        return super.getUnlocalizedName() + "_" + ((IMetaName)this.block).getSpecialName(stack);
+        return super.getTranslationKey() + "_" + ((IMetaName)this.block).getSpecialName(stack);
     }
 }

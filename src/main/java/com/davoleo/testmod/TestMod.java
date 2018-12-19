@@ -6,7 +6,6 @@ import com.davoleo.testmod.network.PacketRequestUpdatePedestal;
 import com.davoleo.testmod.network.PacketUpdatePedestal;
 import com.davoleo.testmod.proxy.CommonProxy;
 import com.davoleo.testmod.recipe.ModRecipes;
-import com.davoleo.testmod.util.Reference;
 import com.davoleo.testmod.world.ModWorldGen;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -31,7 +30,7 @@ import org.apache.logging.log4j.Logger;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-@Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION)
+@Mod(modid = TestMod.MODID, name = TestMod.MODNAME, version = TestMod.VERSION)
 public class TestMod {
 
     //Definisce il nome l'ID e la versione della mod
@@ -42,12 +41,12 @@ public class TestMod {
     public static final TestTab creativeTab = new TestTab();
 
     public static final Item.ToolMaterial copperToolMaterial = EnumHelper.addToolMaterial("COPPER", 2, 500, 6,2, 14);
-    public static final ItemArmor.ArmorMaterial copperArmorMaterial = EnumHelper.addArmorMaterial("COPPER", Reference.MODID + ":copper", 15, new int[]{2,5,6,2},9, SoundEvents.ITEM_ARMOR_EQUIP_IRON , 0.0F);
+    public static final ItemArmor.ArmorMaterial copperArmorMaterial = EnumHelper.addArmorMaterial("COPPER", TestMod.MODID + ":copper", 15, new int[]{2,5,6,2},9, SoundEvents.ITEM_ARMOR_EQUIP_IRON , 0.0F);
 
     public static SimpleNetworkWrapper network;
 
     //Mod instance
-    @Mod.Instance(Reference.MODID)
+    @Mod.Instance(TestMod.MODID)
     public static TestMod instance;
 
     public static Logger logger;
@@ -66,7 +65,7 @@ public class TestMod {
 
         //Networking
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
-        network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(TestMod.MODID);
         network.registerMessage(new PacketUpdatePedestal.Handler(), PacketUpdatePedestal.class, 0, Side.CLIENT);
         network.registerMessage(new PacketRequestUpdatePedestal.Handler(), PacketRequestUpdatePedestal.class, 1, Side.SERVER);
 
