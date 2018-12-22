@@ -24,6 +24,7 @@ tile.copper_block.name=Copper Block
 
 tile.counter.name=Counter
 tile.pedestal.name=Pedestal
+tile.fast_furnace.name=Fast Furnace
 
 #Creative Tab
 itemGroup.testmod=§1Davoleo's Test Mod

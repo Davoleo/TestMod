@@ -4,7 +4,6 @@ import com.davoleo.testmod.block.counter.BlockCounter;
 import com.davoleo.testmod.block.pedestal.BlockPedestal;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
@@ -27,8 +26,11 @@ public class ModBlocks {
     public static BlockBase oreGold = new BlockBase(Material.ROCK,"nether_gold_ore", "oreGold");
     public static BlockBase oreZephyrite = new BlockBase(Material.ROCK,"end_zephyrite_ore", "oreZephyrite");
     public static BlockBase blockCopper = new BlockBase(Material.ROCK,"copper_block", "blockCopper");
+
     public static BlockPedestal pedestal = new BlockPedestal();
     public static BlockCounter counter = new BlockCounter();
+
+    public static BlockBase fast_furnace = new BlockBase(Material.IRON, "fast_furnace");
 
     //Registra i blocchi in versione piazzata
     public static void register(IForgeRegistry<Block> registry)
@@ -40,12 +42,9 @@ public class ModBlocks {
                 oreZephyrite,
                 blockCopper,
                 pedestal,
-                counter
+                counter,
+                fast_furnace
         );
-
-        GameRegistry.registerTileEntity(counter.getTileEntityClass(), counter.getRegistryName());
-        GameRegistry.registerTileEntity(pedestal.getTileEntityClass(), pedestal.getRegistryName());
-
     }
 
 }

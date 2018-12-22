@@ -1,4 +1,4 @@
-package com.davoleo.testmod.util.handlers;
+package com.davoleo.testmod.handler;
 
 import com.davoleo.testmod.block.ModBlocks;
 import com.davoleo.testmod.item.ModItems;

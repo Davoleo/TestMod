@@ -11,6 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
+
 /*************************************************
  * Author: Davoleo
  * Date: 04/08/2018
@@ -37,8 +39,8 @@ public class BlockBase extends Block implements IHasModel {
         this.name = name;
         this.oreName = oreName;
 
-        setTranslationKey(name);
-        setRegistryName(name);
+        setTranslationKey(TestMod.MODID + "." + name);
+        setRegistryName(TestMod.MODID, name);
 
         setCreativeTab(TestMod.creativeTab);
 
@@ -72,8 +74,9 @@ public class BlockBase extends Block implements IHasModel {
         return new ItemBlock(this).setRegistryName(getRegistryName());
     }
 
+    @Nonnull
     @Override
-    public BlockBase setCreativeTab(CreativeTabs tab) {
+    public BlockBase setCreativeTab(@Nonnull CreativeTabs tab) {
         super.setCreativeTab(tab);
         return this;
     }
