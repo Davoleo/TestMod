@@ -1,6 +1,30 @@
 This mapping 'stable_39' was designed for MC 1.12! Use at your own peril.This mapping 'stable_39' was designed for MC 1.12! Use at your own peril.
 
+:deobfCompileDummyTask
+:deobfProvidedDummyTask
+:getVersionJson
+:extractUserdev UP-TO-DATE
+:extractDependencyATs SKIPPED
+:extractMcpData SKIPPED
+:extractMcpMappings SKIPPED
+:genSrgs SKIPPED
+:downloadClient SKIPPED
+:downloadServer SKIPPED
+:splitServerJar SKIPPED
+:mergeJars SKIPPED
+:deobfMcSRG SKIPPED
+:decompileMc SKIPPED
+:fixMcSources SKIPPED
+:applySourcePatches SKIPPED
+:remapMcSources SKIPPED
+:recompileMc SKIPPED
+:extractNatives SKIPPED
+:getAssetIndex UP-TO-DATE
+:getAssets
+Current status: 1304/1305   99%
+:makeStart
+:setupDecompWorkspace
 
-CONFIGURE SUCCESSFUL
+BUILD SUCCESSFUL
 
-Total time: 2.507 secs
+Total time: 19.61 secs

@@ -1,13 +1,27 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cube_all",
+    "model": "cube",
     "textures": {
-      "all": "testmod:blocks/fast_furnace"
+      "north": "testmod:blocks/ff_front",
+      "south": "testmod:blocks/ff_side",
+      "west": "testmod:blocks/ff_side",
+      "east": "testmod:blocks/ff_side",
+      "up": "testmod:blocks/ff_top",
+      "down": "testmod:blocks/ff_bottom"
+
     }
   },
   "variants": {
     "normal": [{}],
-    "inventory": [{}]
+    "inventory": [{}],
+    "facing": {
+      "north": {},
+      "south": {"y": 180},
+      "west": {"y": 270},
+      "east": {"y": 90},
+      "up": {"x": -90},
+      "down": {"x": 90}
+    }
   }
 }
