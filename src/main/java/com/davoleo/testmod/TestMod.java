@@ -30,6 +30,7 @@ import org.apache.logging.log4j.Logger;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
+//TODO : Rework mod base classes
 @Mod(modid = TestMod.MODID, name = TestMod.MODNAME, version = TestMod.VERSION)
 public class TestMod {
 

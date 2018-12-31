@@ -2,6 +2,7 @@ package com.davoleo.testmod.handler;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.counter.TileEntityCounter;
+import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.block.pedestal.TileEntityPedestal;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -20,5 +21,6 @@ public class TileEntityHandler {
     {
         GameRegistry.registerTileEntity(TileEntityCounter.class, new ResourceLocation(TestMod.MODID, "counter"));
         GameRegistry.registerTileEntity(TileEntityPedestal.class, new ResourceLocation(TestMod.MODID, "pedestal"));
+        GameRegistry.registerTileEntity(TileFastFurnace.class, new ResourceLocation(TestMod.MODID, "fast_furnace"));
     }
 }
