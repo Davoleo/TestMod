@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 public class TileFastFurnace extends TileEntity {
 
     public static final int SIZE = 3 + 3;
+
     private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE)
     {
         @Override
@@ -53,14 +54,14 @@ public class TileFastFurnace extends TileEntity {
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
         return super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
         return super.getCapability(capability, facing);
     }

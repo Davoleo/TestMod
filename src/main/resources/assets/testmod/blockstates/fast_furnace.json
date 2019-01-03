@@ -9,7 +9,6 @@
       "east": "testmod:blocks/ff_side",
       "up": "testmod:blocks/ff_top",
       "down": "testmod:blocks/ff_bottom"
-
     }
   },
   "variants": {

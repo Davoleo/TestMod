@@ -71,7 +71,7 @@ public class ContainerFastFurnace extends Container {
         x = 117;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
-        addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y));
+        addSlotToContainer(new SlotItemHandler(handler, slotIndex, x, y));
 
 
     }

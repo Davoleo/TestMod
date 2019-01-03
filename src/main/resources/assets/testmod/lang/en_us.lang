@@ -1,30 +1,5 @@
-#Items
-item.copper_ingot.name=Copper Ingot
-item.corn_seed.name=Corn Seeds
-item.corn.name=Corn
-item.paninazzo.name=ER PANINAZZO
-
-item.copper_sword.name=Copper Sword
-item.copper_pickaxe.name=Copper Pickaxe
-item.copper_axe.name=Copper Axe
-item.copper_shovel.name=Copper Shovel
-item.copper_hoe.name=Copper Hoe
-
-item.copper_helmet.name=Copper Helmet
-item.copper_chestplate.name=Copper Chestplate
-item.copper_leggings.name=Copper Leggings
-item.copper_boots.name=Copper Boots
-
-
 #Blocks
-tile.aluminum_ore.name=Aluminum Ore
-tile.copper_ore.name=Copper Ore
-tile.nether_gold_ore.name=Nether Gold Ore
-tile.copper_block.name=Copper Block
-
-tile.counter.name=Counter
-tile.pedestal.name=Pedestal
 tile.testmod.fast_furnace.name=Fast Furnace
 
-#Creative Tab
-itemGroup.testmod=§1Davoleo's Test Mod
+#Creative Tabs
+itemGroup.testmod=Test Mod 2
