@@ -38,7 +38,7 @@ public class ContainerFastFurnace extends Container {
         {
             for (int col = 0; col < 9; ++col)
             {
-                int x = 9 + col * 18;
+                int x = 10 + col * 18;
                 int y = row * 18 + 70;
                 this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 10, x, y));
             }
@@ -47,7 +47,7 @@ public class ContainerFastFurnace extends Container {
         //Hotbar Slots
         for (int row = 0; row < 9; ++row)
         {
-            int x = 9 + row * 18;
+            int x = 10 + row * 18;
             int y = 58 + 70;
             this.addSlotToContainer(new Slot(playerInventory, row, x, y));
         }
@@ -61,14 +61,14 @@ public class ContainerFastFurnace extends Container {
         int slotIndex = 0;
 
         //inputs
-        int x = 9;
-        int y = 39;
+        int x = 10;
+        int y = 40;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y));
 
         //outputs
-        x = 117;
+        x = 118;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex, x, y));
