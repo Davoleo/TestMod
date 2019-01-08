@@ -2,6 +2,7 @@ package com.davoleo.testmod.block.furnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,8 @@ import javax.annotation.Nonnull;
 public class ContainerFastFurnace extends Container {
 
     private TileFastFurnace te;
+
+    private static final int PROGRESS_ID = 0;
 
     public ContainerFastFurnace(IInventory playerInventory, TileFastFurnace te)
     {
@@ -74,6 +77,21 @@ public class ContainerFastFurnace extends Container {
         addSlotToContainer(new SlotItemHandler(handler, slotIndex, x, y));
 
 
+    }
+
+    @Override
+    public void detectAndSendChanges()
+    {
+        super.detectAndSendChanges();
+        for (IContainerListener listener : listeners)
+            listener.sendWindowProperty(this, PROGRESS_ID, te.getProgress());
+    }
+
+    @Override
+    public void updateProgressBar(int id, int data)
+    {
+        if (id == PROGRESS_ID)
+            te.setProgress(data);
     }
 
     @Nonnull
