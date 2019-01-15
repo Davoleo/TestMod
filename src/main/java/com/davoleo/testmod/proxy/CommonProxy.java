@@ -5,7 +5,10 @@ import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.init.GuiHandler;
 import com.davoleo.testmod.init.ModBlocks;
+import com.davoleo.testmod.network.Messages;
+import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -30,6 +33,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent e) {
+        Messages.registerMessages("testmod");
     }
 
     public void init(FMLInitializationEvent e) {
@@ -48,5 +52,15 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().register(new ItemBlock(ModBlocks.blockFastFurnace).setRegistryName(BlockFastFurnace.FAST_FURNACE));
+    }
+
+    public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)
+    {
+        throw new IllegalStateException("This should only be called Client-Side");
+    }
+
+    public EntityPlayer getClientPlayer()
+    {
+        throw new IllegalStateException("This should only be called Client-Side");
     }
 }

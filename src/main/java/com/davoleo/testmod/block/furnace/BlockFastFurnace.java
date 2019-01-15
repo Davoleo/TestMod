@@ -78,7 +78,7 @@ public class BlockFastFurnace extends Block implements ITileEntityProvider {
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
     {
         return new TileFastFurnace();
     }

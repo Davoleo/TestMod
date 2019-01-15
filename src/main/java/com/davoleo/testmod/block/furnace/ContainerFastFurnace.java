@@ -1,6 +1,10 @@
 package com.davoleo.testmod.block.furnace;
 
+import com.davoleo.testmod.network.Messages;
+import com.davoleo.testmod.network.PacketSyncPower;
+import com.davoleo.testmod.util.IEnergyContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
@@ -20,7 +24,7 @@ import javax.annotation.Nonnull;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class ContainerFastFurnace extends Container {
+public class ContainerFastFurnace extends Container implements IEnergyContainer {
 
     private TileFastFurnace te;
 
@@ -88,6 +92,18 @@ public class ContainerFastFurnace extends Container {
             for (IContainerListener listener : listeners)
                 listener.sendWindowProperty(this, PROGRESS_ID, te.getProgress());
         }
+        if (te.getEnergy() != te.getClientEnergy())
+        {
+            te.setClientEnergy(te.getEnergy());
+            for (IContainerListener listener : listeners)
+            {
+                if (listener instanceof EntityPlayerMP)
+                {
+                    EntityPlayerMP player = (EntityPlayerMP) listener;
+                    Messages.INSTANCE.sendTo(new PacketSyncPower(te.getEnergy()), player);
+                }
+            }
+        }
     }
 
     @Override
@@ -132,5 +148,11 @@ public class ContainerFastFurnace extends Container {
     public boolean canInteractWith(@Nonnull EntityPlayer playerIn)
     {
         return te.canInteractWith(playerIn);
+    }
+
+    @Override
+    public void syncEnergy(int energy)
+    {
+        te.setClientEnergy(energy);
     }
 }
