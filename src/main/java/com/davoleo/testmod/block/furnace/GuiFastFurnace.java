@@ -35,7 +35,7 @@ public class GuiFastFurnace extends GuiContainer {
     //TODO Needs some tweaks
     private void drawEnergyBar(int energy)
     {
-        drawRect(guiLeft + 10, guiTop + 5, guiLeft + 22, guiTop + 15, 0xFF555555);
+        drawRect(guiLeft + 10, guiTop + 5, guiLeft + 112, guiTop + 15, 0xFF555555);
         int percentage = energy * 100 / TileFastFurnace.MAX_POWER;
         for (int i = 0; i < percentage; i++)
         {
@@ -66,7 +66,7 @@ public class GuiFastFurnace extends GuiContainer {
         if (furnace.getClientProgress() > 0)
         {
             int percentage = 100 - furnace.getClientProgress() * 100 / TileFastFurnace.MAX_PROGRESS;
-            drawString(mc.fontRenderer, "PROGRESS: " + percentage +"%", guiLeft + 10, guiTop + 15, 0xFFFFFF);
+            drawString(mc.fontRenderer, "PROGRESS: " + percentage +"%", guiLeft + 10, guiTop + 20, 0xFFFFFF);
         }
     }
 }
