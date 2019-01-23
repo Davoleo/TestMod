@@ -1,10 +1,13 @@
 package com.davoleo.testmod.block.furnace;
 
 import com.davoleo.testmod.util.TestEnergyStorage;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -15,6 +18,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /*************************************************
  * Author: Davoleo
@@ -35,6 +39,7 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     public static final int RF_PER_TICK_INPUT = 100;
     public static final int RF_PER_TICK = 20;
 
+    private FurnaceState state = FurnaceState.IDLE;
     private int progress = 0;
     private int clientProgress = -1;
     private int clientEnergy = -1;
@@ -97,7 +102,7 @@ public class TileFastFurnace extends TileEntity implements ITickable {
         return compound;
     }
 
-    public boolean canInteractWith(EntityPlayer player)
+    boolean canInteractWith(EntityPlayer player)
     {
         return !isInvalid() && player.getDistanceSq(pos.add(0.5,0.5,0.5)) <= 64;
     }
@@ -107,10 +112,13 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     {
         if (!world.isRemote)
         {
-            if (energyStorage.getEnergyStored() < RF_PER_TICK)
+            if (energyStorage.getEnergyStored() < RF_PER_TICK) {
+                setState(FurnaceState.NO_POWER);
                 return;
+            }
 
             if (progress > 0) {
+                setState(FurnaceState.WORKING);
                 energyStorage.consumePower(RF_PER_TICK);
                 progress--;
                 if (progress <= 0) {
@@ -118,6 +126,7 @@ public class TileFastFurnace extends TileEntity implements ITickable {
                 }
                 markDirty();
             } else {
+                setState(FurnaceState.IDLE);
                 startSmelting();
             }
         }
@@ -172,6 +181,34 @@ public class TileFastFurnace extends TileEntity implements ITickable {
         }
     }
 
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
+    }
+
+    @Nonnull
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        NBTTagCompound compound = super.getUpdateTag();
+        compound.setInteger("state", state.ordinal());
+        return compound;
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+    {
+        int stateIndex = pkt.getNbtCompound().getInteger("state");
+
+        if (world.isRemote && stateIndex != state.ordinal())
+        {
+            state = FurnaceState.VALUES[stateIndex];
+            world.markBlockRangeForRenderUpdate(pos, pos);
+        }
+    }
+
     private TestEnergyStorage energyStorage = new TestEnergyStorage(MAX_POWER, RF_PER_TICK_INPUT);
 
     @Override
@@ -201,6 +238,24 @@ public class TileFastFurnace extends TileEntity implements ITickable {
             return CapabilityEnergy.ENERGY.cast(energyStorage);
         }
         return super.getCapability(capability, facing);
+    }
+
+    public void setState(FurnaceState state)
+    {
+        if (this.state != state)
+        {
+            this.state = state;
+            markDirty();
+
+            //this two lines make sure the client is notified of a block update
+            IBlockState blockState = world.getBlockState(pos);
+            getWorld().notifyBlockUpdate(pos, blockState, blockState, 3);
+        }
+    }
+
+    public FurnaceState getState()
+    {
+        return state;
     }
 
     public int getProgress()

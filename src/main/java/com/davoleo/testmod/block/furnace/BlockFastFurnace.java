@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -17,7 +18,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkCache;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -39,6 +43,7 @@ public class BlockFastFurnace extends Block implements ITileEntityProvider {
      public static final ResourceLocation FAST_FURNACE = new ResourceLocation(TestMod.MODID, "fast_furnace");
 
      public static final PropertyDirection FACING = PropertyDirection.create("facing");
+     public static final PropertyEnum<FurnaceState> STATE = PropertyEnum.create("state", FurnaceState.class);
 
     public BlockFastFurnace()
     {
@@ -76,6 +81,17 @@ public class BlockFastFurnace extends Block implements ITileEntityProvider {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(Objects.requireNonNull(getRegistryName()), "inventory"));
     }
 
+    @SuppressWarnings("deprecation")
+    @Nonnull
+    @Override
+    public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntity te = worldIn instanceof ChunkCache ? ((ChunkCache) worldIn).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : worldIn.getTileEntity(pos);
+        if (te instanceof TileFastFurnace)
+            return state.withProperty(STATE, ((TileFastFurnace) te).getState());
+        return super.getActualState(state, worldIn, pos);
+    }
+
     @Nullable
     @Override
     public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
@@ -87,7 +103,7 @@ public class BlockFastFurnace extends Block implements ITileEntityProvider {
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING);
+        return new BlockStateContainer(this, FACING, STATE);
     }
 
     @Nonnull
