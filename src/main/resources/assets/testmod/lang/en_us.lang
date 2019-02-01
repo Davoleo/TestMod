@@ -3,3 +3,6 @@ tile.testmod.fast_furnace.name=Fast Furnace
 
 #Creative Tabs
 itemGroup.testmod=Test Mod 2
+
+#Others
+message.testmod.fast_furnace=\@aEnergy: %d\n\@aItems: %d -> %d\n\@fFastFurnace

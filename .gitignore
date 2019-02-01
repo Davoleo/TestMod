@@ -1,4 +1,5 @@
 *.class
+local.properties
 
 # Package Files #
 *.war
@@ -17,3 +18,4 @@ build/
 *.ipr
 *.iws
 *.iml
+.idea/

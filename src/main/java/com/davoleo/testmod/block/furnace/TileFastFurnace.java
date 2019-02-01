@@ -82,6 +82,11 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
+        readRestorableFromNBT(compound);
+    }
+
+    void readRestorableFromNBT(NBTTagCompound compound)
+    {
         progress = compound.getInteger("progress");
         if (compound.hasKey("itemsIn"))
             inputHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsIn"));
@@ -95,11 +100,16 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
+        writeRestorableToNBT(compound);
+        return compound;
+    }
+
+    void writeRestorableToNBT(NBTTagCompound compound)
+    {
         compound.setInteger("progress", progress);
         compound.setTag("itemsIn", inputHandler.serializeNBT());
         compound.setTag("itemsOut", outputHandler.serializeNBT());
         compound.setInteger("energy", energyStorage.getEnergyStored());
-        return compound;
     }
 
     boolean canInteractWith(EntityPlayer player)
