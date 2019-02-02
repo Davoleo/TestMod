@@ -1,8 +1,9 @@
 package com.davoleo.testmod.block.furnace;
 
+import com.davoleo.testmod.config.FastFurnaceConfig;
 import com.davoleo.testmod.network.Messages;
-import com.davoleo.testmod.network.PacketSyncPower;
-import com.davoleo.testmod.util.IEnergyContainer;
+import com.davoleo.testmod.network.PacketSyncMachineState;
+import com.davoleo.testmod.util.IMachineStateContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -24,7 +25,7 @@ import javax.annotation.Nonnull;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class ContainerFastFurnace extends Container implements IEnergyContainer {
+public class ContainerFastFurnace extends Container implements IMachineStateContainer {
 
     private TileFastFurnace te;
 
@@ -87,30 +88,20 @@ public class ContainerFastFurnace extends Container implements IEnergyContainer 
     public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
-        if (te.getProgress() != te.getClientProgress()) {
-            te.setClientProgress(te.getProgress());
-            for (IContainerListener listener : listeners)
-                listener.sendWindowProperty(this, PROGRESS_ID, te.getProgress());
-        }
-        if (te.getEnergy() != te.getClientEnergy())
+        if (te.getEnergy() != te.getClientEnergy() || te.getProgress() != te.getClientProgress())
         {
             te.setClientEnergy(te.getEnergy());
+            te.setClientProgress(te.getProgress());
             for (IContainerListener listener : listeners)
             {
                 if (listener instanceof EntityPlayerMP)
                 {
                     EntityPlayerMP player = (EntityPlayerMP) listener;
-                    Messages.INSTANCE.sendTo(new PacketSyncPower(te.getEnergy()), player);
+                    int progressPercentage = 100 - te.getProgress() * 100 / FastFurnaceConfig.MAX_PROGRESS;
+                    Messages.INSTANCE.sendTo(new PacketSyncMachineState(te.getEnergy(), progressPercentage), player);
                 }
             }
         }
-    }
-
-    @Override
-    public void updateProgressBar(int id, int data)
-    {
-        if (id == PROGRESS_ID)
-            te.setClientProgress(data);
     }
 
     @Nonnull
@@ -151,8 +142,9 @@ public class ContainerFastFurnace extends Container implements IEnergyContainer 
     }
 
     @Override
-    public void syncEnergy(int energy)
+    public void sync(int energy, int progress)
     {
         te.setClientEnergy(energy);
+        te.setClientProgress(progress);
     }
 }

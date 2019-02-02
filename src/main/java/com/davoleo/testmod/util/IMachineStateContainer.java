@@ -3,13 +3,13 @@ package com.davoleo.testmod.util;
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 15/01/2019 / 19:16
- * Interface: IEnergyContainer
+ * Interface: IMachineStateContainer
  * Project: Test_mod
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public interface IEnergyContainer {
+public interface IMachineStateContainer {
 
-    void syncEnergy(int energy);
+    void sync(int energy, int progress);
 
 }

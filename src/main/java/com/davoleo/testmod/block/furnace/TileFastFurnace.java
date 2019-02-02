@@ -1,5 +1,6 @@
 package com.davoleo.testmod.block.furnace;
 
+import com.davoleo.testmod.config.FastFurnaceConfig;
 import com.davoleo.testmod.util.TestEnergyStorage;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,11 +34,6 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     public static final int INPUT_SLOTS = 3;
     public static final int OUTPUT_SLOTS = 3;
     public static final int SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
-
-    public static final int MAX_PROGRESS = 40;
-    public static final int MAX_POWER = 100000;
-    public static final int RF_PER_TICK_INPUT = 100;
-    public static final int RF_PER_TICK = 20;
 
     private FurnaceState state = FurnaceState.IDLE;
     private int progress = 0;
@@ -83,8 +79,10 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     {
         super.readFromNBT(compound);
         readRestorableFromNBT(compound);
+        state = FurnaceState.VALUES[compound.getInteger("state")];
     }
 
+    //saved things when the block is broken
     void readRestorableFromNBT(NBTTagCompound compound)
     {
         progress = compound.getInteger("progress");
@@ -101,9 +99,11 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     {
         super.writeToNBT(compound);
         writeRestorableToNBT(compound);
+        compound.setInteger("state", state.ordinal());
         return compound;
     }
 
+    //saved things when the block is broken
     void writeRestorableToNBT(NBTTagCompound compound)
     {
         compound.setInteger("progress", progress);
@@ -122,21 +122,20 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     {
         if (!world.isRemote)
         {
-            if (energyStorage.getEnergyStored() < RF_PER_TICK) {
+            if (energyStorage.getEnergyStored() < FastFurnaceConfig.RF_PER_TICK) {
                 setState(FurnaceState.NO_POWER);
                 return;
             }
 
             if (progress > 0) {
                 setState(FurnaceState.WORKING);
-                energyStorage.consumePower(RF_PER_TICK);
+                energyStorage.consumePower(FastFurnaceConfig.RF_PER_TICK);
                 progress--;
                 if (progress <= 0) {
                     attemptSmelting();
                 }
                 markDirty();
             } else {
-                setState(FurnaceState.IDLE);
                 startSmelting();
             }
         }
@@ -163,14 +162,15 @@ public class TileFastFurnace extends TileEntity implements ITickable {
             {
                 if (insertOutput(result.copy(), true))
                 {
-                    progress = MAX_PROGRESS;
+                    setState(FurnaceState.WORKING);
+                    progress = FastFurnaceConfig.MAX_PROGRESS;
                     markDirty();
                     //^^^ perché una variabile dello stato interno è cambiata
+                    return;
                 }
-
-                break;
             }
         }
+        setState(FurnaceState.IDLE);
     }
 
     private void attemptSmelting()
@@ -219,7 +219,7 @@ public class TileFastFurnace extends TileEntity implements ITickable {
         }
     }
 
-    private TestEnergyStorage energyStorage = new TestEnergyStorage(MAX_POWER, RF_PER_TICK_INPUT);
+    private TestEnergyStorage energyStorage = new TestEnergyStorage(FastFurnaceConfig.MAX_POWER, FastFurnaceConfig.RF_PER_TICK_INPUT);
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {

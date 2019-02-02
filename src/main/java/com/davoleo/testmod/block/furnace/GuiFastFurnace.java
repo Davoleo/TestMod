@@ -1,6 +1,7 @@
 package com.davoleo.testmod.block.furnace;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.config.FastFurnaceConfig;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 
@@ -36,7 +37,7 @@ public class GuiFastFurnace extends GuiContainer {
     private void drawEnergyBar(int energy)
     {
         drawRect(guiLeft + 10, guiTop + 5, guiLeft + 112, guiTop + 15, 0xFF555555);
-        int percentage = energy * 100 / TileFastFurnace.MAX_POWER;
+        int percentage = energy * 100 / FastFurnaceConfig.MAX_POWER;
         for (int i = 0; i < percentage; i++)
         {
             drawVerticalLine(guiLeft + 10 + 1 + i, guiTop + 5, guiTop + 14, i % 2 == 0 ? 0xFFFF0000 : 0xFF000000);
@@ -65,7 +66,7 @@ public class GuiFastFurnace extends GuiContainer {
 
         if (furnace.getClientProgress() > 0)
         {
-            int percentage = 100 - furnace.getClientProgress() * 100 / TileFastFurnace.MAX_PROGRESS;
+            int percentage = furnace.getClientProgress();
             drawString(mc.fontRenderer, "PROGRESS: " + percentage +"%", guiLeft + 10, guiTop + 20, 0xFFFFFF);
         }
     }

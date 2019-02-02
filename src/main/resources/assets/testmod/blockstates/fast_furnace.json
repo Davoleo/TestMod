@@ -3,6 +3,7 @@
   "defaults": {
     "model": "cube",
     "textures": {
+      "particle": "testmod:blocks/ff_front",
       "north": "testmod:blocks/ff_front",
       "south": "testmod:blocks/ff_side",
       "west": "testmod:blocks/ff_side",
