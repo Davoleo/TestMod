@@ -11,7 +11,7 @@ import net.minecraftforge.common.config.Config;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-@net.minecraftforge.common.config.Config(modid = TestMod.MODID, name = "testmod", category = "fast_furnace")
+@net.minecraftforge.common.config.Config(modid = TestMod.MODID, category = "fast_furnace")
 public class FastFurnaceConfig {
 
     @Config.Comment(value = "Number of ticks to smelt one item")

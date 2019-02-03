@@ -7,6 +7,7 @@ import com.davoleo.testmod.init.GuiHandler;
 import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.world.BlockAngelOre;
+import com.davoleo.testmod.world.OreGenerator;
 import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +36,7 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent e) {
         Messages.registerMessages("testmod");
+        GameRegistry.registerWorldGenerator(OreGenerator.instance, 5);
     }
 
     public void init(FMLInitializationEvent e) {

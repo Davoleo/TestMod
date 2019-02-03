@@ -1,0 +1,69 @@
+package com.davoleo.testmod.world;
+
+import com.davoleo.testmod.config.OreGenConfig;
+import com.davoleo.testmod.init.ModBlocks;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.pattern.BlockMatcher;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraftforge.fml.common.IWorldGenerator;
+
+import java.util.Random;
+
+/*************************************************
+ * Author: Davoleo
+ * Date / Hour: 03/02/2019 / 16:46
+ * Class: OreGenerator
+ * Project: Test_mod
+ * Copyright - © - Davoleo - 2019
+ **************************************************/
+
+public class OreGenerator implements IWorldGenerator {
+
+    public static OreGenerator instance = new OreGenerator();
+
+    @Override
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
+    {
+        generateWorld(random, chunkX, chunkZ, world, true);
+    }
+
+    public void generateWorld(Random random, int chunkX, int chunkZ, World world, boolean newGen)
+    {
+        if (!newGen && !OreGenConfig.RETROGEN)
+            return;
+        if (world.provider.getDimension() == DimensionType.OVERWORLD.getId()) {
+            if (OreGenConfig.GENERATE_OVERWORLD) {
+                addOreSpawn(ModBlocks.angelOre, (byte) OreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+            }
+        } else
+        if (world.provider.getDimension() == DimensionType.NETHER.getId()) {
+            if (OreGenConfig.GENERATE_NETHER) {
+                addOreSpawn(ModBlocks.angelOre, (byte) OreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+            }
+        } else
+        if (world.provider.getDimension() == DimensionType.THE_END.getId()) {
+            if (OreGenConfig.GENERATE_END) {
+                addOreSpawn(ModBlocks.angelOre, (byte) OreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+            }
+        }
+
+    }
+
+    public void addOreSpawn(Block block, byte blockMeta, Block targetBlock, World world, Random random, int blockXPos, int blockZPos, int minVeinSize, int maxVeinSize, int chancesToSpawn, int yMin, int yMax)
+    {
+        WorldGenMinable minable = new WorldGenMinable(block.getStateFromMeta(blockMeta), (minVeinSize + random.nextInt(maxVeinSize - minVeinSize + 1)), BlockMatcher.forBlock(targetBlock));
+        for (int i = 0; i < chancesToSpawn; i++)
+        {
+            int posX = blockXPos + random.nextInt(16);
+            int posY = yMin + random.nextInt(yMax - yMin);
+            int posZ = blockZPos + random.nextInt(16);
+            minable.generate(world, random, new BlockPos(posX, posY, posZ));
+        }
+    }
+}
