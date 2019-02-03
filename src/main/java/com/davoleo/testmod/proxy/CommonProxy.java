@@ -6,6 +6,7 @@ import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.init.GuiHandler;
 import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.network.Messages;
+import com.davoleo.testmod.world.BlockAngelOre;
 import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,11 +48,24 @@ public class CommonProxy {
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(ModBlocks.blockFastFurnace);
         GameRegistry.registerTileEntity(TileFastFurnace.class, new ResourceLocation(TestMod.MODID, "_fast_furnace"));
+        event.getRegistry().register(ModBlocks.angelOre);
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().register(new ItemBlock(ModBlocks.blockFastFurnace).setRegistryName(BlockFastFurnace.FAST_FURNACE));
+        event.getRegistry().register(
+                new ItemBlock(ModBlocks.angelOre)
+                {
+                    @Override
+                    public int getMetadata(int damage)
+                    {
+                        return damage;
+                    }
+                }
+                .setHasSubtypes(true)
+                .setRegistryName(BlockAngelOre.ANGEL_ORE)
+        );
     }
 
     public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)
