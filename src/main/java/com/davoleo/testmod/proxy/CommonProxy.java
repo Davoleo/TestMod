@@ -5,6 +5,7 @@ import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.init.GuiHandler;
 import com.davoleo.testmod.init.ModBlocks;
+import com.davoleo.testmod.init.ModItems;
 import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.world.BlockAngelOre;
 import com.davoleo.testmod.world.OreGenerator;
@@ -14,6 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -24,6 +26,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 /*************************************************
  * Author: Davoleo
@@ -48,6 +51,8 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent e) {
+        GameRegistry.addSmelting(ModBlocks.angelOre, new ItemStack(ModItems.angelIngot, 1), 1F);
+        OreDictionary.registerOre("oreAngel", ModBlocks.angelOre);
     }
 
     @SubscribeEvent
@@ -72,6 +77,7 @@ public class CommonProxy {
                 .setHasSubtypes(true)
                 .setRegistryName(BlockAngelOre.ANGEL_ORE)
         );
+        event.getRegistry().register(ModItems.angelIngot);
     }
 
     public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)

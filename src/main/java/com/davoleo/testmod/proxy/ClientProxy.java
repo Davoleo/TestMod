@@ -1,6 +1,7 @@
 package com.davoleo.testmod.proxy;
 
 import com.davoleo.testmod.init.ModBlocks;
+import com.davoleo.testmod.init.ModItems;
 import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +29,7 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         ModBlocks.initModels();
+        ModItems.initModels();
     }
 
     @Override
