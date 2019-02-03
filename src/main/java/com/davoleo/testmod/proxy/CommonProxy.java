@@ -8,12 +8,14 @@ import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.world.BlockAngelOre;
 import com.davoleo.testmod.world.OreGenerator;
+import com.davoleo.testmod.world.WorldTickHandler;
 import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -37,6 +39,8 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent e) {
         Messages.registerMessages("testmod");
         GameRegistry.registerWorldGenerator(OreGenerator.instance, 5);
+        MinecraftForge.EVENT_BUS.register(OreGenerator.instance);
+        MinecraftForge.EVENT_BUS.register(WorldTickHandler.instance);
     }
 
     public void init(FMLInitializationEvent e) {
