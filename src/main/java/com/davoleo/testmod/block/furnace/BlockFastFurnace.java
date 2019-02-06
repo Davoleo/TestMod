@@ -1,17 +1,15 @@
 package com.davoleo.testmod.block.furnace;
 
 import com.davoleo.testmod.TestMod;
-import com.davoleo.testmod.block.BlockBase;
+import com.davoleo.testmod.block.BlockTEBase;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,15 +22,11 @@ import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 
 /*************************************************
  * Author: Davoleo
@@ -42,7 +36,7 @@ import java.util.Objects;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class BlockFastFurnace extends BlockBase implements ITileEntityProvider {
+public class BlockFastFurnace extends BlockTEBase implements ITileEntityProvider {
 
      public static final ResourceLocation FAST_FURNACE = new ResourceLocation(TestMod.MODID, "fast_furnace");
 
@@ -60,12 +54,6 @@ public class BlockFastFurnace extends BlockBase implements ITileEntityProvider {
         setHarvestLevel("pickaxe", 1);
 
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void initModel()
-    {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(Objects.requireNonNull(getRegistryName()), "inventory"));
     }
 
     @SuppressWarnings("deprecation")
@@ -95,7 +83,7 @@ public class BlockFastFurnace extends BlockBase implements ITileEntityProvider {
             int energy = compound.getInteger("energy");
             int sizeIn = getItemCount(compound, "itemsIn");
             int sizeOut = getItemCount(compound, "itemsOut");
-            addInformationLocalized(tooltip, "message.testmod.fast_furnace", energy, sizeIn, sizeOut);
+            addInformationLocalized(tooltip, "tooltip.testmod.fast_furnace", energy, sizeIn, sizeOut);
         }
     }
 

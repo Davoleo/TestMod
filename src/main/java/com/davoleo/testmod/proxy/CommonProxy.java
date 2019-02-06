@@ -1,22 +1,17 @@
 package com.davoleo.testmod.proxy;
 
 import com.davoleo.testmod.TestMod;
-import com.davoleo.testmod.block.furnace.BlockFastFurnace;
-import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.init.GuiHandler;
 import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.init.ModItems;
 import com.davoleo.testmod.network.Messages;
-import com.davoleo.testmod.world.BlockAngelOre;
 import com.davoleo.testmod.world.OreGenerator;
 import com.davoleo.testmod.world.WorldTickHandler;
 import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -57,27 +52,12 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        event.getRegistry().register(ModBlocks.blockFastFurnace);
-        GameRegistry.registerTileEntity(TileFastFurnace.class, new ResourceLocation(TestMod.MODID, "_fast_furnace"));
-        event.getRegistry().register(ModBlocks.angelOre);
+        ModBlocks.registerBlocks(event.getRegistry());
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
-        event.getRegistry().register(new ItemBlock(ModBlocks.blockFastFurnace).setRegistryName(BlockFastFurnace.FAST_FURNACE));
-        event.getRegistry().register(
-                new ItemBlock(ModBlocks.angelOre)
-                {
-                    @Override
-                    public int getMetadata(int damage)
-                    {
-                        return damage;
-                    }
-                }
-                .setHasSubtypes(true)
-                .setRegistryName(BlockAngelOre.ANGEL_ORE)
-        );
-        event.getRegistry().register(ModItems.angelIngot);
+        ModItems.registerItems(event.getRegistry());
     }
 
     public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)

@@ -1,12 +1,12 @@
 package com.davoleo.testmod.block;
 
 import com.davoleo.testmod.TestMod;
-import com.davoleo.testmod.init.GuiHandler;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,25 +20,29 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 06/02/2019 / 17:15
- * Class: BlockBase
+ * Class: BlockTEBase
  * Project: Test_mod
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class BlockBase extends Block {
+public class BlockTEBase extends Block {
 
-    public BlockBase(Material materialIn)
+    public BlockTEBase(Material materialIn)
     {
         super(materialIn);
         setCreativeTab(TestMod.testTab);
@@ -65,8 +69,8 @@ public class BlockBase extends Block {
         if (!(te instanceof IGuiTileEntity))
             return false;
 
-        playerIn.openGui(TestMod.instance, GuiHandler.GUI_FAST_FURNACE, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            return true;
+        playerIn.openGui(TestMod.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        return true;
     }
 
     @Override
@@ -115,5 +119,11 @@ public class BlockBase extends Block {
             if (compound != null)
                 ((IRestorableTileEntity)te).readRestorableFromNBT(compound);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void initModel()
+    {
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(Objects.requireNonNull(getRegistryName()), "inventory"));
     }
 }

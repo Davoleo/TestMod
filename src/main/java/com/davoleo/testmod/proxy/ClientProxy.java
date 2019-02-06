@@ -1,11 +1,13 @@
 package com.davoleo.testmod.proxy;
 
+import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.init.ModItems;
 import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -24,6 +26,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit(FMLPreInitializationEvent e) {
         super.preInit(e);
+        OBJLoader.INSTANCE.addDomain(TestMod.MODID);
     }
 
     @SubscribeEvent

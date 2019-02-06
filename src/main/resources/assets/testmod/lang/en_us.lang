@@ -1,6 +1,7 @@
 #Blocks
-tile.testmod.fast_furnace.name=Fast Furnace
 tile.testmod.angel_ore.name=Angel Ore
+tile.testmod.fast_furnace.name=Fast Furnace
+tile.testmod.generator.name=Generator
 
 #Creative Tabs
 itemGroup.testmod=Test Mod 2
@@ -8,5 +9,6 @@ itemGroup.testmod=Test Mod 2
 #Items
 item.testmod.angel_ingot.name=Angel Ingot
 
-#Others
-message.testmod.fast_furnace=@aEnergy: %d<NL>@aItems: %d -> %d<NL>@fFastFurnace
+#Tooltips
+tooltip.testmod.fast_furnace=@aEnergy: %d<NL>@aItems: %d -> %d<NL>@fFastFurnace
+tooltip.testmod.generator=@aEnergy: %d<NL>@fGenerator
