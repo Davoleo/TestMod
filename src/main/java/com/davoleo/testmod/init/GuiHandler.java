@@ -1,8 +1,7 @@
 package com.davoleo.testmod.init;
 
-import com.davoleo.testmod.block.furnace.ContainerFastFurnace;
-import com.davoleo.testmod.block.furnace.GuiFastFurnace;
 import com.davoleo.testmod.block.furnace.TileFastFurnace;
+import com.davoleo.testmod.util.IGuiTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -26,9 +25,9 @@ public class GuiHandler implements IGuiHandler {
         BlockPos pos = new BlockPos(x, y, z);
         TileEntity te = world.getTileEntity(pos);
 
-        if (te instanceof TileFastFurnace) {
+        if (te instanceof IGuiTileEntity) {
             ID = GUI_FAST_FURNACE;
-            return new ContainerFastFurnace(player.inventory, (TileFastFurnace) te);
+            return ((IGuiTileEntity) te).createContainer(player);
         }
 
         return null;
@@ -39,10 +38,10 @@ public class GuiHandler implements IGuiHandler {
         BlockPos pos = new BlockPos(x, y, z);
         TileEntity te = world.getTileEntity(pos);
 
-        if (te instanceof TileFastFurnace) {
+        if (te instanceof IGuiTileEntity) {
             ID = GUI_FAST_FURNACE;
             TileFastFurnace containerTileEntity = (TileFastFurnace) te;
-            return new GuiFastFurnace(containerTileEntity, new ContainerFastFurnace(player.inventory, containerTileEntity));
+            return ((TileFastFurnace) te).createGui(player);
         }
 
         return null;

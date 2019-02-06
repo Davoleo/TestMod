@@ -1,9 +1,13 @@
 package com.davoleo.testmod.block.furnace;
 
 import com.davoleo.testmod.config.FastFurnaceConfig;
+import com.davoleo.testmod.util.IGuiTileEntity;
+import com.davoleo.testmod.util.IRestorableTileEntity;
 import com.davoleo.testmod.util.TestEnergyStorage;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +33,7 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class TileFastFurnace extends TileEntity implements ITickable {
+public class TileFastFurnace extends TileEntity implements ITickable, IRestorableTileEntity, IGuiTileEntity {
 
     public static final int INPUT_SLOTS = 3;
     public static final int OUTPUT_SLOTS = 3;
@@ -83,7 +87,8 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     }
 
     //saved things when the block is broken
-    void readRestorableFromNBT(NBTTagCompound compound)
+    @Override
+    public void readRestorableFromNBT(NBTTagCompound compound)
     {
         progress = compound.getInteger("progress");
         if (compound.hasKey("itemsIn"))
@@ -104,7 +109,8 @@ public class TileFastFurnace extends TileEntity implements ITickable {
     }
 
     //saved things when the block is broken
-    void writeRestorableToNBT(NBTTagCompound compound)
+    @Override
+    public void writeRestorableToNBT(NBTTagCompound compound)
     {
         compound.setInteger("progress", progress);
         compound.setTag("itemsIn", inputHandler.serializeNBT());
@@ -189,6 +195,18 @@ public class TileFastFurnace extends TileEntity implements ITickable {
                 break;
             }
         }
+    }
+
+    @Override
+    public Container createContainer(EntityPlayer player)
+    {
+        return new ContainerFastFurnace(player.inventory,  this);
+    }
+
+    @Override
+    public GuiContainer createGui(EntityPlayer player)
+    {
+        return new GuiFastFurnace(this, new ContainerFastFurnace(player.inventory, this));
     }
 
     @Nullable

@@ -9,4 +9,4 @@ itemGroup.testmod=Test Mod 2
 item.testmod.angel_ingot.name=Angel Ingot
 
 #Others
-message.testmod.fast_furnace=\@aEnergy: %d\n\@aItems: %d -> %d\n\@fFastFurnace
+message.testmod.fast_furnace=@aEnergy: %d<NL>@aItems: %d -> %d<NL>@fFastFurnace
