@@ -1,9 +1,11 @@
 package com.davoleo.testmod.block.generator;
 
+import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.config.GeneratorConfig;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import com.davoleo.testmod.util.TestEnergyStorage;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -11,7 +13,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.model.animation.CapabilityAnimation;
+import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nonnull;
@@ -36,6 +41,13 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
         }
     }
 
+    @Nullable
+    private final IAnimationStateMachine asm;
+
+    public TileGenerator()
+    {
+        asm = TestMod.proxy.load(new ResourceLocation(TestMod.MODID, "asms/block/generator.json"), ImmutableMap.of());
+    }
     //----------------------------------------------------------------------------------------------------------
 
     private TestEnergyStorage energyStorage = new TestEnergyStorage(GeneratorConfig.MAX_POWER, 0);
@@ -93,6 +105,8 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
     {
         if (capability == CapabilityEnergy.ENERGY)
             return true;
+        if (capability == CapabilityAnimation.ANIMATION_CAPABILITY)
+            return true;
         return super.hasCapability(capability, facing);
     }
 
@@ -102,6 +116,8 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
     {
         if (capability == CapabilityEnergy.ENERGY)
             return CapabilityEnergy.ENERGY.cast(energyStorage);
+        if (capability == CapabilityAnimation.ANIMATION_CAPABILITY)
+            return CapabilityAnimation.ANIMATION_CAPABILITY.cast(asm);
         return super.getCapability(capability, facing);
     }
 }
