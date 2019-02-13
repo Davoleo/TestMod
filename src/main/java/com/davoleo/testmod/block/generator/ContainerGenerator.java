@@ -34,7 +34,7 @@ public class ContainerGenerator extends Container {
             {
                 int x = 10 + column * 18;
                 int y = row * 18 + 70;
-                this.addSlotToContainer(new Slot(playerInventory, column + row * 9 + 10, x, y));
+                this.addSlotToContainer(new Slot(playerInventory, column + row * 9 + 9, x, y));
             }
 
         //Hotbar

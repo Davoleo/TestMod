@@ -91,4 +91,18 @@ public class BlockGenerator extends BlockTEBase implements ITileEntityProvider {
     {
         return state.getValue(FACING_HORIZONTAL).getIndex() - 2;
     }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
 }

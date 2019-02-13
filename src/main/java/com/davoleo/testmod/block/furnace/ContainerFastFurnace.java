@@ -48,7 +48,7 @@ public class ContainerFastFurnace extends Container implements IMachineStateCont
             {
                 int x = 10 + col * 18;
                 int y = row * 18 + 70;
-                this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 10, x, y));
+                this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, x, y));
             }
         }
 
@@ -88,17 +88,16 @@ public class ContainerFastFurnace extends Container implements IMachineStateCont
     public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
-        if (te.getEnergy() != te.getClientEnergy() || te.getProgress() != te.getClientProgress())
-        {
-            te.setClientEnergy(te.getEnergy());
-            te.setClientProgress(te.getProgress());
-            for (IContainerListener listener : listeners)
-            {
-                if (listener instanceof EntityPlayerMP)
-                {
-                    EntityPlayerMP player = (EntityPlayerMP) listener;
-                    int progressPercentage = 100 - te.getProgress() * 100 / FastFurnaceConfig.MAX_PROGRESS;
-                    Messages.INSTANCE.sendTo(new PacketSyncMachineState(te.getEnergy(), progressPercentage), player);
+        if (!te.getWorld().isRemote) {
+            if (te.getEnergy() != te.getClientEnergy() || te.getProgress() != te.getClientProgress()) {
+                te.setClientEnergy(te.getEnergy());
+                te.setClientProgress(te.getProgress());
+                for (IContainerListener listener : listeners) {
+                    if (listener instanceof EntityPlayerMP) {
+                        EntityPlayerMP player = (EntityPlayerMP) listener;
+                        int progressPercentage = 100 - te.getProgress() * 100 / FastFurnaceConfig.MAX_PROGRESS;
+                        Messages.INSTANCE.sendTo(new PacketSyncMachineState(te.getEnergy(), progressPercentage), player);
+                    }
                 }
             }
         }
