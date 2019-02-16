@@ -1,7 +1,12 @@
 package com.davoleo.testmod.block.generator;
 
+import com.davoleo.testmod.network.Messages;
+import com.davoleo.testmod.network.PacketSyncMachineState;
+import com.davoleo.testmod.util.IMachineStateContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 
@@ -15,7 +20,7 @@ import javax.annotation.Nonnull;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class ContainerGenerator extends Container {
+public class ContainerGenerator extends Container implements IMachineStateContainer {
 
     private TileGenerator tileEntity;
 
@@ -57,7 +62,23 @@ public class ContainerGenerator extends Container {
     public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
+
+        if (tileEntity.getEnergy() != tileEntity.getClientEnergy())
+            tileEntity.setClientEnergy(tileEntity.getEnergy());
+
+        for (IContainerListener listener : listeners)
+        {
+            if (listener instanceof EntityPlayerMP)
+            {
+                EntityPlayerMP player = (EntityPlayerMP) listener;
+                Messages.INSTANCE.sendTo(new PacketSyncMachineState(tileEntity.getEnergy(), 0), player);
+            }
+        }
     }
 
-
+    @Override
+    public void sync(int energy, int progress)
+    {
+        tileEntity.setClientEnergy(energy);
+    }
 }

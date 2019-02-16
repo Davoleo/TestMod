@@ -86,6 +86,7 @@ public class OreGenerator implements IWorldGenerator {
         event.getData().setTag(RETRO_NAME, genTag);
     }
 
+    @SubscribeEvent
     public void onChunkLoad(ChunkDataEvent.Load event)
     {
         int dimension = event.getWorld().provider.getDimension();

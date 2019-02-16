@@ -5,6 +5,8 @@ import com.davoleo.testmod.config.GeneratorConfig;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.Collections;
+
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 06/02/2019 / 18:12
@@ -37,7 +39,7 @@ public class GuiGenerator extends GuiContainer {
         mc.getTextureManager().bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-        int energy = 0;
+        int energy = tileEntity.getClientEnergy();
         drawEnergyBar(energy);
     }
 
@@ -49,8 +51,7 @@ public class GuiGenerator extends GuiContainer {
         renderHoveredToolTip(mouseX, mouseY);
 
         if (mouseX > guiLeft + 10 && mouseX < guiLeft + 112 && mouseY > guiTop + 5 && mouseY < guiTop + 15)
-            drawHoveringText("TEMPORARY STRING", mouseX, mouseY);
-            //drawHoveringText(Collections.singletonList("Energy: " + tileEntity.getClientEnergy()), mouseX, mouseY, fontRenderer);
+            drawHoveringText(Collections.singletonList("Energy: " + tileEntity.getClientEnergy()), mouseX, mouseY, fontRenderer);
     }
 
     private void drawEnergyBar(int energy)

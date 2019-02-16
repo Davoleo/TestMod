@@ -1,12 +1,11 @@
 package com.davoleo.testmod;
 
+import com.davoleo.testmod.block.generator.DamageTracker;
 import com.davoleo.testmod.proxy.CommonProxy;
 import com.davoleo.testmod.util.TestTab;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.*;
 import org.apache.logging.log4j.Logger;
 
 /*************************************************
@@ -48,5 +47,17 @@ public class TestMod {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         proxy.postInit(e);
+    }
+
+    @Mod.EventHandler
+    public void serverStarted(FMLServerStartedEvent e)
+    {
+        DamageTracker.instance.reset();
+    }
+
+    @Mod.EventHandler
+    public void serverStopped(FMLServerStoppedEvent e)
+    {
+        DamageTracker.instance.reset();
     }
 }

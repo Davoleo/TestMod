@@ -3,6 +3,7 @@ package com.davoleo.testmod.world;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -23,6 +24,7 @@ public class WorldTickHandler {
 
     public static TIntObjectHashMap<ArrayDeque<ChunkPos>> chunksToGenerate = new TIntObjectHashMap<>();
 
+    @SubscribeEvent
     public void onTickEnd(TickEvent.WorldTickEvent event)
     {
         if(event.side != Side.SERVER)
