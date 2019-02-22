@@ -2,6 +2,7 @@ package com.davoleo.testmod.proxy;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.init.ModBlocks;
+import com.davoleo.testmod.init.ModEntities;
 import com.davoleo.testmod.init.ModItems;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -38,6 +39,7 @@ public class ClientProxy extends CommonProxy {
     public static void registerModels(ModelRegistryEvent event) {
         ModBlocks.initModels();
         ModItems.initModels();
+        ModEntities.initModels();
     }
 
     @Override

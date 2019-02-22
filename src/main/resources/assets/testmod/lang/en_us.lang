@@ -6,6 +6,9 @@ tile.testmod.generator.name=Generator
 #Creative Tabs
 itemGroup.testmod=Test Mod 2
 
+#Entities
+entity.testmod_guard.name=Guard
+
 #Items
 item.testmod.angel_ingot.name=Angel Ingot
 
