@@ -5,6 +5,8 @@ import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
 import com.davoleo.testmod.block.generator.TileGenerator;
+import com.davoleo.testmod.memory.BlockPuzzle;
+import com.davoleo.testmod.memory.TilePuzzle;
 import com.davoleo.testmod.world.BlockAngelOre;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
@@ -24,6 +26,7 @@ public class ModBlocks {
     public static BlockFastFurnace blockFastFurnace = new BlockFastFurnace();
     public static BlockAngelOre angelOre = new BlockAngelOre();
     public static BlockGenerator blockGenerator = new BlockGenerator();
+    public static BlockPuzzle blockPuzzle = new BlockPuzzle();
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
@@ -33,6 +36,9 @@ public class ModBlocks {
         registry.register(blockGenerator);
         GameRegistry.registerTileEntity(TileGenerator.class, new ResourceLocation(TestMod.MODID, "generator"));
 
+        registry.register(blockPuzzle);
+        GameRegistry.registerTileEntity(TilePuzzle.class, new ResourceLocation(TestMod.MODID, "puzzle"));
+
         registry.register(angelOre);
     }
 
@@ -40,6 +46,7 @@ public class ModBlocks {
     {
         blockFastFurnace.initModel();
         blockGenerator.initModel();
+        blockPuzzle.initModel();
         angelOre.initModel();
     }
 

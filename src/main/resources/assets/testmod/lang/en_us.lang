@@ -2,6 +2,7 @@
 tile.testmod.angel_ore.name=Angel Ore
 tile.testmod.fast_furnace.name=Fast Furnace
 tile.testmod.generator.name=Generator
+tile.testmod.puzzle.name=Puzzle
 
 #Creative Tabs
 itemGroup.testmod=Test Mod 2
