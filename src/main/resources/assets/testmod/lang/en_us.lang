@@ -13,6 +13,9 @@ entity.testmod_guard.name=Guard
 #Items
 item.testmod.angel_ingot.name=Angel Ingot
 
+#Other
+status.testmod.puzzle.odd_gameblocks=You can't play this game with an odd number of blocks!
+
 #Tooltips
 tooltip.testmod.fast_furnace=@aEnergy: %d<NL>@aItems: %d -> %d<NL>@fFastFurnace
 tooltip.testmod.generator=@aEnergy: %d<NL>@fGenerator

@@ -2,6 +2,7 @@ package com.davoleo.testmod.memory;
 
 import com.davoleo.testmod.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import scala.actors.threadpool.Arrays;
 
@@ -35,7 +37,6 @@ public class TilePuzzle extends TileEntity implements ITickable {
     private int power = 0;
     private int timer = 0;
     private boolean solved = false;
-    private static int blockcount = 0;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newSate)
@@ -123,7 +124,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
         }
     }
 
-    public void activate(IBlockState state)
+    public void activate(IBlockState state, EntityPlayer player)
     {
         Boolean open = state.getValue(BlockPuzzle.OPEN);
 
@@ -136,6 +137,12 @@ public class TilePuzzle extends TileEntity implements ITickable {
             return;
 
         Set<BlockPos> blocks = findParticipatingBlocks();
+
+        if (blocks.size() % 2 != 0)
+        {
+            player.sendStatusMessage(new TextComponentTranslation("status.testmod.puzzle.odd_gameblocks"), true);
+            return;
+        }
 
         // We are temporarily displaying a bad solution. Do nothing
         if (isDisplayingWrongSolution(blocks))
@@ -151,13 +158,21 @@ public class TilePuzzle extends TileEntity implements ITickable {
             boolean goodsolution = checkSolution(blocks);
             if (goodsolution) {
                 markResolved(blocks);
-                world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1F, 1F);
+//                if (isSolved())
+//                    world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_BLAST, SoundCategory.BLOCKS, 1F, 1F);
+//                    world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_BLAST, SoundCategory.BLOCKS, 1F, 1F);
             } else {
                 setWrongTimer(blocks);
-                world.playSound(null, pos, SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                world.playSound(null, pos, SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 1, 1F);
             }
         }
     }
+
+//    private boolean isPuzzleComplete(Set<BlockPos> blocks)
+//    {
+//
+//    }
 
     private boolean isDisplayingWrongSolution(Set<BlockPos> blocks)
     {
@@ -276,7 +291,6 @@ public class TilePuzzle extends TileEntity implements ITickable {
                         if (facing.getAxis() != thisFacing.getAxis()) {
                             BlockPos newPos = todoPos.offset(facing);
                             if (!gameblocks.contains(newPos)) {
-
                                 todo.add(newPos);
                             }
                         }

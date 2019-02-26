@@ -67,7 +67,7 @@ public class BlockPuzzle extends BlockTEBase implements ITileEntityProvider {
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (tileEntity instanceof TilePuzzle && !worldIn.isRemote)
-            ((TilePuzzle) tileEntity).activate(state);
+            ((TilePuzzle) tileEntity).activate(state, playerIn);
         return true;
     }
 
