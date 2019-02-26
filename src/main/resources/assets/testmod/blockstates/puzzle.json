@@ -13,7 +13,7 @@
     "normal": [{}],
     "inventory": [{}],
     "facing": {
-      "south": {"y":  180},
+      "south": {"y": 180},
       "west": {"y": 270},
       "east": {"y": 90},
       "up": {"x": -90},
@@ -21,12 +21,12 @@
       "north": {}
     },
     "base": [{
-      "custom": {"flip-v": true},
+      "custom": { "flip-v": true },
       "model": "testmod:puzzle.obj"
     }],
     "open": {
-      "true": { },
-      "false": {"submodel": {"block": {"model": "testmod:puzzle_breaker", "textures": {"overlay": "minecraft:blocks/stone"}}}}
+      "true": {  },
+      "false": { "submodel": { "block": { "model": "testmod:puzzle_blocker", "textures": {"overlay": "minecraft:blocks/stone"} } } }
     },
     "window": [{
       "model": "testmod:puzzle_window",

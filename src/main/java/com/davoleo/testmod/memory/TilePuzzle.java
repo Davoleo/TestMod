@@ -35,6 +35,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
     private int power = 0;
     private int timer = 0;
     private boolean solved = false;
+    private static int blockcount = 0;
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newSate)
@@ -126,33 +127,35 @@ public class TilePuzzle extends TileEntity implements ITickable {
     {
         Boolean open = state.getValue(BlockPuzzle.OPEN);
 
+        // Already open, do nothing
         if (open)
-            //Already open: do nothing
             return;
 
+        // No game, do nothing
         if (item.isEmpty())
-            //no initialized game: do nothing
             return;
 
         Set<BlockPos> blocks = findParticipatingBlocks();
+
+        // We are temporarily displaying a bad solution. Do nothing
         if (isDisplayingWrongSolution(blocks))
-            //When it's displaying a wrong solution: do nothing
             return;
 
         int count = countOpenUnsolvedBlocks(blocks);
-        if (count == 0)
+        if (count == 0) {
+            // We can open
             openMe();
-        else if (count == 1)
+        } else if (count == 1) {
+            // We can also open. Check status
             openMe();
-        boolean goodSolution = checkSolution(blocks);
-        if (goodSolution) {
-            markResolved(blocks);
-            world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1F, 1F);
-        }
-        else
-        {
-            setWrongTimer(blocks);
-            world.playSound(null, pos, SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 1F, 1F);
+            boolean goodsolution = checkSolution(blocks);
+            if (goodsolution) {
+                markResolved(blocks);
+                world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            } else {
+                setWrongTimer(blocks);
+                world.playSound(null, pos, SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            }
         }
     }
 
@@ -193,8 +196,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
     private boolean checkSolution(Set<BlockPos> blocks)
     {
         for (BlockPos block : blocks)
-            if (isUnsolved(block))
-            {
+            if (isUnsolved(block)) {
                 TileEntity te = world.getTileEntity(block);
                 assert te != null;
                 if (!ItemStack.areItemsEqual(((TilePuzzle) te).getItem(), item))
@@ -211,7 +213,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
             {
                 TileEntity te = world.getTileEntity(block);
                 assert te != null;
-                ((TilePuzzle) te).solved = true;
+                ((TilePuzzle)te).solved = true;
                 te.markDirty();
                 IBlockState blockState = world.getBlockState(block);
                 getWorld().notifyBlockUpdate(block, blockState, blockState, 3);
@@ -227,7 +229,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
             {
                 TileEntity te = world.getTileEntity(block);
                 assert te != null;
-                ((TilePuzzle) te).timer = 10;
+                ((TilePuzzle)te).timer = 10;
                 te.markDirty();
             }
         }
@@ -254,51 +256,49 @@ public class TilePuzzle extends TileEntity implements ITickable {
         }
     }
 
-    private Set<BlockPos> findParticipatingBlocks()
-    {
+    private Set<BlockPos> findParticipatingBlocks() {
         Queue<BlockPos> todo = new ArrayDeque<>();
         todo.add(pos);
 
         EnumFacing thisFacing = world.getBlockState(pos).getValue(BlockPuzzle.FACING);
 
-        Set<BlockPos> gameBlocks = new HashSet<>();
+        Set<BlockPos> gameblocks = new HashSet<>();
 
-        while (!todo.isEmpty())
-        {
+        while (!todo.isEmpty()) {
             BlockPos todoPos = todo.poll();
-            if (world.isBlockLoaded(todoPos))
-            {
+            if (world.isBlockLoaded(todoPos)) {
                 IBlockState state = world.getBlockState(todoPos);
                 TileEntity te = world.getTileEntity(todoPos);
-                if (te instanceof TilePuzzle && state.getBlock() == ModBlocks.blockPuzzle && state.getValue(BlockPuzzle.FACING) == thisFacing)
-                {
-                    gameBlocks.add(todoPos);
-                    //Add the pos of the Connected Blocks to the list of blocks in the game
-                    for (EnumFacing facing : EnumFacing.VALUES)
-                        if (facing.getAxis() != thisFacing.getAxis())
-                        {
+                if (te instanceof TilePuzzle && state.getBlock() == ModBlocks.blockPuzzle && state.getValue(BlockPuzzle.FACING) == thisFacing) {
+                    gameblocks.add(todoPos);
+                    // Add connected positions to the todo
+                    for (EnumFacing facing : EnumFacing.VALUES) {
+                        if (facing.getAxis() != thisFacing.getAxis()) {
                             BlockPos newPos = todoPos.offset(facing);
-                            if (!gameBlocks.contains(newPos))
+                            if (!gameblocks.contains(newPos)) {
+
                                 todo.add(newPos);
+                            }
                         }
+                    }
                 }
             }
         }
-        return gameBlocks;
+        return gameblocks;
     }
 
     private void openMe()
     {
         IBlockState state = world.getBlockState(pos);
         world.setBlockState(pos, state.withProperty(BlockPuzzle.OPEN, true), 3);
-        world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 1, 1);
+        world.playSound(null, pos, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 1, 2);
     }
 
     private void closeMe()
     {
         IBlockState state = world.getBlockState(pos);
         world.setBlockState(pos, state.withProperty(BlockPuzzle.OPEN, false), 3);
-        world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 1, 1);
+        world.playSound(null, pos, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 1, 2);
         //UI_BUTTON_CLICK
     }
 

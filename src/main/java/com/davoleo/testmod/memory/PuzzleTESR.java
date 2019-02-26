@@ -36,9 +36,9 @@ public class PuzzleTESR extends TileEntitySpecialRenderer<TilePuzzle> {
         Minecraft.getMinecraft().entityRenderer.disableLightmap();
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x + 0.5, (float) y + 0.75, (float) z + 0.5);
+        GlStateManager.translate((float) x + 0.5F, (float) y + 0.75F, (float) z + 0.5F);
         setupRotation(state);
-        GlStateManager.translate(0, 0, 0.9);
+        GlStateManager.translate(0F, 0F, 0.9F);
 
         GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
@@ -54,26 +54,23 @@ public class PuzzleTESR extends TileEntitySpecialRenderer<TilePuzzle> {
     private void setupRotation(IBlockState state)
     {
         EnumFacing facing = state.getValue(BlockPuzzle.FACING);
-        if (facing == EnumFacing.UP)
-        {
-            GlStateManager.rotate(-90, 1, 0, 0);
-            GlStateManager.translate(0, 0, 0.68);
-        }
-        else if (facing == EnumFacing.DOWN)
-        {
-            GlStateManager.rotate(90, 1, 0, 0);
-            GlStateManager.translate(0, 0, -0.184);
-        }
-        else {
-            float rotY = 0F;
-            if (facing == EnumFacing.NORTH)
-                rotY = 180;
-            else if (facing == EnumFacing.WEST)
-                rotY = 90;
-            else if (facing == EnumFacing.EAST)
-                rotY = -90;
-            GlStateManager.rotate(-rotY, 0, 1, 0);
-            GlStateManager.translate(0, -0.2500, -0.4375);
+        if (facing == EnumFacing.UP) {
+            GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.translate(0.0F, 0.0F, -0.68F);
+        } else if (facing == EnumFacing.DOWN) {
+            GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.translate(0.0F, 0.0F, -.184F);
+        } else {
+            float rotY = 0.0F;
+            if (facing == EnumFacing.NORTH) {
+                rotY = 180.0F;
+            } else if (facing == EnumFacing.WEST) {
+                rotY = 90.0F;
+            } else if (facing == EnumFacing.EAST) {
+                rotY = -90.0F;
+            }
+            GlStateManager.rotate(-rotY, 0.0F, 1.0F, 0.0F);
+            GlStateManager.translate(0.0F, -0.2500F, -0.4375F);
         }
     }
 
@@ -86,7 +83,7 @@ public class PuzzleTESR extends TileEntitySpecialRenderer<TilePuzzle> {
         RenderHelper.enableGUIStandardItemLighting();
         float factor = 4F;
         float f3 = 0.0075F;
-        GlStateManager.translate(-0.5, 0.5, 0.15);
+        GlStateManager.translate(-0.5F, 0.5F, -0.15F);
         GlStateManager.scale(f3 * factor, -f3 * factor, 0.0001F);
 
         RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
@@ -99,16 +96,15 @@ public class PuzzleTESR extends TileEntitySpecialRenderer<TilePuzzle> {
     {
         GlStateManager.pushMatrix();
 
-        float factor = 4F;
+        float factor = 4.0f;
         float f3 = 0.0075F;
-        GlStateManager.translate(-0.5, 0.5, 0.15);
+        GlStateManager.translate(-0.5F, 0.5F, -0.155F);
         GlStateManager.scale(f3 * factor, -f3 * factor, f3);
         GlStateManager.disableLighting();
 
-        Gui.drawRect(8-3, 8-3, 8+21, 8+21, 0x5566FF66);
+        Gui.drawRect(8-3, 8-3, 8 + 21, 8 + 21, 0x5566ff66);
 
         GlStateManager.popMatrix();
-
     }
 
 
