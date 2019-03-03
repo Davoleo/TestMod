@@ -2,10 +2,7 @@ package com.davoleo.testmod.proxy;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.generator.DamageTracker;
-import com.davoleo.testmod.init.GuiHandler;
-import com.davoleo.testmod.init.ModBlocks;
-import com.davoleo.testmod.init.ModEntities;
-import com.davoleo.testmod.init.ModItems;
+import com.davoleo.testmod.init.*;
 import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.world.OreGenerator;
 import com.davoleo.testmod.world.WorldTickHandler;
@@ -50,6 +47,7 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(DamageTracker.instance);
 
         ModEntities.init();
+        ModFluids.init();
     }
 
     public void init(FMLInitializationEvent e) {

@@ -3,6 +3,7 @@ tile.testmod.angel_ore.name=Angel Ore
 tile.testmod.fast_furnace.name=Fast Furnace
 tile.testmod.generator.name=Generator
 tile.testmod.puzzle.name=Puzzle
+tile.testmod.fload.name=Fload
 
 #Creative Tabs
 itemGroup.testmod=Test Mod 2
@@ -10,8 +11,12 @@ itemGroup.testmod=Test Mod 2
 #Entities
 entity.testmod_guard.name=Guard
 
+#Fluids
+fluid.fload=Fload
+
 #Items
 item.testmod.angel_ingot.name=Angel Ingot
+item.testmod.fload_bucket.name=Fload Bucket
 
 #Other
 status.testmod.puzzle.odd_gameblocks=You can't play this game with an odd number of blocks!

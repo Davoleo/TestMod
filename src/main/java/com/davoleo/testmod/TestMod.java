@@ -3,6 +3,7 @@ package com.davoleo.testmod;
 import com.davoleo.testmod.block.generator.DamageTracker;
 import com.davoleo.testmod.proxy.CommonProxy;
 import com.davoleo.testmod.util.TestTab;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
@@ -26,6 +27,10 @@ public class TestMod {
     @SidedProxy(clientSide = "com.davoleo.testmod.proxy.ClientProxy", serverSide = "com.davoleo.testmod.proxy.ServerProxy")
     public static CommonProxy proxy;
 
+    static
+    {
+        FluidRegistry.enableUniversalBucket();
+    }
     public static TestTab testTab = new TestTab();
 
     @Mod.Instance

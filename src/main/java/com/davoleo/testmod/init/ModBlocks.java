@@ -1,6 +1,7 @@
 package com.davoleo.testmod.init;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.block.BlockFload;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
@@ -27,6 +28,7 @@ public class ModBlocks {
     public static BlockAngelOre angelOre = new BlockAngelOre();
     public static BlockGenerator blockGenerator = new BlockGenerator();
     public static BlockPuzzle blockPuzzle = new BlockPuzzle();
+    public static BlockFload blockFload = new BlockFload();
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
@@ -40,6 +42,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TilePuzzle.class, new ResourceLocation(TestMod.MODID, "puzzle"));
 
         registry.register(angelOre);
+        registry.register(blockFload);
     }
 
     public static void initModels()
@@ -48,6 +51,7 @@ public class ModBlocks {
         blockGenerator.initModel();
         blockPuzzle.initModel();
         angelOre.initModel();
+        blockFload.initModel();
     }
 
 }
