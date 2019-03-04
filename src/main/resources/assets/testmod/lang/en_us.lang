@@ -4,6 +4,7 @@ tile.testmod.fast_furnace.name=Fast Furnace
 tile.testmod.generator.name=Generator
 tile.testmod.puzzle.name=Puzzle
 tile.testmod.fload.name=Fload
+tile.testmod.tank.name=Tank
 
 #Creative Tabs
 itemGroup.testmod=Test Mod 2
@@ -24,3 +25,4 @@ status.testmod.puzzle.odd_gameblocks=You can't play this game with an odd number
 #Tooltips
 tooltip.testmod.fast_furnace=@aEnergy: %d<NL>@aItems: %d -> %d<NL>@fFastFurnace
 tooltip.testmod.generator=@aEnergy: %d<NL>@fGenerator
+tooltip.testmod.tank=@bFluid: %s

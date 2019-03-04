@@ -6,6 +6,8 @@ import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
 import com.davoleo.testmod.block.generator.TileGenerator;
+import com.davoleo.testmod.block.tank.BlockTank;
+import com.davoleo.testmod.block.tank.TileTank;
 import com.davoleo.testmod.memory.BlockPuzzle;
 import com.davoleo.testmod.memory.TilePuzzle;
 import com.davoleo.testmod.world.BlockAngelOre;
@@ -29,6 +31,7 @@ public class ModBlocks {
     public static BlockGenerator blockGenerator = new BlockGenerator();
     public static BlockPuzzle blockPuzzle = new BlockPuzzle();
     public static BlockFload blockFload = new BlockFload();
+    public static BlockTank blockTank = new BlockTank();
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
@@ -41,6 +44,9 @@ public class ModBlocks {
         registry.register(blockPuzzle);
         GameRegistry.registerTileEntity(TilePuzzle.class, new ResourceLocation(TestMod.MODID, "puzzle"));
 
+        registry.register(blockTank);
+        GameRegistry.registerTileEntity(TileTank.class, new ResourceLocation(TestMod.MODID, "tank"));
+
         registry.register(angelOre);
         registry.register(blockFload);
     }
@@ -52,6 +58,7 @@ public class ModBlocks {
         blockPuzzle.initModel();
         angelOre.initModel();
         blockFload.initModel();
+        blockTank.initModel();
     }
 
 }
