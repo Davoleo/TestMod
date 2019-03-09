@@ -26,8 +26,36 @@ minecraft {
     mappings = "stable_39"
 }
 
-dependencies {
+repositories {
+    maven {
+        name "Mobius Repo"
+        url "http://tehnut.info/maven"
+    }
+    maven { //JEI
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+    maven { //IntWheel
+        url "http://maven.k-4u.nl"
+    }
+    maven { //TOP
+        name "tterrag maven"
+        url "http://maven.tterrag.com/"
+    }
+    maven {
+        name = "CoFH Maven"
+        url = "http://maven.covers1624.net"
+    }
+}
 
+dependencies {
+    // compile against the JEI API but do not include it at runtime
+    deobfProvided "mezz.jei:jei_1.12.2:4.13.1.222:api"
+    // at runtime, use the full JEI jar
+    runtime "mezz.jei:jei_1.12.2:4.13.1.222"
+
+    deobfCompile "cofh:RedstoneFlux:1.12-2.1.0.7:universal"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.14-7"
+    deobfCompile "com.github.mcjty:intwheel:1.12-1.2.7"
 }
 
 processResources {

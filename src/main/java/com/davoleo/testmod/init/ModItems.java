@@ -1,5 +1,6 @@
 package com.davoleo.testmod.init;
 
+import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
 import com.davoleo.testmod.block.tank.BlockTank;
@@ -26,6 +27,7 @@ public class ModItems {
     {
         registry.register(new ItemBlock(ModBlocks.blockFastFurnace).setRegistryName(BlockFastFurnace.FAST_FURNACE));
         registry.register(new ItemBlock(ModBlocks.blockGenerator).setRegistryName(BlockGenerator.GENERATOR));
+        registry.register(new ItemBlock(ModBlocks.blockFloadCreator).setRegistryName(BlockFloadCreator.FLOAD_CREATOR));
         registry.register(new ItemBlock(ModBlocks.blockPuzzle).setRegistryName(BlockPuzzle.PUZZLE));
         registry.register(new ItemBlock(ModBlocks.blockTank).setRegistryName(BlockTank.TANK));
 

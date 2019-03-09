@@ -2,6 +2,8 @@ package com.davoleo.testmod.init;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockFload;
+import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
+import com.davoleo.testmod.block.fload_creator.TileFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
@@ -29,6 +31,7 @@ public class ModBlocks {
     public static BlockFastFurnace blockFastFurnace = new BlockFastFurnace();
     public static BlockAngelOre angelOre = new BlockAngelOre();
     public static BlockGenerator blockGenerator = new BlockGenerator();
+    public static BlockFloadCreator blockFloadCreator = new BlockFloadCreator();
     public static BlockPuzzle blockPuzzle = new BlockPuzzle();
     public static BlockFload blockFload = new BlockFload();
     public static BlockTank blockTank = new BlockTank();
@@ -40,6 +43,9 @@ public class ModBlocks {
 
         registry.register(blockGenerator);
         GameRegistry.registerTileEntity(TileGenerator.class, new ResourceLocation(TestMod.MODID, "generator"));
+
+        registry.register(blockFloadCreator);
+        GameRegistry.registerTileEntity(TileFloadCreator.class, new ResourceLocation(TestMod.MODID, "fload_creator"));
 
         registry.register(blockPuzzle);
         GameRegistry.registerTileEntity(TilePuzzle.class, new ResourceLocation(TestMod.MODID, "puzzle"));
@@ -55,6 +61,7 @@ public class ModBlocks {
     {
         blockFastFurnace.initModel();
         blockGenerator.initModel();
+        blockFloadCreator.initModel();
         blockPuzzle.initModel();
         angelOre.initModel();
         blockFload.initModel();
