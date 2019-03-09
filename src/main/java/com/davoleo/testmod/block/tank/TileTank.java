@@ -1,6 +1,7 @@
 package com.davoleo.testmod.block.tank;
 
 import com.davoleo.testmod.util.IRestorableTileEntity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -25,7 +26,16 @@ public class TileTank extends TileEntity implements IRestorableTileEntity {
 
     public static final int MAX_SIZE = 10000; //10b = 10000mb
 
-    private FluidTank tank = new FluidTank(MAX_SIZE);
+    private FluidTank tank = new FluidTank(MAX_SIZE)
+    {
+        @Override
+        protected void onContentsChanged()
+        {
+            IBlockState state =  world.getBlockState(pos);
+            world.notifyBlockUpdate(pos, state, state, 3);
+            markDirty();
+        }
+    };
 
     @Nonnull
     @Override
