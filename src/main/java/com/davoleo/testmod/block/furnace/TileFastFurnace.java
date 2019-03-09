@@ -1,6 +1,8 @@
 package com.davoleo.testmod.block.furnace;
 
 import com.davoleo.testmod.config.FastFurnaceConfig;
+import com.davoleo.testmod.recipe.custom.CustomRecipe;
+import com.davoleo.testmod.recipe.custom.CustomRecipeRegistry;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import com.davoleo.testmod.util.TestEnergyStorage;
@@ -56,7 +58,7 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack)
         {
-            ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
+            ItemStack result = getResult(stack);
             return !result.isEmpty();
         }
     };
@@ -77,6 +79,16 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
     };
 
     private CombinedInvWrapper combinedHandler = new CombinedInvWrapper(inputHandler, outputHandler);
+
+    // TODO: 09/03/2019 Cache to make it more efficient
+    private ItemStack getResult(ItemStack stackInSlot)
+    {
+        CustomRecipe recipe = CustomRecipeRegistry.getRecipe(stackInSlot);
+        if (recipe != null)
+            return recipe.getOutput();
+        return FurnaceRecipes.instance().getSmeltingResult(stackInSlot);
+
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
@@ -163,7 +175,7 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
     {
         for (int i = 0; i < INPUT_SLOTS; i++)
         {
-            ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inputHandler.getStackInSlot(i));
+            ItemStack result = getResult(inputHandler.getStackInSlot(i));
             if (!result.isEmpty())
             {
                 if (insertOutput(result.copy(), true))
@@ -183,7 +195,7 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
     {
         for (int i = 0; i < INPUT_SLOTS; i++)
         {
-            ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inputHandler.getStackInSlot(i));
+            ItemStack result = getResult(inputHandler.getStackInSlot(i));
             if (!result.isEmpty())
             {
                 if (insertOutput(result.copy(), false))
