@@ -12,6 +12,7 @@ import com.davoleo.testmod.block.tank.BlockTank;
 import com.davoleo.testmod.block.tank.TileTank;
 import com.davoleo.testmod.memory.BlockPuzzle;
 import com.davoleo.testmod.memory.TilePuzzle;
+import com.davoleo.testmod.superchest.BlockSuperChest;
 import com.davoleo.testmod.world.BlockAngelOre;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
@@ -35,6 +36,7 @@ public class ModBlocks {
     public static BlockPuzzle blockPuzzle = new BlockPuzzle();
     public static BlockFload blockFload = new BlockFload();
     public static BlockTank blockTank = new BlockTank();
+    public static BlockSuperChest blockSuperChest = new BlockSuperChest();
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
