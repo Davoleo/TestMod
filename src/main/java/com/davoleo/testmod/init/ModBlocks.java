@@ -13,6 +13,9 @@ import com.davoleo.testmod.block.tank.TileTank;
 import com.davoleo.testmod.memory.BlockPuzzle;
 import com.davoleo.testmod.memory.TilePuzzle;
 import com.davoleo.testmod.superchest.BlockSuperChest;
+import com.davoleo.testmod.superchest.BlockSuperChestPart;
+import com.davoleo.testmod.superchest.TileSuperChest;
+import com.davoleo.testmod.superchest.TileSuperChestPart;
 import com.davoleo.testmod.world.BlockAngelOre;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
@@ -37,6 +40,7 @@ public class ModBlocks {
     public static BlockFload blockFload = new BlockFload();
     public static BlockTank blockTank = new BlockTank();
     public static BlockSuperChest blockSuperChest = new BlockSuperChest();
+    public static BlockSuperChestPart blockSuperChestPart = new BlockSuperChestPart();
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
@@ -55,6 +59,12 @@ public class ModBlocks {
         registry.register(blockTank);
         GameRegistry.registerTileEntity(TileTank.class, new ResourceLocation(TestMod.MODID, "tank"));
 
+        registry.register(blockSuperChest);
+        GameRegistry.registerTileEntity(TileSuperChest.class, new ResourceLocation(TestMod.MODID, "superchest"));
+
+        registry.register(blockSuperChestPart);
+        GameRegistry.registerTileEntity(TileSuperChestPart.class, new ResourceLocation(TestMod.MODID, "superchest_part"));
+
         registry.register(angelOre);
         registry.register(blockFload);
     }
@@ -68,6 +78,8 @@ public class ModBlocks {
         angelOre.initModel();
         blockFload.initModel();
         blockTank.initModel();
+        blockSuperChest.initModel();
+        blockSuperChestPart.initModel();
     }
 
 }

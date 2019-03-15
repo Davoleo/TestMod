@@ -4,6 +4,7 @@ import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTEBase;
 import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.init.ModItems;
+import com.davoleo.testmod.util.MultiBlockUtils;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -62,14 +63,14 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
             SuperChestPartIndex formed = state.getValue(FORMED);
             if (formed == SuperChestPartIndex.UNFORMED)
             {
-                if (-----)
+                if (MultiBlockUtils.formMultiblock(SuperChestMultiBlock.INSTANCE, world, pos))
                     player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "Super-Chest successfully assembled!"), false);
                 else
                     player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "There was an issue while forming the Super-Chest"), false);
             }
             else
             {
-                if (-----)
+                if (!MultiBlockUtils.breakMultiblock(SuperChestMultiBlock.INSTANCE, world, pos));
                     player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "The Super Chest is invalid"), false);
             }
         }
@@ -100,7 +101,7 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state)
+    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
     {
         return new TileSuperChest();
     }
@@ -133,30 +134,33 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
     }
 
     @Override
-    public void harvestBlock(@Nonnull World worldIn, EntityPlayer player, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nullable TileEntity te, ItemStack stack)
-    {
-        if (!worldIn.isRemote);
+    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+        if (!world.isRemote) {
+            MultiBlockUtils.breakMultiblock(SuperChestMultiBlock.INSTANCE, world, pos);
+        }
+        super.harvestBlock(world, player, pos, state, te, stack);
+    }
 
-        super.harvestBlock(worldIn, player, pos, state, te, stack);
+    public static boolean isFormedSuperChestController(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() == ModBlocks.blockSuperChest && state.getValue(FORMED) != SuperChestPartIndex.UNFORMED;
     }
 
     @Nonnull
     @Override
-    protected BlockStateContainer createBlockState()
-    {
+    protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FORMED);
     }
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(FORMED).ordinal();
-    }
-
     @Nonnull
     @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(FORMED, SuperChestPartIndex.VALUES[meta]);
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState()
+                .withProperty(FORMED, SuperChestPartIndex.VALUES[meta]);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return (state.getValue(FORMED).ordinal());
     }
 }

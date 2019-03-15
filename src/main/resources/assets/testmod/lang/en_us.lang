@@ -6,6 +6,8 @@ tile.testmod.generator.name=Generator
 tile.testmod.puzzle.name=Puzzle
 tile.testmod.fload.name=Fload
 tile.testmod.tank.name=Tank
+tile.testmod.superchest.name=SuperChest!
+tile.testmod.superchest_part.name=SuperChest!
 
 #Creative Tabs
 itemGroup.testmod=Test Mod 2

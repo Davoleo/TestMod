@@ -6,6 +6,8 @@ import com.davoleo.testmod.block.generator.BlockGenerator;
 import com.davoleo.testmod.block.tank.BlockTank;
 import com.davoleo.testmod.item.ItemAngelIngot;
 import com.davoleo.testmod.memory.BlockPuzzle;
+import com.davoleo.testmod.superchest.BlockSuperChest;
+import com.davoleo.testmod.superchest.BlockSuperChestPart;
 import com.davoleo.testmod.world.BlockAngelOre;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -30,6 +32,8 @@ public class ModItems {
         registry.register(new ItemBlock(ModBlocks.blockFloadCreator).setRegistryName(BlockFloadCreator.FLOAD_CREATOR));
         registry.register(new ItemBlock(ModBlocks.blockPuzzle).setRegistryName(BlockPuzzle.PUZZLE));
         registry.register(new ItemBlock(ModBlocks.blockTank).setRegistryName(BlockTank.TANK));
+        registry.register(new ItemBlock(ModBlocks.blockSuperChest).setRegistryName(BlockSuperChest.SUPERCHEST));
+        registry.register(new ItemBlock(ModBlocks.blockSuperChestPart).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART));
 
         registry.register(
                 new ItemBlock(ModBlocks.angelOre)
