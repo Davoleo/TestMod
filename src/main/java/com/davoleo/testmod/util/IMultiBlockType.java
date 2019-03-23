@@ -39,8 +39,9 @@ public interface IMultiBlockType {
     void formBlock(World world, BlockPos pos, int dx, int dy, int dz);
 
     /**
-     * Return true if the given position is the bottom/lower/left position
-     * of an unformed multiblock. i.e. it is possible to form a multiblock here
+     * @param world the world where you check the TE
+     * @param pos The pos of the checked TE
+     * @return True if the given position is the bottom/lower/left position of an unformed multiblock. i.e. it is possible to form a multiblock here
      */
     boolean isValidUnformedMultiBlock(World world, BlockPos pos);
 
@@ -50,11 +51,19 @@ public interface IMultiBlockType {
      */
     boolean isValidFormedMultiBlock(World world, BlockPos pos);
 
-    /// The dimension of this multiblock type on the X axis
+    /**
+     * @return The dimension of this multiblock type on the X axis
+     */
     int getWidth();
-    /// The dimension of this multiblock type on the Y axis
+
+    /**
+     * @return The dimension of this multiblock type on the Y axis
+     */
     int getHeight();
-    /// The dimension of this multiblock type on the Z axis
+
+    /**
+      * @return The dimension of this multiblock type on the Z axis
+     */
     int getDepth();
 
 }

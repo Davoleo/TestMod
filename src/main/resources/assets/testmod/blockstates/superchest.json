@@ -1,4 +1,5 @@
 {
+  "forge_marker": 1,
   "defaults": {
     "model": "cube_all",
     "textures": {
@@ -13,43 +14,43 @@
       "unformed": {
       },
       "p000": {
-        "custom": {"flip-v": true},
+        "custom": { "flip-v": true },
         "model": "testmod:superchest.obj"
       },
       "p001": {
-        "custom": {"flip-v": true},
+        "custom": { "flip-v": true },
         "model": "testmod:superchest.obj",
-        "transform": {"translation": [0, 0, -1]}
+        "transform": { "translation": [0, 0, -1]}
       },
       "p010": {
-        "custom": {"flip-v": true},
+        "custom": { "flip-v": true },
         "model": "testmod:superchest.obj",
-        "transform": {"translation": [0, -1, 0]}
+        "transform": { "translation": [0, -1, 0]}
       },
       "p011": {
-        "custom": {"flip-v": true},
+        "custom": { "flip-v": true },
         "model": "testmod:superchest.obj",
-        "transform": {"translation": [0, -1, -1]}
+        "transform": { "translation": [0, -1, -1]}
       },
       "p100": {
-        "custom": {"flip-v": true},
+        "custom": { "flip-v": true },
         "model": "testmod:superchest.obj",
-        "transform": {"translation": [-1, 0, 0]}
+        "transform": { "translation": [-1, 0, 0]}
       },
       "p101": {
-        "custom": {"flip-v": true},
+        "custom": { "flip-v": true },
         "model": "testmod:superchest.obj",
-        "transform": {"translation": [-1, 0, -1]}
+        "transform": { "translation": [-1, 0, -1]}
       },
       "p110": {
-        "custom": {"flip-v": true},
+        "custom": { "flip-v": true },
         "model": "testmod:superchest.obj",
-        "transform": {"translation": [-1, -1, 0]}
+        "transform": { "translation": [-1, -1, 0]}
       },
       "p111": {
-        "custom": {"flip-v": true},
+        "custom": { "flip-v": true },
         "model": "testmod:superchest.obj",
-        "transform": {"translation": [-1, -1, -1]}
+        "transform": { "translation": [-1, -1, -1]}
       }
     }
   }

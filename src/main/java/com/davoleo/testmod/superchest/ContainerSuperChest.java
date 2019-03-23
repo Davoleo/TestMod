@@ -10,6 +10,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import javax.annotation.Nonnull;
+
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 15/03/2019 / 15:15
@@ -63,6 +65,7 @@ public class ContainerSuperChest extends Container {
         }
     }
 
+    @Nonnull
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -91,7 +94,7 @@ public class ContainerSuperChest extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer playerIn) {
+    public boolean canInteractWith(@Nonnull EntityPlayer playerIn) {
         return te.canInteractWith(playerIn);
     }
 

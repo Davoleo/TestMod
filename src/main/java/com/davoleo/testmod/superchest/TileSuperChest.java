@@ -66,7 +66,7 @@ public class TileSuperChest extends TileEntity implements IRestorableTileEntity,
         return super.getCapability(capability, facing);
     }
 
-    protected boolean canInteractWith(EntityPlayer player)
+    boolean canInteractWith(EntityPlayer player)
     {
         return !isInvalid() && (player.getDistanceSq(pos.add(0.5, 0.5, 0.5)) <= 64);
     }

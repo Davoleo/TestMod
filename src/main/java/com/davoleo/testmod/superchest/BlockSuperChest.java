@@ -62,15 +62,13 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
         {
             SuperChestPartIndex formed = state.getValue(FORMED);
             if (formed == SuperChestPartIndex.UNFORMED)
-            {
                 if (MultiBlockUtils.formMultiblock(SuperChestMultiBlock.INSTANCE, world, pos))
                     player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "Super-Chest successfully assembled!"), false);
                 else
                     player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "There was an issue while forming the Super-Chest"), false);
-            }
             else
             {
-                if (!MultiBlockUtils.breakMultiblock(SuperChestMultiBlock.INSTANCE, world, pos));
+                if (!MultiBlockUtils.breakMultiblock(SuperChestMultiBlock.INSTANCE, world, pos))
                     player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "The Super Chest is invalid"), false);
             }
         }
@@ -82,6 +80,7 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() == ModBlocks.blockSuperChest && state.getValue(FORMED) != SuperChestPartIndex.UNFORMED)
             return pos;
+
         if (state.getBlock() == ModBlocks.blockSuperChestPart && state.getValue(FORMED) != SuperChestPartIndex.UNFORMED)
         {
             SuperChestPartIndex index = state.getValue(BlockSuperChest.FORMED);
@@ -121,23 +120,25 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (playerIn.getHeldItem(hand).getItem() == ModItems.angelIngot)
-        {
-            toggleMultiblock(worldIn, pos, state, playerIn);
-            return true;
-        }
+        //if (worldIn.isRemote)
+        //{
+            if (playerIn.getHeldItem(hand).getItem() == ModItems.angelIngot) {
+                toggleMultiblock(worldIn, pos, state, playerIn);
+                return true;
+            }
 
-        if (state.getBlock() == ModBlocks.blockSuperChest && state.getValue(FORMED) != SuperChestPartIndex.UNFORMED)
-            return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
-        else
-            return false;
+            if (state.getBlock() == ModBlocks.blockSuperChest && state.getValue(FORMED) != SuperChestPartIndex.UNFORMED)
+                return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+            else
+                return false;
+        //}
+        //return false;
     }
 
     @Override
-    public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
-        if (!world.isRemote) {
+    public void harvestBlock(@Nonnull World world, EntityPlayer player, @Nonnull BlockPos pos, @Nonnull IBlockState state, TileEntity te, ItemStack stack) {
+        if (!world.isRemote)
             MultiBlockUtils.breakMultiblock(SuperChestMultiBlock.INSTANCE, world, pos);
-        }
         super.harvestBlock(world, player, pos, state, te, stack);
     }
 
@@ -155,8 +156,7 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
     @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState()
-                .withProperty(FORMED, SuperChestPartIndex.VALUES[meta]);
+        return this.getDefaultState().withProperty(FORMED, SuperChestPartIndex.VALUES[meta]);
     }
 
     @Override
