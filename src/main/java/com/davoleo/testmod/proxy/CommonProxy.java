@@ -4,6 +4,9 @@ import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.generator.DamageTracker;
 import com.davoleo.testmod.init.*;
 import com.davoleo.testmod.network.Messages;
+import com.davoleo.testmod.omega.OmegaTickHandler;
+import com.davoleo.testmod.omega.player.PlayerOmega;
+import com.davoleo.testmod.omega.player.PlayerPropertyEvents;
 import com.davoleo.testmod.world.OreGenerator;
 import com.davoleo.testmod.world.WorldTickHandler;
 import com.google.common.collect.ImmutableMap;
@@ -12,9 +15,13 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.animation.ITimeValue;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -45,6 +52,23 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(OreGenerator.instance);
         MinecraftForge.EVENT_BUS.register(WorldTickHandler.instance);
         MinecraftForge.EVENT_BUS.register(DamageTracker.instance);
+        MinecraftForge.EVENT_BUS.register(OmegaTickHandler.instance);
+        MinecraftForge.EVENT_BUS.register(PlayerPropertyEvents.instance);
+
+        CapabilityManager.INSTANCE.register(PlayerOmega.class, new Capability.IStorage<PlayerOmega>() {
+            @Nullable
+            @Override
+            public NBTBase writeNBT(Capability<PlayerOmega> capability, PlayerOmega playerOmega, EnumFacing enumFacing)
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void readNBT(Capability<PlayerOmega> capability, PlayerOmega playerOmega, EnumFacing enumFacing, NBTBase nbtBase)
+            {
+                throw new UnsupportedOperationException();
+            }
+        }, () -> null);
 
         ModEntities.init();
         ModFluids.init();

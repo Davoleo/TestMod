@@ -4,6 +4,7 @@ import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.init.ModEntities;
 import com.davoleo.testmod.init.ModItems;
+import com.davoleo.testmod.render.OverlayRenderer;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.client.Minecraft;
@@ -12,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +35,8 @@ public class ClientProxy extends CommonProxy {
     public void preInit(FMLPreInitializationEvent e) {
         super.preInit(e);
         OBJLoader.INSTANCE.addDomain(TestMod.MODID);
+
+        MinecraftForge.EVENT_BUS.register(OverlayRenderer.instance);
     }
 
     @SubscribeEvent

@@ -29,6 +29,7 @@ public class Messages {
 
         //Client-side (From Server 2 Client)
         INSTANCE.registerMessage(PacketSyncMachineState.Handler.class, PacketSyncMachineState.class, nextID(), Side.CLIENT);
+        INSTANCE.registerMessage(PacketSendOmega.Handler.class, PacketSendOmega.class, nextID(), Side.CLIENT);
     }
 
 }
