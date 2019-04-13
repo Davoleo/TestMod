@@ -1,4 +1,4 @@
-package com.davoleo.testmod.entity;
+package com.davoleo.testmod.entity.guard;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;

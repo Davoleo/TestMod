@@ -26,6 +26,7 @@ public class Messages {
         INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(channelName);
 
         //Server-side (From Client 2 Server)
+        INSTANCE.registerMessage(PacketToggleMode.Handler.class, PacketToggleMode.class, nextID(), Side.SERVER);
 
         //Client-side (From Server 2 Client)
         INSTANCE.registerMessage(PacketSyncMachineState.Handler.class, PacketSyncMachineState.class, nextID(), Side.CLIENT);

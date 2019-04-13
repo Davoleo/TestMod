@@ -4,6 +4,8 @@ import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.init.ModEntities;
 import com.davoleo.testmod.init.ModItems;
+import com.davoleo.testmod.input.KeyBindings;
+import com.davoleo.testmod.input.KeyInputHandler;
 import com.davoleo.testmod.render.OverlayRenderer;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -17,6 +19,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,6 +40,14 @@ public class ClientProxy extends CommonProxy {
         OBJLoader.INSTANCE.addDomain(TestMod.MODID);
 
         MinecraftForge.EVENT_BUS.register(OverlayRenderer.instance);
+    }
+
+    @Override
+    public void init(FMLInitializationEvent e)
+    {
+        super.init(e);
+        MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
+        KeyBindings.init();
     }
 
     @SubscribeEvent

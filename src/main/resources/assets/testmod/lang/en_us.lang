@@ -23,6 +23,10 @@ item.testmod.angel_ingot.name=Angel Ingot
 item.testmod.fload_bucket.name=Fload Bucket
 item.testmod.wand.name=Wand
 
+#KeyBindings
+key.wandmode=Wand Mode
+key.categories.testmod=Test Mod
+
 #Other
 status.testmod.puzzle.odd_gameblocks=You can't play this game with an odd number of blocks!
 

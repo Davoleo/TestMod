@@ -31,6 +31,7 @@ public class TestMod {
     {
         FluidRegistry.enableUniversalBucket();
     }
+
     public static TestTab testTab = new TestTab();
 
     @Mod.Instance

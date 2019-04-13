@@ -1,4 +1,4 @@
-package com.davoleo.testmod.entity;
+package com.davoleo.testmod.entity.guard;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.entity.ai.GuardAIFollow;

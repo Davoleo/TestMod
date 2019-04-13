@@ -104,6 +104,7 @@ public class CommonProxy {
         return null;
     }
 
+    @SubscribeEvent
     public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
     {
         if (event.getModID().equals(MODID))
