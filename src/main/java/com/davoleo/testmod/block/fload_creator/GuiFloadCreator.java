@@ -1,8 +1,11 @@
 package com.davoleo.testmod.block.fload_creator;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.init.ModFluids;
+import com.davoleo.testmod.util.FluidStackRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 
 /*************************************************
  * Author: Davoleo
@@ -36,7 +39,7 @@ public class GuiFloadCreator extends GuiContainer {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        //FluidStackRenderer.renderFluidStack(new FluidStack(ModFluids.fload, 1000), guiLeft + 30, guiTop + 26);
+        FluidStackRenderer.renderFluidStack(new FluidStack(ModFluids.fload, 1000), guiLeft + 30, guiTop + 26);
         renderHoveredToolTip(mouseX, mouseY);
     }
 
