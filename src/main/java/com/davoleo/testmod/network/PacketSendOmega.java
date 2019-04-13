@@ -21,6 +21,9 @@ public class PacketSendOmega implements IMessage {
     private float influence;
     private float playerOmega;
 
+    public PacketSendOmega()
+    { }
+
     @Override
     public void fromBytes(ByteBuf byteBuf)
     {
