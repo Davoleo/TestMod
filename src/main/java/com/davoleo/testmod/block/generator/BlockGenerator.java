@@ -24,6 +24,8 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -116,6 +118,7 @@ public class BlockGenerator extends BlockTEBase implements ITileEntityProvider {
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void initModel()
     {
