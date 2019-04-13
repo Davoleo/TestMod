@@ -22,8 +22,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -34,6 +37,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
+
+import static com.davoleo.testmod.TestMod.MODID;
 
 /*************************************************
  * Author: Davoleo
@@ -97,6 +102,12 @@ public class CommonProxy {
     public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)
     {
         return null;
+    }
+
+    public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
+    {
+        if (event.getModID().equals(MODID))
+            ConfigManager.sync(MODID, Config.Type.INSTANCE);
     }
 
     public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)
