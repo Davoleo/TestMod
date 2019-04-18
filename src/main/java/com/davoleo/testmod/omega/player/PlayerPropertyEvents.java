@@ -23,8 +23,10 @@ public class PlayerPropertyEvents {
     @SubscribeEvent
     public void onEntityCreation(AttachCapabilitiesEvent<Entity> event)
     {
-        if (event.getObject() instanceof EntityPlayer && !event.getObject().hasCapability(PlayerProperties.PLAYER_OMEGA, null))
-            event.addCapability(new ResourceLocation(TestMod.MODID, "Omega"), new PropertiesDispatcher());
+        if (event.getObject() instanceof EntityPlayer) {
+            if (!event.getObject().hasCapability(PlayerProperties.PLAYER_OMEGA, null))
+                event.addCapability(new ResourceLocation(TestMod.MODID, "Omega"), new PropertiesDispatcher());
+        }
     }
 
     //To ensure the Omega Power is not lost after death

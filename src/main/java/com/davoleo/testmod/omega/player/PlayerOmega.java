@@ -15,8 +15,7 @@ public class PlayerOmega {
     private float omega = 0F;
 
     public PlayerOmega()
-    {
-    }
+    { }
 
     public float getOmega()
     {

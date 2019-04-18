@@ -26,6 +26,7 @@ public class PropertiesDispatcher implements ICapabilitySerializable<NBTTagCompo
         return capability == PlayerProperties.PLAYER_OMEGA;
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing enumFacing)
@@ -38,9 +39,9 @@ public class PropertiesDispatcher implements ICapabilitySerializable<NBTTagCompo
     @Override
     public NBTTagCompound serializeNBT()
     {
-        NBTTagCompound nbt = new NBTTagCompound();
-        playerOmega.saveNBTData(nbt);
-        return nbt;
+        NBTTagCompound compound = new NBTTagCompound();
+        playerOmega.saveNBTData(compound);
+        return compound;
     }
 
     @Override

@@ -34,56 +34,34 @@ public class WorldOmega extends WorldSavedData {
     private Map<ChunkPos, OmegaSphere> spheres = new HashMap<>();
     private int ticker = 10;
 
-    public WorldOmega()
-    {
+    public WorldOmega() {
         super(NAME);
     }
 
-    @SuppressWarnings("unused")
-    public WorldOmega(String name)
-    {
+    public WorldOmega(String name) {
         super(name);
     }
 
-    public static WorldOmega get(World world)
-    {
-        MapStorage storage = world.getPerWorldStorage();  //Unique per dimension
-        //world.getMapStorage(); <--- The same for all dimensions
-
+    public static WorldOmega get(World world) {
+        MapStorage storage = world.getPerWorldStorage();
         WorldOmega instance = (WorldOmega) storage.getOrLoadData(WorldOmega.class, NAME);
 
-        if (instance == null)
-        {
+        if (instance == null) {
             instance = new WorldOmega();
             storage.setData(NAME, instance);
         }
-
         return instance;
     }
 
-    public void tick(World world)
-    {
-        ticker--;
-        if (ticker > 0)
-            return;
-        ticker = 10;
-        growOmega(world);
-        sendOmega(world);
-    }
-
-    public float getOmegaInfluence(World world, BlockPos pos)
-    {
+    public float getOmegaInfluence(World world, BlockPos pos) {
         ChunkPos chunkPos = new ChunkPos(pos);
-        float omega = 0F;
-        for (int dx = -4; dx <= 4; dx++)
-        {
-            for (int dz = -4; dz <= 4; dz++)
-            {
+        float omega = 0.0f;
+        for (int dx = -4 ; dx <= 4 ; dx++) {
+            for (int dz = -4 ; dz <= 4 ; dz++) {
                 ChunkPos cp = new ChunkPos(chunkPos.x + dx, chunkPos.z + dz);
                 OmegaSphere sphere = getOrCreateSphereAt(world, cp);
-                if (sphere.getRadius() > 0)
-                {
-                    double distanceSq = sphere.getRadius() * sphere.getRadius();
+                if (sphere.getRadius() > 0) {
+                    double distanceSq = pos.distanceSq(sphere.getCenter());
                     if (distanceSq < sphere.getRadius() * sphere.getRadius()) {
                         double distance = Math.sqrt(distanceSq);
                         omega += (sphere.getRadius() - distance) / sphere.getRadius();
@@ -94,19 +72,15 @@ public class WorldOmega extends WorldSavedData {
         return omega;
     }
 
-    public float getOmegaStrength(World world, BlockPos pos)
-    {
+    public float getOmegaStrength(World world, BlockPos pos) {
         ChunkPos chunkPos = new ChunkPos(pos);
-        float omega = 0F;
-        for (int dx = -4; dx <= 4; dx++)
-        {
-            for (int dz = -4; dz <= 4; dz++)
-            {
+        float omega = 0.0f;
+        for (int dx = -4 ; dx <= 4 ; dx++) {
+            for (int dz = -4 ; dz <= 4 ; dz++) {
                 ChunkPos cp = new ChunkPos(chunkPos.x + dx, chunkPos.z + dz);
                 OmegaSphere sphere = getOrCreateSphereAt(world, cp);
-                if (sphere.getRadius() > 0)
-                {
-                    double distanceSq = sphere.getRadius() * sphere.getRadius();
+                if (sphere.getRadius() > 0) {
+                    double distanceSq = pos.distanceSq(sphere.getCenter());
                     if (distanceSq < sphere.getRadius() * sphere.getRadius()) {
                         double distance = Math.sqrt(distanceSq);
                         double influence = (sphere.getRadius() - distance) / sphere.getRadius();
@@ -118,29 +92,27 @@ public class WorldOmega extends WorldSavedData {
         return omega;
     }
 
-    public float extractOmega(World world, BlockPos pos)
-    {
+    public float extractOmega(World world, BlockPos pos) {
         float omegaInfluence = getOmegaInfluence(world, pos);
-        if (omegaInfluence <= 0)
+        if (omegaInfluence <= 0) {
             return 0;
+        }
         ChunkPos chunkPos = new ChunkPos(pos);
-        float extracted = 0F;
-        for (int dx = -4; dx <= 4; dx++)
-        {
-            for (int dz = -4; dz <= 4; dz++)
-            {
+        float extracted = 0.0f;
+        for (int dx = -4 ; dx <= 4 ; dx++) {
+            for (int dz = -4 ; dz <= 4 ; dz++) {
                 ChunkPos cp = new ChunkPos(chunkPos.x + dx, chunkPos.z + dz);
                 OmegaSphere sphere = getOrCreateSphereAt(world, cp);
                 if (sphere.getRadius() > 0) {
-                    double distanceSq = sphere.getRadius() * sphere.getRadius();
+                    double distanceSq = pos.distanceSq(sphere.getCenter());
                     if (distanceSq < sphere.getRadius() * sphere.getRadius()) {
                         double distance = Math.sqrt(distanceSq);
-                        double factor = (sphere.getRadius() - distance) / sphere.getRadius();
+                        double influence = (sphere.getRadius() - distance) / sphere.getRadius();
                         float currentOmega = sphere.getCurrentOmega();
-                        if (factor > currentOmega)
-                            factor = currentOmega;
-                        currentOmega -= factor;
-                        extracted += factor;
+                        if (influence > currentOmega)
+                            influence = currentOmega;
+                        currentOmega -= influence;
+                        extracted += influence;
                         sphere.setCurrentOmega(currentOmega);
                         markDirty();
                     }
@@ -150,28 +122,35 @@ public class WorldOmega extends WorldSavedData {
         return extracted;
     }
 
-    private void growOmega(World world)
-    {
-        for (Map.Entry<ChunkPos, OmegaSphere> entry : spheres.entrySet())
-        {
-            OmegaSphere sphere = entry.getValue();
+    public void tick(World world) {
+        ticker--;
+        if (ticker > 0) {
+            return;
+        }
+        ticker = 10;
+        growOmega(world);
+        sendOmega(world);
+    }
 
-            if (sphere.getRadius() > 0 && world.isBlockLoaded(sphere.getCenter()))
-            {
-                float currentOmega = sphere.getCurrentOmega();
-                currentOmega += 0.01;
-                if (currentOmega >= 5)
-                    currentOmega = 5;
-                sphere.setCurrentOmega(currentOmega);
-                markDirty();
+    private void growOmega(World world) {
+        for (Map.Entry<ChunkPos, OmegaSphere> entry : spheres.entrySet()) {
+            OmegaSphere sphere = entry.getValue();
+            if (sphere.getRadius() > 0) {
+                if (world.isBlockLoaded(sphere.getCenter())) {
+                    float currentOmega = sphere.getCurrentOmega();
+                    currentOmega += .01f;
+                    if (currentOmega >= 5) {
+                        currentOmega = 5;
+                    }
+                    sphere.setCurrentOmega(currentOmega);
+                    markDirty();
+                }
             }
         }
     }
 
-    private void sendOmega(World world)
-    {
-        for (EntityPlayer player : world.playerEntities)
-        {
+    private void sendOmega(World world) {
+        for (EntityPlayer player : world.playerEntities) {
             float omegaStrength = getOmegaStrength(world, player.getPosition());
             float maxInfluence = getOmegaInfluence(world, player.getPosition());
             PlayerOmega playerOmega = PlayerProperties.getPlayerOmega(player);
@@ -179,17 +158,16 @@ public class WorldOmega extends WorldSavedData {
         }
     }
 
-    private OmegaSphere getOrCreateSphereAt(World world, ChunkPos pos)
-    {
-        OmegaSphere sphere = spheres.get(pos);
-        if (sphere == null)
-        {
-            BlockPos center = pos.getBlock(8, OmegaSphere.getRandomYOffset(world.getSeed(), pos.x, pos.z), 8);
+    private OmegaSphere getOrCreateSphereAt(World world, ChunkPos cp) {
+        OmegaSphere sphere = spheres.get(cp);
+        if (sphere == null) {
+            BlockPos center = cp.getBlock(8, OmegaSphere.getRandomYOffset(world.getSeed(), cp.x, cp.z), 8);
             float radius = 0;
-            if (OmegaSphere.isCenterChunk(world.getSeed(), pos.x, pos.z))
-                radius = OmegaSphere.getRadius(world.getSeed(), pos.x, pos.z);
+            if (OmegaSphere.isCenterChunk(world.getSeed(), cp.x, cp.z)) {
+                radius = OmegaSphere.getRadius(world.getSeed(), cp.x, cp.z);
+            }
             sphere = new OmegaSphere(center, radius);
-            spheres.put(pos, sphere);
+            spheres.put(cp, sphere);
             markDirty();
         }
         return sphere;
@@ -204,14 +182,14 @@ public class WorldOmega extends WorldSavedData {
             OmegaSphere sphere = new OmegaSphere(
                     new BlockPos(sphereNBT.getInteger("posx"), sphereNBT.getInteger("posy"), sphereNBT.getInteger("posz")),
                     sphereNBT.getFloat("radius"));
-            sphere.setCurrentOmega(sphereNBT.getFloat("mana"));
+            sphere.setCurrentOmega(sphereNBT.getFloat("omega"));
             spheres.put(pos, sphere);
         }
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagList list = new NBTTagList();
         for (Map.Entry<ChunkPos, OmegaSphere> entry : spheres.entrySet()) {
             NBTTagCompound sphereNBT = new NBTTagCompound();
@@ -223,7 +201,7 @@ public class WorldOmega extends WorldSavedData {
             sphereNBT.setInteger("posy", sphere.getCenter().getY());
             sphereNBT.setInteger("posz", sphere.getCenter().getZ());
             sphereNBT.setFloat("radius", sphere.getRadius());
-            sphereNBT.setFloat("mana", sphere.getCurrentOmega());
+            sphereNBT.setFloat("omega", sphere.getCurrentOmega());
             list.appendTag(sphereNBT);
         }
         compound.setTag("spheres", list);

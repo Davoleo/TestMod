@@ -6,6 +6,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /*************************************************
  * Author: Davoleo
@@ -30,6 +31,7 @@ public class OverlayRenderer {
         this.playerOmega = playerOmega;
     }
 
+    @SubscribeEvent
     public void renderGameOverlayEvent(RenderGameOverlayEvent event)
     {
         if (event.isCancelable() || event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE)

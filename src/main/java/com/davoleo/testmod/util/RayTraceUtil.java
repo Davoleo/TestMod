@@ -71,6 +71,8 @@ public class RayTraceUtil {
             this.world = world;
             this.player = player;
             this.maxDist = maxDist;
+
+            calculate();
         }
 
         private void calculate()

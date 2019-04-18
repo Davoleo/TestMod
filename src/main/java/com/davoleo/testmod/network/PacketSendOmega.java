@@ -21,8 +21,16 @@ public class PacketSendOmega implements IMessage {
     private float influence;
     private float playerOmega;
 
+    @SuppressWarnings("unused")
     public PacketSendOmega()
     { }
+
+    public PacketSendOmega(float omega, float influence, float playerOmega)
+    {
+        this.omega = omega;
+        this.influence = influence;
+        this.playerOmega = playerOmega;
+    }
 
     @Override
     public void fromBytes(ByteBuf byteBuf)
@@ -40,23 +48,16 @@ public class PacketSendOmega implements IMessage {
         byteBuf.writeFloat(playerOmega);
     }
 
-    public PacketSendOmega(float omega, float influence, float playerOmega)
-    {
-        this.omega = omega;
-        this.influence = influence;
-        this.playerOmega = playerOmega;
-    }
-
     public static class Handler implements IMessageHandler<PacketSendOmega, IMessage>
     {
         @Override
         public IMessage onMessage(PacketSendOmega packetSendOmega, MessageContext messageContext)
         {
-            TestMod.proxy.addScheduledTaskClient(() -> handle(packetSendOmega, messageContext));
+            TestMod.proxy.addScheduledTaskClient(() -> handle(packetSendOmega));
             return null;
         }
 
-        private void handle(PacketSendOmega message, MessageContext context)
+        private void handle(PacketSendOmega message)
         {
             OverlayRenderer.instance.setOmega(message.omega, message.influence, message.playerOmega);
         }

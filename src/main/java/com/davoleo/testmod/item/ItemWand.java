@@ -160,12 +160,5 @@ public class ItemWand extends Item {
                 }
             });
         }
-
-
-    }
-
-    private void addLevitateEffect(EntityPlayer target)
-    {
-        target.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 60, 1));
     }
 }

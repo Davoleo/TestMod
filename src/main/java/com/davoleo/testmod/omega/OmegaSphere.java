@@ -12,53 +12,55 @@ import java.util.Random;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class OmegaSphere {
+class OmegaSphere {
 
     private final BlockPos center;
     private final float radius;
 
     private float currentOmega = 0;
 
-    public OmegaSphere(BlockPos center, float radius)
+    OmegaSphere(BlockPos center, float radius)
     {
         this.center = center;
         this.radius = radius;
     }
 
-    public float getCurrentOmega()
+    float getCurrentOmega()
     {
         return currentOmega;
     }
 
-    public void setCurrentOmega(float currentOmega)
+    void setCurrentOmega(float currentOmega)
     {
         this.currentOmega = currentOmega;
     }
 
-    public BlockPos getCenter()
+    BlockPos getCenter()
     {
         return center;
     }
 
-    public float getRadius()
+    float getRadius()
     {
         return radius;
     }
 
 
-    public static boolean isCenterChunk(long seed, int chunkX, int chunkZ)
+    static boolean isCenterChunk(long seed, int chunkX, int chunkZ)
     {
-        Random random = new Random(seed + chunkX * 1766554063L + chunkZ * 21766558031L);
-        return random.nextFloat() < 0.03;
+        Random random = new Random(seed + chunkX * 1766557063L + chunkZ * 21766558031L);
+        //TODO : Further Inspection on this problem
+        //Default '<'
+        return random.nextFloat() > .03F;
     }
 
-    public static float getRadius(long seed, int chunkX, int chunkZ)
+    static float getRadius(long seed, int chunkX, int chunkZ)
     {
         Random random = new Random(seed + chunkX * 31766435083L + chunkZ * 655987873L);
         return random.nextFloat() * 40 + 20;
     }
 
-    public static int getRandomYOffset(long seed, int chunkX, int chunkZ)
+    static int getRandomYOffset(long seed, int chunkX, int chunkZ)
     {
         Random random = new Random(seed + chunkX * 3556692499L + chunkZ * 2998604447L);
         return random.nextInt(60) + 40;
