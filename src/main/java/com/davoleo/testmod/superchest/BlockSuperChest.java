@@ -62,10 +62,12 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
         {
             SuperChestPartIndex formed = state.getValue(FORMED);
             if (formed == SuperChestPartIndex.UNFORMED)
+            {
                 if (MultiBlockUtils.formMultiblock(SuperChestMultiBlock.INSTANCE, world, pos))
                     player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "Super-Chest successfully assembled!"), false);
                 else
                     player.sendStatusMessage(new TextComponentString(TextFormatting.RED + "There was an issue while forming the Super-Chest"), false);
+            }
             else
             {
                 if (!MultiBlockUtils.breakMultiblock(SuperChestMultiBlock.INSTANCE, world, pos))
@@ -75,16 +77,17 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
     }
 
     @Nullable
-    public static BlockPos getControllerPos(World world, BlockPos pos)
-    {
+    public static BlockPos getControllerPos(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() == ModBlocks.blockSuperChest && state.getValue(FORMED) != SuperChestPartIndex.UNFORMED)
+        if (state.getBlock() == ModBlocks.blockSuperChest && state.getValue(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED)
             return pos;
 
-        if (state.getBlock() == ModBlocks.blockSuperChestPart && state.getValue(FORMED) != SuperChestPartIndex.UNFORMED)
+        if (state.getBlock() == ModBlocks.blockSuperChestPart && state.getValue(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED)
         {
             SuperChestPartIndex index = state.getValue(BlockSuperChest.FORMED);
+            // This index indicates where in the superblock this part is located. From this we can find the location of the bottom-left coordinate
             BlockPos bottomLeft = pos.add(-index.getDx(), -index.getDy(), -index.getDz());
+
             for (SuperChestPartIndex idx : SuperChestPartIndex.VALUES)
             {
                 if (idx != SuperChestPartIndex.UNFORMED)
@@ -94,6 +97,7 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
                         return p;
                 }
             }
+
         }
         return null;
     }
@@ -120,8 +124,6 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        //if (worldIn.isRemote)
-        //{
             if (playerIn.getHeldItem(hand).getItem() == ModItems.angelIngot) {
                 toggleMultiblock(worldIn, pos, state, playerIn);
                 return true;
@@ -131,8 +133,6 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
                 return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
             else
                 return false;
-        //}
-        //return false;
     }
 
     @Override
@@ -140,11 +140,6 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
         if (!world.isRemote)
             MultiBlockUtils.breakMultiblock(SuperChestMultiBlock.INSTANCE, world, pos);
         super.harvestBlock(world, player, pos, state, te, stack);
-    }
-
-    public static boolean isFormedSuperChestController(World world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
-        return state.getBlock() == ModBlocks.blockSuperChest && state.getValue(FORMED) != SuperChestPartIndex.UNFORMED;
     }
 
     @Nonnull

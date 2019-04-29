@@ -42,6 +42,8 @@ import java.util.regex.Pattern;
 
 public class BlockTEBase extends Block {
 
+    private int id = 0;
+
     public BlockTEBase(Material materialIn)
     {
         super(materialIn);
@@ -69,7 +71,8 @@ public class BlockTEBase extends Block {
         if (!(te instanceof IGuiTileEntity))
             return false;
 
-        playerIn.openGui(TestMod.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        playerIn.openGui(TestMod.instance, id, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        id++;
         return true;
     }
 

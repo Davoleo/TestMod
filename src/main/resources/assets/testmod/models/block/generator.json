@@ -3,7 +3,8 @@
     "0": "blocks/iron_block",
     "1": "blocks/gold_block",
     "2": "blocks/diamond_block",
-    "3": "blocks/emerald_block"
+    "3": "blocks/emerald_block",
+    "particle": "testmod:blocks"
   },
   "elements": [
     {

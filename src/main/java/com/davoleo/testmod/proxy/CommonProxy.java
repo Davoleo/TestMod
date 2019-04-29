@@ -55,8 +55,6 @@ public class CommonProxy {
         Messages.registerMessages("testmod");
         GameRegistry.registerWorldGenerator(OreGenerator.instance, 5);
         MinecraftForge.EVENT_BUS.register(OreGenerator.instance);
-        MinecraftForge.EVENT_BUS.register(WorldTickHandler.instance);
-        MinecraftForge.EVENT_BUS.register(DamageTracker.instance);
         MinecraftForge.EVENT_BUS.register(OmegaTickHandler.instance);
         MinecraftForge.EVENT_BUS.register(PlayerPropertyEvents.instance);
 
@@ -81,6 +79,9 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent e) {
         NetworkRegistry.INSTANCE.registerGuiHandler(TestMod.instance, new GuiHandler());
+
+        MinecraftForge.EVENT_BUS.register(WorldTickHandler.instance);
+        MinecraftForge.EVENT_BUS.register(DamageTracker.instance);
     }
 
     public void postInit(FMLPostInitializationEvent e) {

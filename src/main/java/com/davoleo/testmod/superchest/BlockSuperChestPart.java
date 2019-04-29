@@ -2,6 +2,7 @@ package com.davoleo.testmod.superchest;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.init.ModBlocks;
+import com.davoleo.testmod.init.ModItems;
 import com.davoleo.testmod.util.MultiBlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -10,7 +11,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -66,7 +66,7 @@ public class BlockSuperChestPart extends Block implements ITileEntityProvider {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (playerIn.getHeldItem(hand).getItem() == Items.STICK) {
+        if (playerIn.getHeldItem(hand).getItem() == ModItems.angelIngot) {
             BlockSuperChest.toggleMultiblock(worldIn, pos, state, playerIn);
             return true;
         }

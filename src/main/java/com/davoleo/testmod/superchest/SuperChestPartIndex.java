@@ -16,13 +16,13 @@ public enum SuperChestPartIndex implements IStringSerializable {
 
     UNFORMED("unformed", 0, 0, 0),
     P000("p000", 0, 0, 0),
-    P001("p001", 0, 0, 0),
-    P010("p010", 0, 0, 0),
-    P011("p011", 0, 0, 0),
-    P100("p100", 0, 0, 0),
-    P101("p101", 0, 0, 0),
-    P110("p110", 0, 0, 0),
-    P111("p111", 0, 0, 0);
+    P001("p001", 0, 0, 1),
+    P010("p010", 0, 1, 0),
+    P011("p011", 0, 1, 1),
+    P100("p100", 1, 0, 0),
+    P101("p101", 1, 0, 1),
+    P110("p110", 1, 1, 0),
+    P111("p111", 1, 1, 1);
 
     public static final SuperChestPartIndex[] VALUES = SuperChestPartIndex.values();
 

@@ -37,8 +37,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit(FMLPreInitializationEvent e) {
         super.preInit(e);
-        OBJLoader.INSTANCE.addDomain(TestMod.MODID);
 
+        OBJLoader.INSTANCE.addDomain(TestMod.MODID);
         MinecraftForge.EVENT_BUS.register(OverlayRenderer.instance);
     }
 

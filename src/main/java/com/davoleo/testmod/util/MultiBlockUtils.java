@@ -3,14 +3,6 @@ package com.davoleo.testmod.util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-/*************************************************
- * Author: Davoleo
- * Date / Hour: 15/03/2019 / 17:19
- * Class: MultiBlockUtils
- * Project: Test_mod
- * Copyright - © - Davoleo - 2019
- **************************************************/
-
 public class MultiBlockUtils {
 
     // Return true on success;
