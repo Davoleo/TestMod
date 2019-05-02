@@ -2,29 +2,40 @@ This mapping 'stable_39' was designed for MC 1.12! Use at your own peril.This ma
 
 :deobfCompileDummyTask
 :deobfProvidedDummyTask
-:getVersionJson
-:extractUserdev UP-TO-DATE
-:extractDependencyATs SKIPPED
+:sourceApiJava
+:compileApiJava UP-TO-DATE
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:sourceMainJava
+:compileJavaNote: D:\Everything\MC\Modding\1.12.2\Test_mod\build\sources\main\java\com\davoleo\testmod\block\furnace\BlockFastFurnace.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: D:\Everything\MC\Modding\1.12.2\Test_mod\build\sources\main\java\com\davoleo\testmod\block\BlockTileEntity.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+:processResources
+:classes
+:jar
+:sourceTestJava
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+:test UP-TO-DATE
 :extractMcpData SKIPPED
 :extractMcpMappings SKIPPED
+:getVersionJson
+:extractUserdev UP-TO-DATE
 :genSrgs SKIPPED
-:downloadClient SKIPPED
-:downloadServer SKIPPED
-:splitServerJar SKIPPED
-:mergeJars SKIPPED
-:deobfMcSRG SKIPPED
-:decompileMc SKIPPED
-:fixMcSources SKIPPED
-:applySourcePatches SKIPPED
-:remapMcSources SKIPPED
-:recompileMc SKIPPED
-:extractNatives SKIPPED
-:getAssetIndex UP-TO-DATE
-:getAssets
-Current status: 1304/1305   99%
-:makeStart
-:setupDecompWorkspace
+:reobfJar
+:extractAnnotationsJar
+:extractRangemapReplacedMain
+D:\Everything\MC\Modding\1.12.2\Test_mod\build\sources\main\java
+:retromapReplacedMain
+remapping source...
+:sourceJar
+:assemble
+:check UP-TO-DATE
+:build
 
 BUILD SUCCESSFUL
 
-Total time: 19.61 secs
+Total time: 6.819 secs

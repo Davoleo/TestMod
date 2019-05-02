@@ -5,7 +5,7 @@
 *.ear
 
 # Gradle files and folders
-.gradle/
+.gradle
 gradlew
 
 # Production files and folders
@@ -17,3 +17,5 @@ build/
 *.ipr
 *.iws
 *.iml
+.idea
+local.properties
