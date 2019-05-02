@@ -10,18 +10,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*************************************************
  * Author: Davoleo
- * Date / Hour: 03/02/2019 / 18:35
- * Class: ItemAngelIngot
+ * Date / Hour: 02/05/2019 / 19:00
+ * Class: ItemCopperIngot
  * Project: Test_mod
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class ItemAngelIngot extends Item {
+public class ItemCopperIngot extends Item {
 
-    public ItemAngelIngot()
+    public ItemCopperIngot()
     {
-        setTranslationKey(TestMod.MODID + ".angel_ingot");
-        setRegistryName(new ResourceLocation(TestMod.MODID, "angel_ingot"));
+        setRegistryName(new ResourceLocation(TestMod.MODID, "copper_ingot"));
+        setTranslationKey(TestMod.MODID + ".copper_ingot");
         setCreativeTab(TestMod.testTab);
     }
 

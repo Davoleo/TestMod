@@ -20,6 +20,7 @@ fluid.fload=Fload
 
 #Items
 item.testmod.angel_ingot.name=Angel Ingot
+item.testmod.copper_ingot.name=Copper Ingot
 item.testmod.fload_bucket.name=Fload Bucket
 item.testmod.wand.name=Wand
 

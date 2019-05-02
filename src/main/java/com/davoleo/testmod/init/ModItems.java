@@ -5,6 +5,7 @@ import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
 import com.davoleo.testmod.block.tank.BlockTank;
 import com.davoleo.testmod.item.ItemAngelIngot;
+import com.davoleo.testmod.item.ItemCopperIngot;
 import com.davoleo.testmod.item.ItemWand;
 import com.davoleo.testmod.memory.BlockPuzzle;
 import com.davoleo.testmod.superchest.BlockSuperChest;
@@ -27,6 +28,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ModItems {
 
     public static ItemAngelIngot angelIngot = new ItemAngelIngot();
+    public static ItemCopperIngot copperIngot = new ItemCopperIngot();
     public static ItemWand wand = new ItemWand();
 
     public static void registerItems(IForgeRegistry<Item> registry)
@@ -47,17 +49,18 @@ public class ModItems {
                         return damage;
                     }
                 }
-                        .setHasSubtypes(true)
-                        .setRegistryName(BlockAngelOre.ANGEL_ORE)
-        );
-        registry.register(ModItems.angelIngot);
-        registry.register(ModItems.wand);
+                .setHasSubtypes(true).setRegistryName(BlockAngelOre.ANGEL_ORE));
+
+        registry.register(angelIngot);
+        registry.register(copperIngot);
+        registry.register(wand);
     }
 
     @SideOnly(Side.CLIENT)
     public static void initModels()
     {
         angelIngot.initModel();
+        copperIngot.initModel();
         wand.initModel();
     }
 
