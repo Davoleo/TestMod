@@ -7,6 +7,7 @@ import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.omega.OmegaTickHandler;
 import com.davoleo.testmod.omega.player.PlayerOmega;
 import com.davoleo.testmod.omega.player.PlayerPropertyEvents;
+import com.davoleo.testmod.recipe.OreDictHandler;
 import com.davoleo.testmod.world.OreGenerator;
 import com.davoleo.testmod.world.WorldTickHandler;
 import com.google.common.collect.ImmutableMap;
@@ -79,6 +80,8 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent e) {
         NetworkRegistry.INSTANCE.registerGuiHandler(TestMod.instance, new GuiHandler());
+        //Oredict initialization
+        OreDictHandler.initOreDictEntries();
 
         MinecraftForge.EVENT_BUS.register(WorldTickHandler.instance);
         MinecraftForge.EVENT_BUS.register(DamageTracker.instance);
