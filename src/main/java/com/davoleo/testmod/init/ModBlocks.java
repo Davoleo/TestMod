@@ -1,6 +1,7 @@
 package com.davoleo.testmod.init;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.block.BlockCopper;
 import com.davoleo.testmod.block.BlockFload;
 import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
 import com.davoleo.testmod.block.fload_creator.TileFloadCreator;
@@ -41,6 +42,7 @@ public class ModBlocks {
     public static BlockTank blockTank = new BlockTank();
     public static BlockSuperChest blockSuperChest = new BlockSuperChest();
     public static BlockSuperChestPart blockSuperChestPart = new BlockSuperChestPart();
+    public static BlockCopper blockCopper = new BlockCopper();
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
@@ -67,6 +69,7 @@ public class ModBlocks {
 
         registry.register(angelOre);
         registry.register(blockFload);
+        registry.register(blockCopper);
     }
 
     public static void initModels()
@@ -80,6 +83,7 @@ public class ModBlocks {
         blockTank.initModel();
         blockSuperChest.initModel();
         blockSuperChestPart.initModel();
+        blockCopper.initModel();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.davoleo.testmod.init;
 
+import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
@@ -13,6 +14,7 @@ import com.davoleo.testmod.superchest.BlockSuperChestPart;
 import com.davoleo.testmod.world.BlockAngelOre;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -33,6 +35,7 @@ public class ModItems {
 
     public static void registerItems(IForgeRegistry<Item> registry)
     {
+        //ItemBlocks
         registry.register(new ItemBlock(ModBlocks.blockFastFurnace).setRegistryName(BlockFastFurnace.FAST_FURNACE));
         registry.register(new ItemBlock(ModBlocks.blockGenerator).setRegistryName(BlockGenerator.GENERATOR));
         registry.register(new ItemBlock(ModBlocks.blockFloadCreator).setRegistryName(BlockFloadCreator.FLOAD_CREATOR));
@@ -40,7 +43,7 @@ public class ModItems {
         registry.register(new ItemBlock(ModBlocks.blockTank).setRegistryName(BlockTank.TANK));
         registry.register(new ItemBlock(ModBlocks.blockSuperChest).setRegistryName(BlockSuperChest.SUPERCHEST));
         registry.register(new ItemBlock(ModBlocks.blockSuperChestPart).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART));
-
+        registry.register(new ItemBlock(ModBlocks.blockCopper).setRegistryName(new ResourceLocation(TestMod.MODID, "copper_block")));
         registry.register(
                 new ItemBlock(ModBlocks.angelOre) {
                     @Override
@@ -51,6 +54,7 @@ public class ModItems {
                 }
                 .setHasSubtypes(true).setRegistryName(BlockAngelOre.ANGEL_ORE));
 
+        //Items
         registry.register(angelIngot);
         registry.register(copperIngot);
         registry.register(wand);

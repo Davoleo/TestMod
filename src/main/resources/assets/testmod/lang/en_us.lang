@@ -8,6 +8,7 @@ tile.testmod.fload.name=Fload
 tile.testmod.tank.name=Tank
 tile.testmod.superchest.name=SuperChest!
 tile.testmod.superchest_part.name=SuperChest!
+tile.testmod.copper_block.name=Copper Block
 
 #Creative Tabs
 itemGroup.testmod=Test Mod 2
