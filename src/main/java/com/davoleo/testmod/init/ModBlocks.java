@@ -1,8 +1,10 @@
 package com.davoleo.testmod.init;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.block.BlockAngelOre;
 import com.davoleo.testmod.block.BlockCopper;
 import com.davoleo.testmod.block.BlockFload;
+import com.davoleo.testmod.block.BlockOre;
 import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
 import com.davoleo.testmod.block.fload_creator.TileFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
@@ -17,9 +19,9 @@ import com.davoleo.testmod.superchest.BlockSuperChest;
 import com.davoleo.testmod.superchest.BlockSuperChestPart;
 import com.davoleo.testmod.superchest.TileSuperChest;
 import com.davoleo.testmod.superchest.TileSuperChestPart;
-import com.davoleo.testmod.world.BlockAngelOre;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -43,6 +45,13 @@ public class ModBlocks {
     public static BlockSuperChest blockSuperChest = new BlockSuperChest();
     public static BlockSuperChestPart blockSuperChestPart = new BlockSuperChestPart();
     public static BlockCopper blockCopper = new BlockCopper();
+
+    //Ores
+    public static BlockOre oreCopper = new BlockOre("copper_ore", DimensionType.OVERWORLD);
+    public static BlockOre oreAluminum = new BlockOre("aluminum_ore", DimensionType.OVERWORLD);
+    public static BlockOre oreNetherGold = new BlockOre("nether_gold_ore", DimensionType.NETHER);
+    public static BlockOre oreZephyrite = new BlockOre("zephyrite_ore", DimensionType.THE_END);
+
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
@@ -70,6 +79,9 @@ public class ModBlocks {
         registry.register(angelOre);
         registry.register(blockFload);
         registry.register(blockCopper);
+
+        //Ores
+        registry.registerAll(oreCopper, oreAluminum, oreNetherGold, oreZephyrite);
     }
 
     public static void initModels()
@@ -84,6 +96,10 @@ public class ModBlocks {
         blockSuperChest.initModel();
         blockSuperChestPart.initModel();
         blockCopper.initModel();
+        oreCopper.initModel();
+        oreAluminum.initModel();
+        oreNetherGold.initModel();
+        oreZephyrite.initModel();
     }
 
 }

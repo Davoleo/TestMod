@@ -1,6 +1,7 @@
-package com.davoleo.testmod.world;
+package com.davoleo.testmod.block;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.world.OreType;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -26,6 +27,7 @@ import javax.annotation.Nonnull;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
+//TODO : Generalize and merge with BlockOre
 public class BlockAngelOre extends Block {
 
     public static final PropertyEnum<OreType> ORETYPE = PropertyEnum.create("oretype", OreType.class);

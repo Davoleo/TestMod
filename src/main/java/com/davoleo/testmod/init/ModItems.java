@@ -1,6 +1,7 @@
 package com.davoleo.testmod.init;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.block.BlockAngelOre;
 import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
@@ -11,7 +12,6 @@ import com.davoleo.testmod.item.ItemWand;
 import com.davoleo.testmod.memory.BlockPuzzle;
 import com.davoleo.testmod.superchest.BlockSuperChest;
 import com.davoleo.testmod.superchest.BlockSuperChestPart;
-import com.davoleo.testmod.world.BlockAngelOre;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -58,6 +58,13 @@ public class ModItems {
         registry.register(angelIngot);
         registry.register(copperIngot);
         registry.register(wand);
+
+        //Ores
+        registry.register(new ItemBlock(ModBlocks.oreCopper).setRegistryName(new ResourceLocation(TestMod.MODID, "copper_ore")));
+        registry.register(new ItemBlock(ModBlocks.oreAluminum).setRegistryName(new ResourceLocation(TestMod.MODID, "aluminum_ore")));
+        registry.register(new ItemBlock(ModBlocks.oreNetherGold).setRegistryName(new ResourceLocation(TestMod.MODID, "nether_gold_ore")));
+        registry.register(new ItemBlock(ModBlocks.oreZephyrite).setRegistryName(new ResourceLocation(TestMod.MODID, "zephyrite_ore")));
+
     }
 
     @SideOnly(Side.CLIENT)

@@ -9,6 +9,10 @@ tile.testmod.tank.name=Tank
 tile.testmod.superchest.name=SuperChest!
 tile.testmod.superchest_part.name=SuperChest!
 tile.testmod.copper_block.name=Copper Block
+tile.testmod.copper_ore.name=Copper Ore
+tile.testmod.aluminum_ore.name=Aluminum Ore
+tile.testmod.nether_gold_ore.name=Nether Gold Ore
+tile.testmod.zephyrite_ore.name=Zephyrite Ore
 
 #Creative Tabs
 itemGroup.testmod=Test Mod 2
