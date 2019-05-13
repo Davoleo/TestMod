@@ -47,17 +47,21 @@ public class OreGenerator implements IWorldGenerator {
             return;
         if (world.provider.getDimension() == DimensionType.OVERWORLD.getId()) {
             if (OreGenConfig.GENERATE_OVERWORLD) {
-                addOreSpawn(ModBlocks.angelOre, (byte) OreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+                addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+                addOreSpawn(ModBlocks.oreAluminum, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+                addOreSpawn(ModBlocks.oreCopper, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
             }
         } else
         if (world.provider.getDimension() == DimensionType.NETHER.getId()) {
             if (OreGenConfig.GENERATE_NETHER) {
-                addOreSpawn(ModBlocks.angelOre, (byte) OreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+                addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+                addOreSpawn(ModBlocks.oreNetherGold, (byte) EnumOreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
             }
         } else
         if (world.provider.getDimension() == DimensionType.THE_END.getId()) {
             if (OreGenConfig.GENERATE_END) {
-                addOreSpawn(ModBlocks.angelOre, (byte) OreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+                addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+                addOreSpawn(ModBlocks.oreZephyrite, (byte) EnumOreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
             }
         }
 

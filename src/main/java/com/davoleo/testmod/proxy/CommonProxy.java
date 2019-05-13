@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -35,7 +36,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 
@@ -88,8 +88,10 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent e) {
-        GameRegistry.addSmelting(ModBlocks.angelOre, new ItemStack(ModItems.angelIngot, 1), 1F);
-        OreDictionary.registerOre("oreAngel", ModBlocks.angelOre);
+        GameRegistry.addSmelting(ModBlocks.oreAngel, new ItemStack(ModItems.angelIngot, 1), 1F);
+        GameRegistry.addSmelting(ModBlocks.oreCopper, new ItemStack(ModItems.copperIngot, 1), 1F);
+        GameRegistry.addSmelting(ModBlocks.oreNetherGold, new ItemStack(Items.GOLD_INGOT, 1), 1F);
+
     }
 
     @SubscribeEvent

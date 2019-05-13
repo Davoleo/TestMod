@@ -1,12 +1,12 @@
 package com.davoleo.testmod.init;
 
 import com.davoleo.testmod.TestMod;
-import com.davoleo.testmod.block.BlockAngelOre;
 import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
 import com.davoleo.testmod.block.tank.BlockTank;
 import com.davoleo.testmod.item.ItemAngelIngot;
+import com.davoleo.testmod.item.ItemBlockOre;
 import com.davoleo.testmod.item.ItemCopperIngot;
 import com.davoleo.testmod.item.ItemWand;
 import com.davoleo.testmod.memory.BlockPuzzle;
@@ -44,15 +44,6 @@ public class ModItems {
         registry.register(new ItemBlock(ModBlocks.blockSuperChest).setRegistryName(BlockSuperChest.SUPERCHEST));
         registry.register(new ItemBlock(ModBlocks.blockSuperChestPart).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART));
         registry.register(new ItemBlock(ModBlocks.blockCopper).setRegistryName(new ResourceLocation(TestMod.MODID, "copper_block")));
-        registry.register(
-                new ItemBlock(ModBlocks.angelOre) {
-                    @Override
-                    public int getMetadata(int damage)
-                    {
-                        return damage;
-                    }
-                }
-                .setHasSubtypes(true).setRegistryName(BlockAngelOre.ANGEL_ORE));
 
         //Items
         registry.register(angelIngot);
@@ -60,10 +51,11 @@ public class ModItems {
         registry.register(wand);
 
         //Ores
-        registry.register(new ItemBlock(ModBlocks.oreCopper).setRegistryName(new ResourceLocation(TestMod.MODID, "copper_ore")));
-        registry.register(new ItemBlock(ModBlocks.oreAluminum).setRegistryName(new ResourceLocation(TestMod.MODID, "aluminum_ore")));
-        registry.register(new ItemBlock(ModBlocks.oreNetherGold).setRegistryName(new ResourceLocation(TestMod.MODID, "nether_gold_ore")));
-        registry.register(new ItemBlock(ModBlocks.oreZephyrite).setRegistryName(new ResourceLocation(TestMod.MODID, "zephyrite_ore")));
+        registry.register(new ItemBlockOre(ModBlocks.oreAngel));
+        registry.register(new ItemBlockOre(ModBlocks.oreCopper));
+        registry.register(new ItemBlockOre(ModBlocks.oreAluminum));
+        registry.register(new ItemBlockOre(ModBlocks.oreNetherGold));
+        registry.register(new ItemBlockOre(ModBlocks.oreZephyrite));
 
     }
 
