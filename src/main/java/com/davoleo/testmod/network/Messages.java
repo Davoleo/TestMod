@@ -27,10 +27,12 @@ public class Messages {
 
         //Server-side (From Client 2 Server)
         INSTANCE.registerMessage(PacketToggleMode.Handler.class, PacketToggleMode.class, nextID(), Side.SERVER);
+        INSTANCE.registerMessage(PacketRequestUpdatePedestal.Handler.class, PacketRequestUpdatePedestal.class, nextID(), Side.SERVER);
 
         //Client-side (From Server 2 Client)
         INSTANCE.registerMessage(PacketSyncMachineState.Handler.class, PacketSyncMachineState.class, nextID(), Side.CLIENT);
         INSTANCE.registerMessage(PacketSendOmega.Handler.class, PacketSendOmega.class, nextID(), Side.CLIENT);
+        INSTANCE.registerMessage(PacketUpdatePedestal.Handler.class, PacketUpdatePedestal.class, nextID(), Side.CLIENT);
     }
 
 }

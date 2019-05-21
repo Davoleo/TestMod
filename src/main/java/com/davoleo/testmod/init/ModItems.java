@@ -4,6 +4,7 @@ import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
+import com.davoleo.testmod.block.pedestal.BlockPedestal;
 import com.davoleo.testmod.block.tank.BlockTank;
 import com.davoleo.testmod.item.ItemAngelIngot;
 import com.davoleo.testmod.item.ItemBlockOre;
@@ -44,6 +45,7 @@ public class ModItems {
         registry.register(new ItemBlock(ModBlocks.blockSuperChest).setRegistryName(BlockSuperChest.SUPERCHEST));
         registry.register(new ItemBlock(ModBlocks.blockSuperChestPart).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART));
         registry.register(new ItemBlock(ModBlocks.blockCopper).setRegistryName(new ResourceLocation(TestMod.MODID, "copper_block")));
+        registry.register(new ItemBlock(ModBlocks.blockPedestal).setRegistryName(BlockPedestal.PEDESTAL));
 
         //Items
         registry.register(angelIngot);

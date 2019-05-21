@@ -10,6 +10,8 @@ import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
 import com.davoleo.testmod.block.generator.TileGenerator;
+import com.davoleo.testmod.block.pedestal.BlockPedestal;
+import com.davoleo.testmod.block.pedestal.TileEntityPedestal;
 import com.davoleo.testmod.block.tank.BlockTank;
 import com.davoleo.testmod.block.tank.TileTank;
 import com.davoleo.testmod.memory.BlockPuzzle;
@@ -42,6 +44,7 @@ public class ModBlocks {
     public static BlockSuperChest blockSuperChest = new BlockSuperChest();
     public static BlockSuperChestPart blockSuperChestPart = new BlockSuperChestPart();
     public static BlockCopper blockCopper = new BlockCopper();
+    public static BlockPedestal blockPedestal = new BlockPedestal();
 
     //Ores
     public static BlockOre oreAngel = new BlockOre("angel_ore", new boolean[]{true, true, true}, 2);
@@ -74,6 +77,9 @@ public class ModBlocks {
         registry.register(blockSuperChestPart);
         GameRegistry.registerTileEntity(TileSuperChestPart.class, new ResourceLocation(TestMod.MODID, "superchest_part"));
 
+        registry.register(blockPedestal);
+        GameRegistry.registerTileEntity(TileEntityPedestal.class, new ResourceLocation(TestMod.MODID, "pedestal"));
+
         registry.register(blockFload);
         registry.register(blockCopper);
 
@@ -97,6 +103,7 @@ public class ModBlocks {
         oreAluminum.initModel();
         oreNetherGold.initModel();
         oreZephyrite.initModel();
+        blockPedestal.initModel();
     }
 
 }

@@ -43,7 +43,6 @@ public class ContainerGenerator extends Container implements IMachineStateContai
             }
 
         //Hotbar
-        // Slots for the hotbar
         for (int row = 0; row < 9; ++row)
         {
             int x = 10 + row * 18;
