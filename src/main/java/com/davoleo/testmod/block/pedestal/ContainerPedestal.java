@@ -40,22 +40,18 @@ public class ContainerPedestal extends Container {
     private void addPlayerSlots(IInventory playerInventory)
     {
         //Main Inventory Slots
-        for (int row = 0; row < 3; ++row)
+        for(int row = 0; row<3; row++)
         {
-            for (int col = 0; col < 9; ++col)
+            for (int col=0; col < 9; col++)
             {
-                int x = 10 + col * 18;
-                int y = row * 18 + 70;
-                this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, x, y));
+                addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, 8 + col* 18, 84 + row * 18));
             }
         }
 
         //Hotbar Slots
-        for (int row = 0; row < 9; ++row)
+        for (int col = 0; col < 9; col++)
         {
-            int x = 10 + row * 18;
-            int y = 58 + 70;
-            this.addSlotToContainer(new Slot(playerInventory, row, x, y));
+            addSlotToContainer(new Slot(playerInventory, col, 8+col*18, 142));
         }
     }
 
@@ -65,11 +61,49 @@ public class ContainerPedestal extends Container {
         return Utils.canInteractWithPlayer(playerIn);
     }
 
-    //TODO Implement shift-click method
+    //Stolen from nooby >:)
     @Nonnull
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
     {
-        return super.transferStackInSlot(playerIn, index);
+        Slot slot = this.inventorySlots.get(index);
+
+        if (slot == null || !slot.getHasStack()) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack original = slot.getStack().copy();
+        ItemStack itemstack = slot.getStack().copy();
+
+        // slot that was clicked on not empty?
+        int end = this.inventorySlots.size();
+
+        // Is it a slot in the main inventory? (aka not player inventory)
+        if (index < 5) {
+            // try to put it into the player inventory (if we have a player inventory)
+            if (!this.mergeItemStack(itemstack, 5, end, true)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        // Slot is in the player inventory (if it exists), transfer to main inventory
+        else if (!this.mergeItemStack(itemstack, 0, 5, false)) {
+            return ItemStack.EMPTY;
+        }
+
+        slot.onSlotChanged();
+
+        if (itemstack.getCount() == original.getCount()) {
+            return ItemStack.EMPTY;
+        }
+
+        // update slot we pulled from
+        slot.putStack(itemstack);
+        slot.onTake(playerIn, itemstack);
+
+        if (slot.getHasStack() && slot.getStack().isEmpty()) {
+            slot.putStack(ItemStack.EMPTY);
+        }
+
+        return original;
     }
 }

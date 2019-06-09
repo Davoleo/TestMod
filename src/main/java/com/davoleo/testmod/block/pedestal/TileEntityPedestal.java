@@ -3,6 +3,10 @@ package com.davoleo.testmod.block.pedestal;
 import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.network.PacketRequestUpdatePedestal;
 import com.davoleo.testmod.network.PacketUpdatePedestal;
+import com.davoleo.testmod.util.IGuiTileEntity;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -23,7 +27,7 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class TileEntityPedestal extends TileEntity {
+public class TileEntityPedestal extends TileEntity implements IGuiTileEntity {
 
     public long lastUpdateTick;
     public ItemStackHandler inventory = new ItemStackHandler(1) {
@@ -87,6 +91,18 @@ public class TileEntityPedestal extends TileEntity {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return (T) inventory;
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public Container createContainer(EntityPlayer player)
+    {
+        return new ContainerPedestal(player.inventory, this);
+    }
+
+    @Override
+    public GuiContainer createGui(EntityPlayer player)
+    {
+        return new GuiPedestal(createContainer(player));
     }
 }
 

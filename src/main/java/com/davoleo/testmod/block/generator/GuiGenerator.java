@@ -27,8 +27,8 @@ public class GuiGenerator extends GuiContainer {
     {
         super(container);
 
-        xSize = WIDTH;
-        ySize = HEIGHT;
+        this.xSize = WIDTH;
+        this.ySize = HEIGHT;
 
         this.tileEntity = tileEntity;
     }

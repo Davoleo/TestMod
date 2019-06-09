@@ -2,6 +2,7 @@ package com.davoleo.testmod.block.pedestal;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTEBase;
+import com.davoleo.testmod.config.PedestalConfig;
 import com.davoleo.testmod.util.Utils;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -63,18 +64,19 @@ public class BlockPedestal extends BlockTEBase implements ITileEntityProvider {
                 tile.markDirty();
             } else
             {
-                //GUI Pedestal
-               //playerIn.openGui(TestMod.instance, ModGuiHandler.PEDESTAL, world, pos.getX(), pos.getY(), pos.getZ());
-
-                //NO-GUI Pedestal
-                ItemStack stack = itemHandler.getStackInSlot(0);
-                if (!stack.isEmpty())
+                if (PedestalConfig.GUI)
+                    playerIn.openGui(TestMod.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                else
                 {
-                    String localized = Utils.localize(stack.getTranslationKey() + ".name");
-                    playerIn.sendMessage(new TextComponentString(stack.getCount() + "x " + localized));
-                } else
-                {
-                    playerIn.sendMessage(new TextComponentString("Il Pedestallo è vuoto"));
+                    //NO-GUI Pedestal
+                    ItemStack stack = itemHandler.getStackInSlot(0);
+                    if (!stack.isEmpty())
+                    {
+                        String localized = Utils.localize(stack.getTranslationKey() + ".name");
+                        playerIn.sendMessage(new TextComponentString(stack.getCount() + "x " + localized));
+                    }
+                    else
+                        playerIn.sendMessage(new TextComponentString("Il Pedestallo è vuoto"));
                 }
             }
         }
