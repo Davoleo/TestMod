@@ -30,6 +30,11 @@ item.testmod.angel_ingot.name=Angel Ingot
 item.testmod.copper_ingot.name=Copper Ingot
 item.testmod.fload_bucket.name=Fload Bucket
 item.testmod.wand.name=Wand
+item.testmod.copper_axe.name=Copper Axe
+item.testmod.copper_hoe.name=Copper Hoe
+item.testmod.copper_pickaxe.name=Copper Pickaxe
+item.testmod.copper_shovel.name=Copper Shovel
+item.testmod.copper_sword.name=Copper Sword
 
 #KeyBindings
 key.wandmode=Wand Mode
