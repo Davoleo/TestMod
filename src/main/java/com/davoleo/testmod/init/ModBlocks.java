@@ -4,6 +4,8 @@ import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockCopper;
 import com.davoleo.testmod.block.BlockFload;
 import com.davoleo.testmod.block.BlockOre;
+import com.davoleo.testmod.block.counter.BlockCounter;
+import com.davoleo.testmod.block.counter.TileEntityCounter;
 import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
 import com.davoleo.testmod.block.fload_creator.TileFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
@@ -45,6 +47,7 @@ public class ModBlocks {
     public static BlockSuperChestPart blockSuperChestPart = new BlockSuperChestPart();
     public static BlockCopper blockCopper = new BlockCopper();
     public static BlockPedestal blockPedestal = new BlockPedestal();
+    public static BlockCounter blockCounter = new BlockCounter();
 
     //Ores
     public static BlockOre oreAngel = new BlockOre("angel_ore", new boolean[]{true, true, true}, 2);
@@ -57,19 +60,19 @@ public class ModBlocks {
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
         registry.register(blockFastFurnace);
-        GameRegistry.registerTileEntity(TileFastFurnace.class, new ResourceLocation(TestMod.MODID, "fast_furnace"));
+        GameRegistry.registerTileEntity(TileFastFurnace.class,BlockFastFurnace.FAST_FURNACE);
 
         registry.register(blockGenerator);
-        GameRegistry.registerTileEntity(TileGenerator.class, new ResourceLocation(TestMod.MODID, "generator"));
+        GameRegistry.registerTileEntity(TileGenerator.class, BlockGenerator.GENERATOR);
 
         registry.register(blockFloadCreator);
-        GameRegistry.registerTileEntity(TileFloadCreator.class, new ResourceLocation(TestMod.MODID, "fload_creator"));
+        GameRegistry.registerTileEntity(TileFloadCreator.class, BlockFloadCreator.FLOAD_CREATOR);
 
         registry.register(blockPuzzle);
-        GameRegistry.registerTileEntity(TilePuzzle.class, new ResourceLocation(TestMod.MODID, "puzzle"));
+        GameRegistry.registerTileEntity(TilePuzzle.class, BlockPuzzle.PUZZLE);
 
         registry.register(blockTank);
-        GameRegistry.registerTileEntity(TileTank.class, new ResourceLocation(TestMod.MODID, "tank"));
+        GameRegistry.registerTileEntity(TileTank.class, BlockTank.TANK);
 
         registry.register(blockSuperChest);
         GameRegistry.registerTileEntity(TileSuperChest.class, new ResourceLocation(TestMod.MODID, "superchest"));
@@ -78,7 +81,10 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileSuperChestPart.class, new ResourceLocation(TestMod.MODID, "superchest_part"));
 
         registry.register(blockPedestal);
-        GameRegistry.registerTileEntity(TileEntityPedestal.class, new ResourceLocation(TestMod.MODID, "pedestal"));
+        GameRegistry.registerTileEntity(TileEntityPedestal.class, BlockPedestal.PEDESTAL);
+
+        registry.register(blockCounter);
+        GameRegistry.registerTileEntity(TileEntityCounter.class, BlockCounter.COUNTER);
 
         registry.register(blockFload);
         registry.register(blockCopper);

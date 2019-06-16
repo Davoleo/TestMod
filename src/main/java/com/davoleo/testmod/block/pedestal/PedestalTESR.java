@@ -26,7 +26,6 @@ public class PedestalTESR extends TileEntitySpecialRenderer<TileEntityPedestal> 
 
         if (!item.isEmpty())
         {
-            //TODO Adjust item rendering
             GlStateManager.enableRescaleNormal();
             GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
             GlStateManager.enableBlend();
@@ -34,7 +33,6 @@ public class PedestalTESR extends TileEntitySpecialRenderer<TileEntityPedestal> 
             GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_DST_ALPHA, 1, 0);
             GlStateManager.pushMatrix();
             double offset = Math.sin((te.getWorld().getTotalWorldTime() - te.lastUpdateTick + partialTicks) / 8 ) / 4.0;
-            System.out.println(offset);
             GlStateManager.translate(x + 0.5, y + 1.25 + (offset/2), z + 0.5);
             GlStateManager.rotate((te.getWorld().getTotalWorldTime() + partialTicks) * 4, 0, 1, 0);
 

@@ -1,6 +1,7 @@
 package com.davoleo.testmod.init;
 
 import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.block.counter.BlockCounter;
 import com.davoleo.testmod.block.fload_creator.BlockFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
@@ -46,6 +47,7 @@ public class ModItems {
         registry.register(new ItemBlock(ModBlocks.blockSuperChestPart).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART));
         registry.register(new ItemBlock(ModBlocks.blockCopper).setRegistryName(new ResourceLocation(TestMod.MODID, "copper_block")));
         registry.register(new ItemBlock(ModBlocks.blockPedestal).setRegistryName(BlockPedestal.PEDESTAL));
+        registry.register(new ItemBlock(ModBlocks.blockCounter).setRegistryName(BlockCounter.COUNTER));
 
         //Items
         registry.register(angelIngot);
