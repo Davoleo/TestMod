@@ -34,6 +34,7 @@ public class ModItems {
     public static ItemWand wand = new ItemWand();
     public static ItemCorn corn = new ItemCorn();
     public static ItemCornSeeds cornSeeds = new ItemCornSeeds();
+    public static ItemPANINAZZO paninazzo = new ItemPANINAZZO();
 
     public static ItemCopperAxe copperAxe = new ItemCopperAxe();
     public static ItemCopperHoe copperHoe = new ItemCopperHoe();
@@ -61,6 +62,7 @@ public class ModItems {
         registry.register(copperIngot);
         registry.register(wand);
         registry.registerAll(corn, cornSeeds);
+        registry.register(paninazzo);
         registry.registerAll(copperAxe, copperHoe, copperPickaxe, copperShovel, copperSword);
 
         //Ores
@@ -80,6 +82,7 @@ public class ModItems {
         wand.initModel();
         corn.initModel();
         cornSeeds.initModel();
+        paninazzo.initModel();
 
         copperAxe.initModel();
         copperHoe.initModel();

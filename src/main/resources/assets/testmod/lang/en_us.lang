@@ -38,6 +38,7 @@ item.testmod.copper_shovel.name=Copper Shovel
 item.testmod.copper_sword.name=Copper Sword
 item.testmod.corn.name=Corn
 item.testmod.corn_seeds.name=Corn Seeds
+item.testmod.paninazzo.name=ER PANINAZZO
 
 #KeyBindings
 key.wandmode=Wand Mode
