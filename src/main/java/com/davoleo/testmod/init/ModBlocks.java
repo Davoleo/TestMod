@@ -2,6 +2,7 @@ package com.davoleo.testmod.init;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockCopper;
+import com.davoleo.testmod.block.BlockCornCrops;
 import com.davoleo.testmod.block.BlockFload;
 import com.davoleo.testmod.block.BlockOre;
 import com.davoleo.testmod.block.counter.BlockCounter;
@@ -48,6 +49,7 @@ public class ModBlocks {
     public static BlockCopper blockCopper = new BlockCopper();
     public static BlockPedestal blockPedestal = new BlockPedestal();
     public static BlockCounter blockCounter = new BlockCounter();
+    public static BlockCornCrops cornCrops = new BlockCornCrops();
 
     //Ores
     public static BlockOre oreAngel = new BlockOre("angel_ore", new boolean[]{true, true, true}, 2);
@@ -90,7 +92,7 @@ public class ModBlocks {
         registry.register(blockCopper);
 
         //Ores
-        registry.registerAll(oreAngel, oreCopper, oreAluminum, oreNetherGold, oreZephyrite);
+        registry.registerAll(oreAngel, oreCopper, oreAluminum, oreNetherGold, oreZephyrite, cornCrops);
     }
 
     public static void initModels()

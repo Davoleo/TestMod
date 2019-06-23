@@ -25,7 +25,6 @@ public class ModEntities {
     {
         int id = 1;
 
-        //noinspection UnusedAssignment
         EntityRegistry.registerModEntity(new ResourceLocation(TestMod.MODID, "testmod_guard"), EntityGuard.class, "testmod_guard",
                 id++, TestMod.instance, 64, 3, true, 0x222222, 0x555555);
         EntityRegistry.registerModEntity(new ResourceLocation(TestMod.MODID, "testmod_sphere"), EntitySphere.class, "testmod_sphere",

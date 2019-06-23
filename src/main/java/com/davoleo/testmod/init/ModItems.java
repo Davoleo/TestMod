@@ -7,10 +7,7 @@ import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
 import com.davoleo.testmod.block.pedestal.BlockPedestal;
 import com.davoleo.testmod.block.tank.BlockTank;
-import com.davoleo.testmod.item.ItemAngelIngot;
-import com.davoleo.testmod.item.ItemBlockOre;
-import com.davoleo.testmod.item.ItemCopperIngot;
-import com.davoleo.testmod.item.ItemWand;
+import com.davoleo.testmod.item.*;
 import com.davoleo.testmod.item.tool.*;
 import com.davoleo.testmod.memory.BlockPuzzle;
 import com.davoleo.testmod.superchest.BlockSuperChest;
@@ -35,6 +32,8 @@ public class ModItems {
     public static ItemAngelIngot angelIngot = new ItemAngelIngot();
     public static ItemCopperIngot copperIngot = new ItemCopperIngot();
     public static ItemWand wand = new ItemWand();
+    public static ItemCorn corn = new ItemCorn();
+    public static ItemCornSeeds cornSeeds = new ItemCornSeeds();
 
     public static ItemCopperAxe copperAxe = new ItemCopperAxe();
     public static ItemCopperHoe copperHoe = new ItemCopperHoe();
@@ -61,6 +60,7 @@ public class ModItems {
         registry.register(angelIngot);
         registry.register(copperIngot);
         registry.register(wand);
+        registry.registerAll(corn, cornSeeds);
         registry.registerAll(copperAxe, copperHoe, copperPickaxe, copperShovel, copperSword);
 
         //Ores
@@ -78,6 +78,8 @@ public class ModItems {
         angelIngot.initModel();
         copperIngot.initModel();
         wand.initModel();
+        corn.initModel();
+        cornSeeds.initModel();
 
         copperAxe.initModel();
         copperHoe.initModel();
