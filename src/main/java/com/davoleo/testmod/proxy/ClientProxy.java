@@ -1,15 +1,27 @@
 package com.davoleo.testmod.proxy;
 
 import com.davoleo.testmod.TestMod;
-import com.davoleo.testmod.block.pedestal.TESRPedestal;
-import com.davoleo.testmod.block.pedestal.TileEntityPedestal;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
+import com.davoleo.testmod.init.ModBlocks;
+import com.davoleo.testmod.init.ModEntities;
+import com.davoleo.testmod.init.ModItems;
+import com.davoleo.testmod.input.KeyBindings;
+import com.davoleo.testmod.input.KeyInputHandler;
+import com.davoleo.testmod.render.OverlayRenderer;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.ListenableFuture;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.animation.ITimeValue;
+import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 /*************************************************
@@ -22,30 +34,45 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
-
     @Override
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        super.preInit(event);
-    }
+    public void preInit(FMLPreInitializationEvent e) {
+        super.preInit(e);
 
-    //Implementato poiché client side
-    //Registrazione dei rendering degli oggetti
-    @Override
-    public void registerItemRenderer(Item item, int meta, String id)
-    {
-        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), id));
+        OBJLoader.INSTANCE.addDomain(TestMod.MODID);
+        MinecraftForge.EVENT_BUS.register(OverlayRenderer.instance);
     }
 
     @Override
-    public void registerVariantRenderer(Item item, int meta, String fileName, String id)
+    public void init(FMLInitializationEvent e)
     {
-        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(new ResourceLocation(TestMod.MODID, fileName), id));
+        super.init(e);
+        MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
+        KeyBindings.init();
+    }
+
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        ModBlocks.initModels();
+        ModItems.initModels();
+        ModEntities.initModels();
     }
 
     @Override
-    public void registerRenderers()
+    public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)
     {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPedestal.class, new TESRPedestal());
+        return ModelLoaderRegistry.loadASM(location, parameters);
+    }
+
+    @Override
+    public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)
+    {
+        return Minecraft.getMinecraft().addScheduledTask(runnableToSchedule);
+    }
+
+    @Override
+    public EntityPlayer getClientPlayer()
+    {
+        return Minecraft.getMinecraft().player;
     }
 }
+

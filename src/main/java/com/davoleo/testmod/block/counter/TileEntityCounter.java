@@ -3,18 +3,21 @@ package com.davoleo.testmod.block.counter;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
+import javax.annotation.Nonnull;
+
 /*************************************************
  * Author: Davoleo
- * Date: 09/08/2018
- * Hour: 00.29
+ * Date / Hour: 16/06/2019 / 10:36
+ * Class: TileEntityCounter
  * Project: Test_mod
- * Copyright - © - Davoleo - 2018
+ * Copyright - © - Davoleo - 2019
  **************************************************/
 
 public class TileEntityCounter extends TileEntity {
 
     private int count;
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
@@ -29,34 +32,35 @@ public class TileEntityCounter extends TileEntity {
         super.readFromNBT(compound);
     }
 
-    public int getCount()
+    int getCount()
     {
         return count;
     }
 
-    public void incrementCount()
+    void incrementCount()
     {
         count++;
         markDirty();
     }
 
-
-    public void decrementCount()
+    void decrementCount()
     {
         count--;
         markDirty();
     }
 
-    public void incrementCountEx()
+
+    void incrementCountEx()
     {
-        count = count + 10;
+        count += 10;
         markDirty();
     }
 
-    public void decrementCountEx()
+    void decrementCountEx()
     {
-        count = count - 10;
+        count -= 10;
         markDirty();
     }
+
 
 }

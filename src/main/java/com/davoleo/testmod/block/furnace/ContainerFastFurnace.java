@@ -1,7 +1,13 @@
 package com.davoleo.testmod.block.furnace;
 
+import com.davoleo.testmod.config.FastFurnaceConfig;
+import com.davoleo.testmod.network.Messages;
+import com.davoleo.testmod.network.PacketSyncMachineState;
+import com.davoleo.testmod.util.IMachineStateContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -19,9 +25,11 @@ import javax.annotation.Nonnull;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class ContainerFastFurnace extends Container {
+public class ContainerFastFurnace extends Container implements IMachineStateContainer {
 
     private TileFastFurnace te;
+
+    private static final int PROGRESS_ID = 0;
 
     public ContainerFastFurnace(IInventory playerInventory, TileFastFurnace te)
     {
@@ -38,16 +46,16 @@ public class ContainerFastFurnace extends Container {
         {
             for (int col = 0; col < 9; ++col)
             {
-                int x = 9 + col * 18;
+                int x = 10 + col * 18;
                 int y = row * 18 + 70;
-                this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 10, x, y));
+                this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, x, y));
             }
         }
 
         //Hotbar Slots
         for (int row = 0; row < 9; ++row)
         {
-            int x = 9 + row * 18;
+            int x = 10 + row * 18;
             int y = 58 + 70;
             this.addSlotToContainer(new Slot(playerInventory, row, x, y));
         }
@@ -61,19 +69,38 @@ public class ContainerFastFurnace extends Container {
         int slotIndex = 0;
 
         //inputs
-        int x = 9;
-        int y = 39;
+        int x = 10;
+        int y = 40;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y));
 
         //outputs
-        x = 117;
+        x = 118;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
         addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
-        addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y));
+        addSlotToContainer(new SlotItemHandler(handler, slotIndex, x, y));
 
 
+    }
+
+    @Override
+    public void detectAndSendChanges()
+    {
+        super.detectAndSendChanges();
+        if (!te.getWorld().isRemote) {
+            if (te.getEnergy() != te.getClientEnergy() || te.getProgress() != te.getClientProgress()) {
+                te.setClientEnergy(te.getEnergy());
+                te.setClientProgress(te.getProgress());
+                for (IContainerListener listener : listeners) {
+                    if (listener instanceof EntityPlayerMP) {
+                        EntityPlayerMP player = (EntityPlayerMP) listener;
+                        int progressPercentage = 100 - te.getProgress() * 100 / FastFurnaceConfig.MAX_PROGRESS;
+                        Messages.INSTANCE.sendTo(new PacketSyncMachineState(te.getEnergy(), progressPercentage), player);
+                    }
+                }
+            }
+        }
     }
 
     @Nonnull
@@ -111,5 +138,12 @@ public class ContainerFastFurnace extends Container {
     public boolean canInteractWith(@Nonnull EntityPlayer playerIn)
     {
         return te.canInteractWith(playerIn);
+    }
+
+    @Override
+    public void sync(int energy, int progress)
+    {
+        te.setClientEnergy(energy);
+        te.setClientProgress(progress);
     }
 }

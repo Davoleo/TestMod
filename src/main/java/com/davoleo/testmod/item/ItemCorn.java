@@ -1,16 +1,18 @@
 package com.davoleo.testmod.item;
 
 import com.davoleo.testmod.TestMod;
-import net.minecraft.item.Item;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemFood;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*************************************************
  * Author: Davoleo
- * Date: 06/08/2018
- * Hour: 22.11
+ * Date / Hour: 23/06/2019 / 12:24
+ * Class: ItemCorn
  * Project: Test_mod
- * Copyright - © - Davoleo - 2018
+ * Copyright - © - Davoleo - 2019
  **************************************************/
 
 public class ItemCorn extends ItemFood {
@@ -18,20 +20,15 @@ public class ItemCorn extends ItemFood {
     public ItemCorn()
     {
         super(3, 0.6F, false);
-        setTranslationKey("corn");
-        setRegistryName("corn");
-        setCreativeTab(TestMod.creativeTab);
-
+        setTranslationKey(TestMod.MODID + ".corn");
+        setRegistryName(TestMod.MODID, "corn");
+        setCreativeTab(TestMod.testTab);
     }
 
-    public void registerItemModel(Item item)
+    @SideOnly(Side.CLIENT)
+    public void initModel()
     {
-        TestMod.proxy.registerItemRenderer(this,0, "corn");
+        assert getRegistryName() != null;
+        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
-
-    public void initOreDict()
-    {
-        OreDictionary.registerOre("cropCorn", this);
-    }
-
 }

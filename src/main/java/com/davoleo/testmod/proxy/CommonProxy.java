@@ -1,11 +1,45 @@
 package com.davoleo.testmod.proxy;
 
-import net.minecraft.client.resources.I18n;
+import com.davoleo.testmod.TestMod;
+import com.davoleo.testmod.block.generator.DamageTracker;
+import com.davoleo.testmod.init.*;
+import com.davoleo.testmod.network.Messages;
+import com.davoleo.testmod.omega.OmegaTickHandler;
+import com.davoleo.testmod.omega.player.PlayerOmega;
+import com.davoleo.testmod.omega.player.PlayerPropertyEvents;
+import com.davoleo.testmod.recipe.OreDictHandler;
+import com.davoleo.testmod.world.OreGenerator;
+import com.davoleo.testmod.world.WorldTickHandler;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.ListenableFuture;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.animation.ITimeValue;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.model.animation.IAnimationStateMachine;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import javax.annotation.Nullable;
+
+import static com.davoleo.testmod.TestMod.MODID;
 
 /*************************************************
  * Author: Davoleo
@@ -18,34 +52,78 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod.EventBusSubscriber
 public class CommonProxy {
 
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent e) {
+        Messages.registerMessages("testmod");
+        GameRegistry.registerWorldGenerator(OreGenerator.instance, 5);
+        MinecraftForge.EVENT_BUS.register(OreGenerator.instance);
+        MinecraftForge.EVENT_BUS.register(OmegaTickHandler.instance);
+        MinecraftForge.EVENT_BUS.register(PlayerPropertyEvents.instance);
+
+        CapabilityManager.INSTANCE.register(PlayerOmega.class, new Capability.IStorage<PlayerOmega>() {
+            @Nullable
+            @Override
+            public NBTBase writeNBT(Capability<PlayerOmega> capability, PlayerOmega playerOmega, EnumFacing enumFacing)
+            {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void readNBT(Capability<PlayerOmega> capability, PlayerOmega playerOmega, EnumFacing enumFacing, NBTBase nbtBase)
+            {
+                throw new UnsupportedOperationException();
+            }
+        }, () -> null);
+
+        ModEntities.init();
+        ModFluids.init();
+    }
+
+    public void init(FMLInitializationEvent e) {
+        NetworkRegistry.INSTANCE.registerGuiHandler(TestMod.instance, new GuiHandler());
+        //Oredict initialization
+        OreDictHandler.initOreDictEntries();
+
+        MinecraftForge.EVENT_BUS.register(WorldTickHandler.instance);
+        MinecraftForge.EVENT_BUS.register(DamageTracker.instance);
+    }
+
+    public void postInit(FMLPostInitializationEvent e) {
+        GameRegistry.addSmelting(ModBlocks.oreAngel, new ItemStack(ModItems.angelIngot, 1), 1F);
+        GameRegistry.addSmelting(ModBlocks.oreCopper, new ItemStack(ModItems.copperIngot, 1), 1F);
+        GameRegistry.addSmelting(ModBlocks.oreNetherGold, new ItemStack(Items.GOLD_INGOT, 1), 1F);
 
     }
 
-    public void init(FMLInitializationEvent event)
-    {
-
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        ModBlocks.registerBlocks(event.getRegistry());
     }
 
-    public void postInit(FMLPostInitializationEvent event)
-    {
-
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+        ModItems.registerItems(event.getRegistry());
     }
 
-    public String localize(String unlocalized, Object... args)
+    @Nullable
+    public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)
     {
-        return I18n.format(unlocalized, args);
+        return null;
     }
 
-    //Vuoto perché dal lato server
-    public void registerItemRenderer(Item item, int meta, String id)
-    {}
+    @SubscribeEvent
+    public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
+    {
+        if (event.getModID().equals(MODID))
+            ConfigManager.sync(MODID, Config.Type.INSTANCE);
+    }
 
-    public void registerVariantRenderer(Item item, int meta, String fileName, String id)
-    {}
+    public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)
+    {
+        throw new IllegalStateException("This should only be called Client-Side");
+    }
 
-    public void registerRenderers()
-    {}
-
+    public EntityPlayer getClientPlayer()
+    {
+        throw new IllegalStateException("This should only be called Client-Side");
+    }
 }

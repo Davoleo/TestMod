@@ -3,11 +3,12 @@
   "defaults": {
     "model": "cube_all",
     "textures": {
-      "all": "blocks/gold_block"
+      "all": "blocks/observer_back"
     }
   },
   "variants": {
     "normal": [{}],
     "inventory": [{}]
-  }
+  },
+  "_comment": "TODO Fix itemblock texture | items/clock"
 }

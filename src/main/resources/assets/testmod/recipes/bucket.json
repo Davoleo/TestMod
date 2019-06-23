@@ -7,7 +7,7 @@
   "key":{
     "I":{
       "type": "forge:ore_dict",
-        "ore":"ingotCopper"
+      "ore":"ingotCopper"
     }
   },
   "result":{

@@ -12,49 +12,48 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /*************************************************
  * Author: Davoleo
- * Date: 13/08/2018
- * Hour: 00.19
+ * Date / Hour: 21/05/2019 / 16:36
+ * Class: PacketUpdatePedestal
  * Project: Test_mod
- * Copyright - © - Davoleo - 2018
+ * Copyright - © - Davoleo - 2019
  **************************************************/
 
 public class PacketUpdatePedestal implements IMessage {
 
     private BlockPos pos;
-    private ItemStack stack;
-    private long lastChangeTime;
+    private ItemStack item;
+    private long lastUpdateTick;
 
-    public PacketUpdatePedestal(BlockPos pos, ItemStack stack, long lastChangeTime)
+    @SuppressWarnings("unused")
+    public PacketUpdatePedestal()
+    { }
+
+    public PacketUpdatePedestal(BlockPos pos, ItemStack item, long lastUpdateTick)
     {
         this.pos = pos;
-        this.stack = stack;
-        this.lastChangeTime = lastChangeTime;
+        this.item = item;
+        this.lastUpdateTick = lastUpdateTick;
     }
 
     public PacketUpdatePedestal(TileEntityPedestal te)
     {
-        this(te.getPos(), te.inventory.getStackInSlot(0), te.lastChangeTime);
-    }
-
-    public PacketUpdatePedestal()
-    {
-
-    }
-
-    @Override
-    public void toBytes(ByteBuf buf)
-    {
-        buf.writeLong(pos.toLong());
-        ByteBufUtils.writeItemStack(buf, stack);
-        buf.writeLong(lastChangeTime);
+        this(te.getPos(), te.inventory.getStackInSlot(0), te.lastUpdateTick);
     }
 
     @Override
     public void fromBytes(ByteBuf buf)
     {
         pos = BlockPos.fromLong(buf.readLong());
-        stack = ByteBufUtils.readItemStack(buf);
-        lastChangeTime = buf.readLong();
+        item = ByteBufUtils.readItemStack(buf);
+        lastUpdateTick = buf.readLong();
+    }
+
+    @Override
+    public void toBytes(ByteBuf buf)
+    {
+        buf.writeLong(pos.toLong());
+        ByteBufUtils.writeItemStack(buf, item);
+        buf.writeLong(lastUpdateTick);
     }
 
     public static class Handler implements IMessageHandler<PacketUpdatePedestal, IMessage> {
@@ -62,13 +61,13 @@ public class PacketUpdatePedestal implements IMessage {
         @Override
         public IMessage onMessage(PacketUpdatePedestal message, MessageContext ctx)
         {
+            //Lambda Runnable to execute client update tasks
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 TileEntityPedestal te = (TileEntityPedestal) Minecraft.getMinecraft().world.getTileEntity(message.pos);
-                te.inventory.setStackInSlot(0, message.stack);
-                te.lastChangeTime = message.lastChangeTime;
+                te.inventory.setStackInSlot(0, message.item);
+                te.lastUpdateTick = message.lastUpdateTick;
             });
             return null;
         }
-
     }
 }

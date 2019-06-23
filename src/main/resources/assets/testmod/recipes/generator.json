@@ -1,0 +1,28 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern":[
+    " D ",
+    "GIE",
+    "AAA"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "G": {
+      "item": "minecraft:gold_block"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "E": {
+      "item": "minecraft:emerald_block"
+    },
+    "A": {
+      "item": "testmod:angel_ingot"
+    }
+  },
+  "result":{
+    "item": "testmod:generator"
+  }
+}

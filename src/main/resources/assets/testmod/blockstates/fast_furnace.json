@@ -3,13 +3,13 @@
   "defaults": {
     "model": "cube",
     "textures": {
+      "particle": "testmod:blocks/ff_front",
       "north": "testmod:blocks/ff_front",
       "south": "testmod:blocks/ff_side",
       "west": "testmod:blocks/ff_side",
       "east": "testmod:blocks/ff_side",
       "up": "testmod:blocks/ff_top",
       "down": "testmod:blocks/ff_bottom"
-
     }
   },
   "variants": {
@@ -22,6 +22,11 @@
       "east": {"y": 90},
       "up": {"x": -90},
       "down": {"x": 90}
+    },
+    "state": {
+      "idle": {},
+      "working": {"textures": {"north": "testmod:blocks/ff_front_working"}},
+      "no_power": {"textures": {"north": "testmod:blocks/ff_front_no_power"}}
     }
   }
 }

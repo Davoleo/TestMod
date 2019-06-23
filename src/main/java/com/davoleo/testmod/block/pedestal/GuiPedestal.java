@@ -1,50 +1,46 @@
 package com.davoleo.testmod.block.pedestal;
 
 import com.davoleo.testmod.TestMod;
-import com.davoleo.testmod.block.ModBlocks;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
 /*************************************************
  * Author: Davoleo
- * Date: 12/08/2018
- * Hour: 18.58
+ * Date / Hour: 09/06/2019 / 18:59
+ * Class: GuiPedestal
  * Project: Test_mod
- * Copyright - © - Davoleo - 2018
+ * Copyright - © - Davoleo - 2019
  **************************************************/
 
 public class GuiPedestal extends GuiContainer {
 
-    private InventoryPlayer playerInv;
+    public static final int WIDTH = 177;
+    public static final int HEIGHT = 167;
 
-    public GuiPedestal(Container container, InventoryPlayer playerInv)
+    private static final ResourceLocation background = new ResourceLocation(TestMod.MODID, "textures/gui/pedestal.png");
+
+
+    public GuiPedestal(Container containerPedestal)
     {
-        super(container);
-        this.playerInv = playerInv;
+        super(containerPedestal);
+
+        this.xSize = WIDTH;
+        this.ySize = HEIGHT;
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        GlStateManager.color(4,4,4,100);
-        mc.getTextureManager().bindTexture(BG_TEXTURE);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        drawTexturedModalRect(x,y,0,0,xSize,ySize);
+        mc.getTextureManager().bindTexture(background);
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        String name = I18n.format(ModBlocks.pedestal.getTranslationKey() + ".name");
-        fontRenderer.drawString(name, xSize/2 - fontRenderer.getStringWidth(name)/2,6, 0x404040);
-        fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8 ,ySize- 94, 0x404040);
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
-
-    public static final ResourceLocation BG_TEXTURE = new ResourceLocation(TestMod.MODID, "textures/gui/pedestal.png");
-
 }

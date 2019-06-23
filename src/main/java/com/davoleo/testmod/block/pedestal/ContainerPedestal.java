@@ -1,93 +1,109 @@
 package com.davoleo.testmod.block.pedestal;
 
+import com.davoleo.testmod.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
+
+import javax.annotation.Nonnull;
 
 /*************************************************
  * Author: Davoleo
- * Date: 12/08/2018
- * Hour: 18.19
+ * Date / Hour: 21/05/2019 / 17:16
+ * Class: ContainerPedestal
  * Project: Test_mod
- * Copyright - © - Davoleo - 2018
+ * Copyright - © - Davoleo - 2019
  **************************************************/
 
 public class ContainerPedestal extends Container {
 
-   //General shift-click method by shadowfacts
-
-    /*@Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = inventorySlots.get(index);
-
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
-
-            int containerSlots = inventorySlots.size() - player.inventory.mainInventory.size();
-
-            if (index < containerSlots) {
-                if (!this.mergeItemStack(itemstack1, containerSlots, inventorySlots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.mergeItemStack(itemstack1, 0, containerSlots, false)) {
-                return ItemStack.EMPTY;
-            }
-
-            if (itemstack1.getCount() == 0) {
-                slot.putStack(ItemStack.EMPTY);
-            } else {
-                slot.onSlotChanged();
-            }
-
-            if (itemstack1.getCount() == itemstack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(player, itemstack1);
-        }
-
-        return itemstack;
-    }
-
-}*/
-
-
-    public ContainerPedestal(InventoryPlayer playerInv, final TileEntityPedestal pedestal)
+    public ContainerPedestal(IInventory playerInventory, final TileEntityPedestal te)
     {
-        IItemHandler inventory = pedestal.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
-        addSlotToContainer(new SlotItemHandler(inventory, 0, 80, 35)
+        //Add player slots
+        addPlayerSlots(playerInventory);
+
+        //Add pedestal inventory slot
+        addSlotToContainer(new SlotItemHandler(te.inventory, 0, 80, 35)
         {
             @Override
             public void onSlotChanged()
             {
-                pedestal.markDirty();
+                te.markDirty();
             }
         });
 
-        for(int i = 0; i<3; i++)
+    }
+
+    private void addPlayerSlots(IInventory playerInventory)
+    {
+        //Main Inventory Slots
+        for(int row = 0; row<3; row++)
         {
-            for (int j=0; j < 9; j++)
+            for (int col=0; col < 9; col++)
             {
-                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j* 18, 84 + i * 18));
+                addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, 8 + col* 18, 84 + row * 18));
             }
         }
 
-        for (int k = 0; k<9; k++)
+        //Hotbar Slots
+        for (int col = 0; col < 9; col++)
         {
-            addSlotToContainer(new Slot(playerInv, k, 8+k*18, 142));
+            addSlotToContainer(new Slot(playerInventory, col, 8+col*18, 142));
         }
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player)
+    public boolean canInteractWith(@Nonnull EntityPlayer playerIn)
     {
-        return true;
+        return Utils.canInteractWithPlayer(playerIn);
     }
 
+    //Stolen from nooby >:)
+    @Nonnull
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
+    {
+        Slot slot = this.inventorySlots.get(index);
+
+        if (slot == null || !slot.getHasStack()) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack original = slot.getStack().copy();
+        ItemStack itemstack = slot.getStack().copy();
+
+        // slot that was clicked on not empty?
+        int end = this.inventorySlots.size();
+
+        // Is it a slot in the main inventory? (aka not player inventory)
+        if (index < 5) {
+            // try to put it into the player inventory (if we have a player inventory)
+            if (!this.mergeItemStack(itemstack, 5, end, true)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        // Slot is in the player inventory (if it exists), transfer to main inventory
+        else if (!this.mergeItemStack(itemstack, 0, 5, false)) {
+            return ItemStack.EMPTY;
+        }
+
+        slot.onSlotChanged();
+
+        if (itemstack.getCount() == original.getCount()) {
+            return ItemStack.EMPTY;
+        }
+
+        // update slot we pulled from
+        slot.putStack(itemstack);
+        slot.onTake(playerIn, itemstack);
+
+        if (slot.getHasStack() && slot.getStack().isEmpty()) {
+            slot.putStack(ItemStack.EMPTY);
+        }
+
+        return original;
+    }
 }
