@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern":[
+    "WWW",
+    "WCW",
+    "WWW"
+  ],
+  "key": {
+    "C": {
+      "item": "testmod:superchest_part"
+    },
+    "W": {
+      "item": "minecraft:planks",
+      "data": 0
+    }
+  },
+  "result":{
+    "item": "testmod:superchest"
+  }
+}
