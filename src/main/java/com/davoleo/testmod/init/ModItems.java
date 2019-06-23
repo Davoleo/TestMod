@@ -12,6 +12,7 @@ import com.davoleo.testmod.item.tool.*;
 import com.davoleo.testmod.memory.BlockPuzzle;
 import com.davoleo.testmod.superchest.BlockSuperChest;
 import com.davoleo.testmod.superchest.BlockSuperChestPart;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -42,6 +43,11 @@ public class ModItems {
     public static ItemCopperShovel copperShovel = new ItemCopperShovel();
     public static ItemCopperSword copperSword = new ItemCopperSword();
 
+    public static ItemArmor copperHelmet = new ItemArmor(TestMod.COPPER_ARMOR_MATERIAL, EntityEquipmentSlot.HEAD, "copper_helmet");
+    public static ItemArmor copperChestplate = new ItemArmor(TestMod.COPPER_ARMOR_MATERIAL, EntityEquipmentSlot.CHEST, "copper_chestplate");
+    public static ItemArmor copperLeggings = new ItemArmor(TestMod.COPPER_ARMOR_MATERIAL, EntityEquipmentSlot.LEGS, "copper_leggings");
+    public static ItemArmor copperBoots = new ItemArmor(TestMod.COPPER_ARMOR_MATERIAL, EntityEquipmentSlot.FEET, "copper_boots");
+
 
     public static void registerItems(IForgeRegistry<Item> registry)
     {
@@ -64,6 +70,7 @@ public class ModItems {
         registry.registerAll(corn, cornSeeds);
         registry.register(paninazzo);
         registry.registerAll(copperAxe, copperHoe, copperPickaxe, copperShovel, copperSword);
+        registry.registerAll(copperHelmet, copperChestplate, copperLeggings, copperBoots);
 
         //Ores
         registry.register(new ItemBlockOre(ModBlocks.oreAngel));
@@ -89,6 +96,11 @@ public class ModItems {
         copperPickaxe.initModel();
         copperShovel.initModel();
         copperSword.initModel();
+
+        copperHelmet.initModel();
+        copperChestplate.initModel();
+        copperLeggings.initModel();
+        copperBoots.initModel();
     }
 
 }

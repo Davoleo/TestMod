@@ -39,6 +39,10 @@ item.testmod.copper_sword.name=Copper Sword
 item.testmod.corn.name=Corn
 item.testmod.corn_seeds.name=Corn Seeds
 item.testmod.paninazzo.name=ER PANINAZZO
+item.testmod.copper_helmet.name=Copper Helmet
+item.testmod.copper_chestplate.name=Copper Chestplate
+item.testmod.copper_leggings.name=Copper Leggings
+item.testmod.copper_boots.name=Copper Boots
 
 #KeyBindings
 key.wandmode=Wand Mode
