@@ -1,7 +1,7 @@
 package com.davoleo.testmod.config;
 
-import com.davoleo.testmod.TestMod;
-import net.minecraftforge.common.config.Config;
+//import com.davoleo.testmod.TestMod;
+//import net.minecraftforge.common.config.Config;
 
 /*************************************************
  * Author: Davoleo
@@ -11,10 +11,10 @@ import net.minecraftforge.common.config.Config;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-@Config(modid = TestMod.MODID, category = "pedestal")
+//@Config(modid = TestMod.MODID, category = "pedestal")
 public class PedestalConfig {
 
-    @Config.Comment("When set to false the pedestal has no GUI")
+//    @Config.Comment("When set to false the pedestal has no GUI")
     public static boolean GUI = true;
 
 }

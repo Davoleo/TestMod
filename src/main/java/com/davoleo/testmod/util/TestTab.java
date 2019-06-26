@@ -1,7 +1,7 @@
 package com.davoleo.testmod.util;
 
 import com.davoleo.testmod.init.ModBlocks;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class TestTab extends CreativeTabs {
+public class TestTab extends ItemGroup {
 
     public TestTab()
     {

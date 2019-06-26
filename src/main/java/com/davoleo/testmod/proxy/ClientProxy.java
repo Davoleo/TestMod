@@ -7,22 +7,11 @@ import com.davoleo.testmod.init.ModItems;
 import com.davoleo.testmod.input.KeyBindings;
 import com.davoleo.testmod.input.KeyInputHandler;
 import com.davoleo.testmod.render.OverlayRenderer;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.util.concurrent.ListenableFuture;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.animation.ITimeValue;
-import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /*************************************************
  * Author: Davoleo
@@ -32,47 +21,32 @@ import net.minecraftforge.fml.relauncher.Side;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-@Mod.EventBusSubscriber(Side.CLIENT)
-public class ClientProxy extends CommonProxy {
-    @Override
-    public void preInit(FMLPreInitializationEvent e) {
-        super.preInit(e);
+@Mod.EventBusSubscriber(Dist.CLIENT)
+public class ClientProxy implements IProxy {
 
+    @Override
+    public void setup(FMLCommonSetupEvent event)
+    {
+        //Old PreInit
         OBJLoader.INSTANCE.addDomain(TestMod.MODID);
         MinecraftForge.EVENT_BUS.register(OverlayRenderer.instance);
-    }
 
-    @Override
-    public void init(FMLInitializationEvent e)
-    {
-        super.init(e);
+        //Old Init
         MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
         KeyBindings.init();
-    }
 
-    @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
+        //MEybe not needed anymore
         ModBlocks.initModels();
         ModItems.initModels();
         ModEntities.initModels();
-    }
 
-    @Override
-    public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)
-    {
-        return ModelLoaderRegistry.loadASM(location, parameters);
-    }
 
-    @Override
-    public ListenableFuture<Object> addScheduledTaskClient(Runnable runnableToSchedule)
-    {
-        return Minecraft.getMinecraft().addScheduledTask(runnableToSchedule);
     }
-
-    @Override
-    public EntityPlayer getClientPlayer()
-    {
-        return Minecraft.getMinecraft().player;
-    }
+//      TODO 1.13 Port
+//    @Override
+//    public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)
+//    {
+//        return ModelLoaderRegistry.loadASM(location, parameters);
+//    }
 }
 

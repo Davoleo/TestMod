@@ -1,15 +1,15 @@
 package com.davoleo.testmod.block;
 
-import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,18 +18,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /*************************************************
@@ -46,8 +41,9 @@ public class BlockTEBase extends Block {
 
     public BlockTEBase(Material materialIn)
     {
-        super(materialIn);
-        setCreativeTab(TestMod.testTab);
+        super(Properties.create(materialIn));
+        //TODO 1.13 Port
+        //setCreativeTab(TestMod.testTab);
     }
 
     private static final Pattern COMPILE = Pattern.compile("@", Pattern.LITERAL);
@@ -60,7 +56,7 @@ public class BlockTEBase extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         //Se client side - non si fa niente
         if(worldIn.isRemote)
@@ -71,13 +67,14 @@ public class BlockTEBase extends Block {
         if (!(te instanceof IGuiTileEntity))
             return false;
 
-        playerIn.openGui(TestMod.instance, id, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        //TODO 1.13 Port
+        //playerIn.openGui(TestMod.instance, id, worldIn, pos.getX(), pos.getY(), pos.getZ());
         id++;
         return true;
     }
 
     @Override
-    public void getDrops(@Nonnull NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, @Nonnull IBlockState state, int fortune)
+    public void getDrops(IBlockState state, NonNullList<ItemStack> drops, World world, BlockPos pos, int fortune)
     {
         TileEntity te = world.getTileEntity(pos);
 
@@ -88,26 +85,26 @@ public class BlockTEBase extends Block {
             NBTTagCompound compound = new NBTTagCompound();
             ((IRestorableTileEntity)te).writeRestorableToNBT(compound);
 
-            stack.setTagCompound(compound);
+            stack.setTag(compound);
             drops.add(stack);
         } else {
-            super.getDrops(drops, world, pos, state, fortune);
+            super.getDrops(state, drops, world, pos, fortune);
         }
     }
 
     @Override
-    public boolean removedByPlayer(@Nonnull IBlockState state, World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest)
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest, IFluidState fluid)
     {
         if (willHarvest)
             return true; //If the block will be harvested, delay deletion of the block until getDrops
-        return super.removedByPlayer(state, world, pos, player, willHarvest);
+        return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
 
     @Override
     public void harvestBlock(@Nonnull World worldIn, EntityPlayer player, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
         super.harvestBlock(worldIn, player, pos, state, te, stack);
-        worldIn.setBlockToAir(pos);
+        worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
     }
 
     @Override
@@ -118,15 +115,9 @@ public class BlockTEBase extends Block {
         //All the tile Entities that implement this interface
         if (te instanceof IRestorableTileEntity)
         {
-            NBTTagCompound compound = stack.getTagCompound();
+            NBTTagCompound compound = stack.getTag();
             if (compound != null)
                 ((IRestorableTileEntity)te).readRestorableFromNBT(compound);
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void initModel()
-    {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(Objects.requireNonNull(getRegistryName()), "inventory"));
     }
 }

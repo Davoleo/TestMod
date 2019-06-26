@@ -1,6 +1,5 @@
 package com.davoleo.testmod.init;
 
-import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockCopper;
 import com.davoleo.testmod.block.BlockCornCrops;
 import com.davoleo.testmod.block.BlockFload;
@@ -12,7 +11,6 @@ import com.davoleo.testmod.block.fload_creator.TileFloadCreator;
 import com.davoleo.testmod.block.furnace.BlockFastFurnace;
 import com.davoleo.testmod.block.furnace.TileFastFurnace;
 import com.davoleo.testmod.block.generator.BlockGenerator;
-import com.davoleo.testmod.block.generator.TileGenerator;
 import com.davoleo.testmod.block.pedestal.BlockPedestal;
 import com.davoleo.testmod.block.pedestal.TileEntityPedestal;
 import com.davoleo.testmod.block.tank.BlockTank;
@@ -24,8 +22,9 @@ import com.davoleo.testmod.superchest.BlockSuperChestPart;
 import com.davoleo.testmod.superchest.TileSuperChest;
 import com.davoleo.testmod.superchest.TileSuperChestPart;
 import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /*************************************************
@@ -61,32 +60,16 @@ public class ModBlocks {
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
+        //TileEntities
         registry.register(blockFastFurnace);
-        GameRegistry.registerTileEntity(TileFastFurnace.class,BlockFastFurnace.FAST_FURNACE);
-
         registry.register(blockGenerator);
-        GameRegistry.registerTileEntity(TileGenerator.class, BlockGenerator.GENERATOR);
-
         registry.register(blockFloadCreator);
-        GameRegistry.registerTileEntity(TileFloadCreator.class, BlockFloadCreator.FLOAD_CREATOR);
-
         registry.register(blockPuzzle);
-        GameRegistry.registerTileEntity(TilePuzzle.class, BlockPuzzle.PUZZLE);
-
         registry.register(blockTank);
-        GameRegistry.registerTileEntity(TileTank.class, BlockTank.TANK);
-
         registry.register(blockSuperChest);
-        GameRegistry.registerTileEntity(TileSuperChest.class, new ResourceLocation(TestMod.MODID, "superchest"));
-
         registry.register(blockSuperChestPart);
-        GameRegistry.registerTileEntity(TileSuperChestPart.class, new ResourceLocation(TestMod.MODID, "superchest_part"));
-
         registry.register(blockPedestal);
-        GameRegistry.registerTileEntity(TileEntityPedestal.class, BlockPedestal.PEDESTAL);
-
         registry.register(blockCounter);
-        GameRegistry.registerTileEntity(TileEntityCounter.class, BlockCounter.COUNTER);
 
         registry.register(blockFload);
         registry.register(blockCopper);
@@ -95,23 +78,38 @@ public class ModBlocks {
         registry.registerAll(oreAngel, oreCopper, oreAluminum, oreNetherGold, oreZephyrite, cornCrops);
     }
 
+    public static void registerTileEntities(IForgeRegistry<TileEntityType<?>> registry)
+    {
+        registry.registerAll(
+                TileEntityType.Builder.create(TileFastFurnace::new).build(null).setRegistryName(BlockFastFurnace.FAST_FURNACE),
+                TileEntityType.Builder.create(TileFloadCreator::new).build(null).setRegistryName(BlockFloadCreator.FLOAD_CREATOR),
+                TileEntityType.Builder.create(TilePuzzle::new).build(null).setRegistryName(BlockPuzzle.PUZZLE),
+                TileEntityType.Builder.create(TileTank::new).build(null).setRegistryName(BlockTank.TANK),
+                TileEntityType.Builder.create(TileSuperChest::new).build(null).setRegistryName(BlockSuperChest.SUPERCHEST),
+                TileEntityType.Builder.create(TileSuperChestPart::new).build(null).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART),
+                TileEntityType.Builder.create(TileEntityPedestal::new).build(null).setRegistryName(BlockCounter.COUNTER),
+                TileEntityType.Builder.create(TileEntityCounter::new).build(null).setRegistryName(BlockPedestal.PEDESTAL)
+        );
+    }
+
+    @OnlyIn(Dist.CLIENT)
     public static void initModels()
     {
-        blockFastFurnace.initModel();
-        blockGenerator.initModel();
-        blockFloadCreator.initModel();
-        blockPuzzle.initModel();
-        blockFload.initModel();
-        blockTank.initModel();
-        blockSuperChest.initModel();
-        blockSuperChestPart.initModel();
-        blockCopper.initModel();
-        oreAngel.initModel();
-        oreCopper.initModel();
-        oreAluminum.initModel();
-        oreNetherGold.initModel();
-        oreZephyrite.initModel();
-        blockPedestal.initModel();
+//        blockFastFurnace.initModel();
+//        blockGenerator.initModel();
+//        blockFloadCreator.initModel();
+//        blockPuzzle.initModel();
+//        blockFload.initModel();
+//        blockTank.initModel();
+//        blockSuperChest.initModel();
+//        blockSuperChestPart.initModel();
+//        blockCopper.initModel();
+//        oreAngel.initModel();
+//        oreCopper.initModel();
+//        oreAluminum.initModel();
+//        oreNetherGold.initModel();
+//        oreZephyrite.initModel();
+//        blockPedestal.initModel();
     }
 
 }
