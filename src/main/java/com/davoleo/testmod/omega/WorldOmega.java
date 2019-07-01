@@ -11,7 +11,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
@@ -173,14 +172,16 @@ public class WorldOmega extends WorldSavedData {
         return sphere;
     }
 
+
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        NBTTagList list = nbt.getTagList("spheres", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0 ; i < list.tagCount() ; i++) {
-            NBTTagCompound sphereNBT = list.getCompoundTagAt(i);
-            ChunkPos pos = new ChunkPos(sphereNBT.getInteger("cx"), sphereNBT.getInteger("cz"));
+    public void read(NBTTagCompound nbt)
+    {
+        NBTTagList list = nbt.getList("spheres", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0 ; i < list.size() ; i++) {
+            NBTTagCompound sphereNBT = list.getCompound(i);
+            ChunkPos pos = new ChunkPos(sphereNBT.getInt("cx"), sphereNBT.getInt("cz"));
             OmegaSphere sphere = new OmegaSphere(
-                    new BlockPos(sphereNBT.getInteger("posx"), sphereNBT.getInteger("posy"), sphereNBT.getInteger("posz")),
+                    new BlockPos(sphereNBT.getInt("posx"), sphereNBT.getInt("posy"), sphereNBT.getInt("posz")),
                     sphereNBT.getFloat("radius"));
             sphere.setCurrentOmega(sphereNBT.getFloat("omega"));
             spheres.put(pos, sphere);
@@ -189,23 +190,25 @@ public class WorldOmega extends WorldSavedData {
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound write(@Nonnull NBTTagCompound compound)
+    {
         NBTTagList list = new NBTTagList();
         for (Map.Entry<ChunkPos, OmegaSphere> entry : spheres.entrySet()) {
             NBTTagCompound sphereNBT = new NBTTagCompound();
             ChunkPos pos = entry.getKey();
             OmegaSphere sphere = entry.getValue();
-            sphereNBT.setInteger("cx", pos.x);
-            sphereNBT.setInteger("cz", pos.z);
-            sphereNBT.setInteger("posx", sphere.getCenter().getX());
-            sphereNBT.setInteger("posy", sphere.getCenter().getY());
-            sphereNBT.setInteger("posz", sphere.getCenter().getZ());
+            sphereNBT.setInt("cx", pos.x);
+            sphereNBT.setInt("cz", pos.z);
+            sphereNBT.setInt("posx", sphere.getCenter().getX());
+            sphereNBT.setInt("posy", sphere.getCenter().getY());
+            sphereNBT.setInt("posz", sphere.getCenter().getZ());
             sphereNBT.setFloat("radius", sphere.getRadius());
             sphereNBT.setFloat("omega", sphere.getCurrentOmega());
-            list.appendTag(sphereNBT);
+            list.add(sphereNBT);
         }
         compound.setTag("spheres", list);
 
         return compound;
     }
+
 }

@@ -2,7 +2,6 @@ package com.davoleo.testmod.block.tank;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTEBase;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -16,12 +15,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,27 +36,30 @@ import java.util.List;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class BlockTank extends BlockTEBase implements ITileEntityProvider {
+public class BlockTank extends BlockTEBase {
 
     public static final ResourceLocation TANK = new ResourceLocation(TestMod.MODID, "tank");
 
     public BlockTank()
     {
-        super(Material.GLASS);
-        setHardness(1F);
-        setSoundType(SoundType.GLASS);
+        super(Properties
+                .create(Material.GLASS)
+                .hardnessAndResistance(1F)
+                .sound(SoundType.GLASS)
+        );
+
         setRegistryName(TANK);
-        setTranslationKey(TestMod.MODID + ".tank");
-        setHarvestLevel("pickaxe", 0);
+        //TODO 1.13 port
+        //setHarvestLevel("pickaxe", 0);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        NBTTagCompound compound = stack.getTagCompound();
+        NBTTagCompound compound = stack.getTag();
         if (compound != null)
         {
-            NBTTagCompound nbt = compound.getCompoundTag("tank");
+            NBTTagCompound nbt = (NBTTagCompound) compound.getTag("tank");
             FluidStack fluidStack = null;
             if (!nbt.hasKey("empty"))
                 fluidStack = FluidStack.loadFluidStackFromNBT(nbt);
@@ -71,23 +75,21 @@ public class BlockTank extends BlockTEBase implements ITileEntityProvider {
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    public TileEntity createTileEntity(IBlockState state, IBlockReader world)
     {
         return new TileTank();
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public void initModel()
     {
-        super.initModel();
         ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankTESR());
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (!worldIn.isRemote && FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing))
+        if (!worldIn.isRemote && FluidUtil.interactWithFluidHandler(player, hand, worldIn, pos, side))
             worldIn.notifyBlockUpdate(pos, state, state, 3);
 
         return true;
@@ -104,21 +106,13 @@ public class BlockTank extends BlockTEBase implements ITileEntityProvider {
     //Overriding is fine
     @SuppressWarnings("deprecation")
     @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    //Overriding is fine
-    @SuppressWarnings("deprecation")
-    @Override
     public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Nonnull
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public BlockRenderLayer getRenderLayer()
     {

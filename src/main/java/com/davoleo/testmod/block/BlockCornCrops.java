@@ -3,7 +3,8 @@ package com.davoleo.testmod.block;
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.init.ModItems;
 import net.minecraft.block.BlockCrops;
-import net.minecraft.item.Item;
+import net.minecraft.block.material.Material;
+import net.minecraft.util.IItemProvider;
 
 import javax.annotation.Nonnull;
 
@@ -19,21 +20,22 @@ public class BlockCornCrops extends BlockCrops {
 
     public BlockCornCrops()
     {
+        super(Properties.create(Material.GRASS));
         setRegistryName(TestMod.MODID, "corn_crops");
-        setTranslationKey(TestMod.MODID + ".corn_crops");
-        setCreativeTab(TestMod.testTab);
+        //TODO 1.13 port
+        //setCreativeTab(TestMod.testTab);
     }
 
     @Nonnull
     @Override
-    protected Item getCrop()
+    protected IItemProvider getCropsItem()
     {
         return ModItems.corn;
     }
 
     @Nonnull
     @Override
-    protected Item getSeed()
+    protected IItemProvider getSeedsItem()
     {
         return ModItems.cornSeeds;
     }

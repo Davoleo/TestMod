@@ -3,26 +3,23 @@ package com.davoleo.testmod.memory;
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTEBase;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /*************************************************
@@ -33,44 +30,42 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class BlockPuzzle extends BlockTEBase implements ITileEntityProvider {
+public class BlockPuzzle extends BlockTEBase {
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
-    public static final PropertyBool OPEN = PropertyBool.create("open");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
     public static final ResourceLocation PUZZLE = new ResourceLocation(TestMod.MODID, "puzzle");
 
     public BlockPuzzle()
     {
-        super(Material.WOOD);
+        super(Properties.create(Material.WOOD));
         setRegistryName(PUZZLE);
-        setTranslationKey(TestMod.MODID + ".puzzle");
-        setHarvestLevel("axe", 1);
+        //TODO 1.13 port
+        //setHarvestLevel("axe", 1);
 
-        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+        setDefaultState(getStateContainer().getBaseState().with(FACING, EnumFacing.NORTH));
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public void initModel()
     {
-        super.initModel();
         ClientRegistry.bindTileEntitySpecialRenderer(TilePuzzle.class, new PuzzleTESR());
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    public TileEntity createTileEntity(IBlockState state, IBlockReader world)
     {
         return new TilePuzzle();
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (tileEntity instanceof TilePuzzle && !worldIn.isRemote)
-            ((TilePuzzle) tileEntity).activate(state, playerIn);
+            ((TilePuzzle) tileEntity).activate(state, player);
         return true;
     }
 
@@ -84,36 +79,19 @@ public class BlockPuzzle extends BlockTEBase implements ITileEntityProvider {
             ((TilePuzzle) tileEntity).setPower(power);
     }
 
-    @Nonnull
+    @Nullable
     @Override
-    public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer, EnumHand hand)
+    public IBlockState getStateForPlacement(BlockItemUseContext context)
     {
         return this.getDefaultState()
-                .withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer))
-                .withProperty(OPEN, false);
-    }
-
-    @Nonnull
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, OPEN);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState()
-                .withProperty(FACING, EnumFacing.byIndex(meta & 7))
-                .withProperty(OPEN, (meta & 8) != 0);
+                .with(FACING, EnumFacing.getFacingFromVector(context.getHitX(), context.getHitY(), context.getHitZ()))
+                .with(OPEN, false);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
     {
-        return state.getValue(FACING).getIndex() + (state.getValue(OPEN) ? 8 : 0);
+        builder.add(FACING).add(OPEN);
     }
 
     @Override

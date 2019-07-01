@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class TankTESR extends TileEntitySpecialRenderer {
+public class TankTESR extends TileEntityRenderer {
 
     public static final float TANK_THICKNESS = 0.05F;
 

@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.IAnimals;
+import net.minecraft.entity.passive.IAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class EntityGuard extends EntityCreature implements IAnimals {
+public class EntityGuard extends EntityCreature implements IAnimal {
 
     public static final ResourceLocation LOOT = new ResourceLocation(TestMod.MODID, "entities/guard");
 

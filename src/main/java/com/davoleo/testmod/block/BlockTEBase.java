@@ -3,7 +3,6 @@ package com.davoleo.testmod.block;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /*************************************************
  * Author: Davoleo
@@ -39,20 +40,20 @@ public class BlockTEBase extends Block {
 
     private int id = 0;
 
-    public BlockTEBase(Material materialIn)
+    public BlockTEBase(Block.Properties properties)
     {
-        super(Properties.create(materialIn));
+        super(properties);
         //TODO 1.13 Port
         //setCreativeTab(TestMod.testTab);
     }
 
     private static final Pattern COMPILE = Pattern.compile("@", Pattern.LITERAL);
 
-    protected void addInformationLocalized(List<String> tooltip, String key, Object... parameters)
+    protected void addInformationLocalized(List<ITextComponent> tooltip, String key, Object... parameters)
     {
         String translated = I18n.format(key, parameters);
         translated = COMPILE.matcher(translated).replaceAll("\u00a7");
-        Collections.addAll(tooltip, StringUtils.split(translated, "<NL>"));
+        Collections.addAll(tooltip.stream().map(ITextComponent::getFormattedText).collect(Collectors.toList()), StringUtils.split(translated, "<NL>"));
     }
 
     @Override
@@ -119,5 +120,9 @@ public class BlockTEBase extends Block {
             if (compound != null)
                 ((IRestorableTileEntity)te).readRestorableFromNBT(compound);
         }
+    }
+
+    public void initModel() {
+
     }
 }

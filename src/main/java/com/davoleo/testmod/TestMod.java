@@ -130,13 +130,13 @@ public class TestMod {
     }
 
     @SubscribeEvent
-    public void serverStarted(FMLServerStartedEvent e)
+    public static void serverStarted(FMLServerStartedEvent e)
     {
         DamageTracker.instance.reset();
     }
 
     @SubscribeEvent
-    public void serverStopped(FMLServerStoppedEvent e)
+    public static void serverStopped(FMLServerStoppedEvent e)
     {
         DamageTracker.instance.reset();
     }

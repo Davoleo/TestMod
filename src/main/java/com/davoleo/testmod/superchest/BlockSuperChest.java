@@ -5,13 +5,13 @@ import com.davoleo.testmod.block.BlockTEBase;
 import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.init.ModItems;
 import com.davoleo.testmod.util.MultiBlockUtils;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -19,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -32,35 +33,36 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider {
+public class BlockSuperChest extends BlockTEBase {
 
-    public static final PropertyEnum<SuperChestPartIndex> FORMED = PropertyEnum.create("formed", SuperChestPartIndex.class);
+    public static final EnumProperty<SuperChestPartIndex> FORMED = EnumProperty.create("formed", SuperChestPartIndex.class);
 
     public static final ResourceLocation SUPERCHEST = new ResourceLocation(TestMod.MODID, "superchest");
 
     public BlockSuperChest()
     {
-        super(Material.IRON);
+        super(Properties
+                .create(Material.IRON)
+                .hardnessAndResistance(2F)
+        );
         setRegistryName(SUPERCHEST);
-        setTranslationKey(TestMod.MODID + ".superchest");
-        setHarvestLevel("axe", 1);
-        setHardness(2F);
-
-        setDefaultState(blockState.getBaseState().withProperty(FORMED, SuperChestPartIndex.UNFORMED));
+        //TODO 1.13 port
+        //setHarvestLevel("axe", 1);
+        setDefaultState(getStateContainer().getBaseState().with(FORMED, SuperChestPartIndex.UNFORMED));
     }
 
     //checks is the block at pos is a formed multiblock controller
     public static boolean isFormedController(World world, BlockPos pos)
     {
         IBlockState blockState = world.getBlockState(pos);
-        return blockState.getBlock() == ModBlocks.blockSuperChest && blockState.getValue(FORMED) != SuperChestPartIndex.UNFORMED;
+        return blockState.getBlock() == ModBlocks.blockSuperChest && blockState.get(FORMED) != SuperChestPartIndex.UNFORMED;
     }
 
     public static void toggleMultiblock(World world, BlockPos pos, IBlockState state, EntityPlayer player)
     {
         if (!world.isRemote)
         {
-            SuperChestPartIndex formed = state.getValue(FORMED);
+            SuperChestPartIndex formed = state.get(FORMED);
             if (formed == SuperChestPartIndex.UNFORMED)
             {
                 if (MultiBlockUtils.formMultiblock(SuperChestMultiBlock.INSTANCE, world, pos))
@@ -79,12 +81,12 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
     @Nullable
     public static BlockPos getControllerPos(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() == ModBlocks.blockSuperChest && state.getValue(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED)
+        if (state.getBlock() == ModBlocks.blockSuperChest && state.get(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED)
             return pos;
 
-        if (state.getBlock() == ModBlocks.blockSuperChestPart && state.getValue(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED)
+        if (state.getBlock() == ModBlocks.blockSuperChestPart && state.get(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED)
         {
-            SuperChestPartIndex index = state.getValue(BlockSuperChest.FORMED);
+            SuperChestPartIndex index = state.get(BlockSuperChest.FORMED);
             // This index indicates where in the superblock this part is located. From this we can find the location of the bottom-left coordinate
             BlockPos bottomLeft = pos.add(-index.getDx(), -index.getDy(), -index.getDz());
 
@@ -104,17 +106,12 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    public TileEntity createTileEntity(IBlockState state, IBlockReader world)
     {
         return new TileSuperChest();
     }
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isFullCube(IBlockState state)
     {
@@ -122,17 +119,17 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-            if (playerIn.getHeldItem(hand).getItem() == ModItems.angelIngot) {
-                toggleMultiblock(worldIn, pos, state, playerIn);
-                return true;
-            }
+        if (player.getHeldItem(hand).getItem() == ModItems.angelIngot) {
+            toggleMultiblock(worldIn, pos, state, player);
+            return true;
+        }
 
-            if (state.getBlock() == ModBlocks.blockSuperChest && state.getValue(FORMED) != SuperChestPartIndex.UNFORMED)
-                return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
-            else
-                return false;
+        if (state.getBlock() == ModBlocks.blockSuperChest && state.get(FORMED) != SuperChestPartIndex.UNFORMED)
+            return super.onBlockActivated(state, worldIn, pos, player, hand, side, hitX, hitY, hitZ);
+        else
+            return false;
     }
 
     @Override
@@ -142,20 +139,9 @@ public class BlockSuperChest extends BlockTEBase implements ITileEntityProvider 
         super.harvestBlock(world, player, pos, state, te, stack);
     }
 
-    @Nonnull
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FORMED);
-    }
-
-    @Nonnull
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FORMED, SuperChestPartIndex.VALUES[meta]);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return (state.getValue(FORMED).ordinal());
+    protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
+    {
+        builder.add(FORMED);
     }
 }

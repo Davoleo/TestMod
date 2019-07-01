@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /*************************************************
  * Author: Davoleo
@@ -24,7 +24,7 @@ public class PlayerPropertyEvents {
     public void onEntityCreation(AttachCapabilitiesEvent<Entity> event)
     {
         if (event.getObject() instanceof EntityPlayer) {
-            if (!event.getObject().hasCapability(PlayerProperties.PLAYER_OMEGA, null))
+            if (!event.getObject().getCapability(PlayerProperties.PLAYER_OMEGA).isPresent())
                 event.addCapability(new ResourceLocation(TestMod.MODID, "Omega"), new PropertiesDispatcher());
         }
     }
@@ -33,11 +33,10 @@ public class PlayerPropertyEvents {
     @SubscribeEvent
     public void onPlayerCloned(PlayerEvent.Clone event)
     {
-        if (event.isWasDeath() && event.getOriginal().hasCapability(PlayerProperties.PLAYER_OMEGA, null))
-        {
-            PlayerOmega oldStock = event.getOriginal().getCapability(PlayerProperties.PLAYER_OMEGA, null);
-            PlayerOmega newStock = PlayerProperties.getPlayerOmega(event.getEntityPlayer());
-            newStock.copyFrom(oldStock);
-        }
+        event.getOriginal().getCapability(PlayerProperties.PLAYER_OMEGA).ifPresent(oldStore -> {
+            event.getEntityPlayer().getCapability(PlayerProperties.PLAYER_OMEGA).ifPresent(newStore -> {
+                newStore.copyFrom(oldStore);
+            });
+        });
     }
 }

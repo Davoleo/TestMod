@@ -1,8 +1,8 @@
 package com.davoleo.testmod.entity.guard;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.model.ModelBase;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 /*************************************************
@@ -32,7 +32,7 @@ public class ModelGuard extends ModelBase {
     {
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0F, 0.6F, 0F);
+        GlStateManager.translatef(0F, 0.6F, 0F);
         this.body.render(scale);
 
         GlStateManager.popMatrix();

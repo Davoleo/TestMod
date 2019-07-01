@@ -2,30 +2,25 @@ package com.davoleo.testmod.block.generator;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTEBase;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.client.model.animation.AnimationTESR;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.common.property.Properties;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IBlockReader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.animation.TileEntityRendererAnimation;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,77 +34,62 @@ import java.util.List;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class BlockGenerator extends BlockTEBase implements ITileEntityProvider {
+public class BlockGenerator extends BlockTEBase {
 
-    public static final PropertyDirection FACING_HORIZONTAL = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING_HORIZONTAL = DirectionProperty.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public static final ResourceLocation GENERATOR = new ResourceLocation(TestMod.MODID, "generator");
 
     public BlockGenerator()
     {
-        super(Material.IRON);
+        super(Properties.create(Material.IRON));
         setRegistryName(GENERATOR);
-        setTranslationKey(TestMod.MODID + ".generator");
-        setHarvestLevel("pickaxe", 1);
+        //TODO 1.13 port
+        //setHarvestLevel("pickaxe", 1);
 
-        setDefaultState(blockState.getBaseState().withProperty(FACING_HORIZONTAL, EnumFacing.NORTH));
+        setDefaultState(getStateContainer().getBaseState().with(FACING_HORIZONTAL, EnumFacing.NORTH));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        NBTTagCompound compound = stack.getTagCompound();
+        NBTTagCompound compound = stack.getTag();
         if (compound != null)
         {
-            int energy = compound.getInteger("energy");
+            int energy = compound.getInt("energy");
             addInformationLocalized(tooltip, "tooltip.testmod.generator", energy);
         }
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    public TileEntity createTileEntity(IBlockState state, IBlockReader world)
     {
         return new TileGenerator();
     }
 
-    @SuppressWarnings("deprecation")
-    @Nonnull
+    @Nullable
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getDefaultState().withProperty(FACING_HORIZONTAL, placer.getHorizontalFacing().getOpposite());
-    }
-
-    @Nonnull
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new ExtendedBlockState(this,
-                new IProperty[] {Properties.StaticProperty, FACING_HORIZONTAL},
-                new IUnlistedProperty[] {Properties.AnimationProperty});
-    }
-
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(FACING_HORIZONTAL, EnumFacing.byIndex((meta & 3) + 2));
+        return this.getDefaultState().with(FACING_HORIZONTAL, context.getPlayer().getHorizontalFacing().getOpposite());
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
     {
-        return state.getValue(FACING_HORIZONTAL).getIndex() - 2;
+        builder.add(FACING_HORIZONTAL);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
+    //TODO 1.13 Port
+//    @Nonnull
+//    @Override
+//    protected BlockStateContainer createBlockState()
+//    {
+//        return new ExtendedBlockState(this,
+//                new IProperty[]{Properties.StaticProperty, FACING_HORIZONTAL},
+//                new IUnlistedProperty[]{Properties.AnimationProperty});
+//    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -118,20 +98,11 @@ public class BlockGenerator extends BlockTEBase implements ITileEntityProvider {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void initModel()
     {
-        super.initModel();
-        ClientRegistry.bindTileEntitySpecialRenderer(TileGenerator.class, new AnimationTESR<>());
-    }
-
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    @Override
-    public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        return state.withProperty(Properties.StaticProperty, false);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileGenerator.class, new TileEntityRendererAnimation<>());
     }
 
     @SuppressWarnings("deprecation")

@@ -2,24 +2,24 @@ package com.davoleo.testmod.block.furnace;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTEBase;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.util.Constants;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -31,51 +31,41 @@ import java.util.List;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class BlockFastFurnace extends BlockTEBase implements ITileEntityProvider {
+public class BlockFastFurnace extends BlockTEBase {
 
      public static final ResourceLocation FAST_FURNACE = new ResourceLocation(TestMod.MODID, "fast_furnace");
 
-     public static final PropertyDirection FACING = PropertyDirection.create("facing");
-     public static final PropertyEnum<FurnaceState> STATE = PropertyEnum.create("state", FurnaceState.class);
+     public static final DirectionProperty FACING = DirectionProperty.create("facing");
+     public static final EnumProperty<FurnaceState> STATE = EnumProperty.create("state", FurnaceState.class);
 
     public BlockFastFurnace()
     {
-        super(Material.IRON);
+        super(Properties
+                .create(Material.IRON)
+        );
 
         //testmod:fast_furnace
         setRegistryName(FAST_FURNACE);
-        setTranslationKey(TestMod.MODID + ".fast_furnace");
+        //TODO 1.13 port
+        //setHarvestLevel("pickaxe", 1);
 
-        setHarvestLevel("pickaxe", 1);
-
-        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    }
-
-    @SuppressWarnings("deprecation")
-    @Nonnull
-    @Override
-    public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        TileEntity te = worldIn instanceof ChunkCache ? ((ChunkCache) worldIn).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : worldIn.getTileEntity(pos);
-        if (te instanceof TileFastFurnace)
-            return state.withProperty(STATE, ((TileFastFurnace) te).getState());
-        return super.getActualState(state, worldIn, pos);
+        setDefaultState(getStateContainer().getBaseState().with(FACING, EnumFacing.NORTH));
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    public TileEntity createTileEntity(IBlockState state, IBlockReader world)
     {
         return new TileFastFurnace();
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        NBTTagCompound compound = stack.getTagCompound();
+        NBTTagCompound compound = stack.getTag();
         if (compound != null)
         {
-            int energy = compound.getInteger("energy");
+            int energy = compound.getInt("energy");
             int sizeIn = getItemCount(compound, "itemsIn");
             int sizeOut = getItemCount(compound, "itemsOut");
             addInformationLocalized(tooltip, "tooltip.testmod.fast_furnace", energy, sizeIn, sizeOut);
@@ -86,41 +76,27 @@ public class BlockFastFurnace extends BlockTEBase implements ITileEntityProvider
     {
         int inputCount = 0;
         NBTTagCompound compoundIn = (NBTTagCompound) compound.getTag(key);
-        NBTTagList itemsInput = compoundIn.getTagList("Items", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < itemsInput.tagCount(); i++)
+        NBTTagList itemsInput = compoundIn.getList("Items", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < itemsInput.size(); i++)
         {
-            NBTTagCompound itemTags = itemsInput.getCompoundTagAt(i);
-            if (!new ItemStack(itemTags).isEmpty())
+            NBTTagCompound itemTags = itemsInput.getCompound(i);
+            if (!ItemStack.read(itemTags).isEmpty())
                 inputCount++;
         }
         return inputCount;
     }
 
-    @Nonnull
     @Override
-    protected BlockStateContainer createBlockState()
+    protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
     {
-        return new BlockStateContainer(this, FACING, STATE);
+        builder.add(FACING).add(STATE);
     }
 
-    @Nonnull
+    @Nullable
     @Override
-    public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer, EnumHand hand)
+    public IBlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        return state.getValue(FACING).getIndex();
-    }
-
-    @Nonnull
-    @Override
-    @SuppressWarnings("deprecation")
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7));
+        //TODO 1.13 port
+        return this.getDefaultState().with(FACING, EnumFacing.getFacingFromVector(context.getHitX(), context.getHitY(), context.getHitZ()));
     }
 }

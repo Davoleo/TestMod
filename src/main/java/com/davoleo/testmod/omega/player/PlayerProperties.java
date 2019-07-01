@@ -1,6 +1,5 @@
 package com.davoleo.testmod.omega.player;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
@@ -16,10 +15,5 @@ public class PlayerProperties {
 
     @CapabilityInject(PlayerOmega.class)
     public static Capability<PlayerOmega> PLAYER_OMEGA;
-
-    public static PlayerOmega getPlayerOmega(EntityPlayer player)
-    {
-        return player.getCapability(PLAYER_OMEGA, null);
-    }
 
 }

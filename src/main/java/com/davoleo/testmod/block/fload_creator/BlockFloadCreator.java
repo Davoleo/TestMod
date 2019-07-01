@@ -2,20 +2,17 @@ package com.davoleo.testmod.block.fload_creator;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTEBase;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /*************************************************
@@ -26,56 +23,42 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class BlockFloadCreator extends BlockTEBase implements ITileEntityProvider {
+public class BlockFloadCreator extends BlockTEBase {
 
-    public static final PropertyDirection FACING_HRZN = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING_HRZN = DirectionProperty.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public static final ResourceLocation FLOAD_CREATOR = new ResourceLocation(TestMod.MODID, "fload_creator");
 
     public BlockFloadCreator()
     {
-        super(Material.IRON);
+        super(Properties.create(Material.IRON));
 
         //testmod:fast_furnace
         setRegistryName(FLOAD_CREATOR);
-        setTranslationKey(TestMod.MODID + ".fload_creator");
 
-        setHarvestLevel("pickaxe", 1);
+        //TODO 1.13 port
+        //setHarvestLevel("pickaxe", 1);
 
-        setDefaultState(blockState.getBaseState().withProperty(FACING_HRZN, EnumFacing.NORTH));
+        setDefaultState(getStateContainer().getBaseState().with(FACING_HRZN, EnumFacing.NORTH));
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
+    public TileEntity createTileEntity(IBlockState state, IBlockReader world)
     {
         return new TileFloadCreator();
     }
 
-    @Nonnull
+    @Nullable
     @Override
-    public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer, EnumHand hand)
+    public IBlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getDefaultState().withProperty(FACING_HRZN, placer.getHorizontalFacing().getOpposite());
-    }
-
-    @Nonnull
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING_HRZN);
-    }
-
-    @Nonnull
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(FACING_HRZN, EnumFacing.byIndex((meta & 3) + 2));
+        return this.getDefaultState().with(FACING_HRZN, context.getPlayer().getHorizontalFacing().getOpposite());
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
     {
-        return state.getValue(FACING_HRZN).getIndex() - 2;
+        builder.add(FACING_HRZN);
     }
 }
