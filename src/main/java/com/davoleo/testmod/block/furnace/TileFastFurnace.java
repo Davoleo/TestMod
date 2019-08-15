@@ -11,7 +11,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -86,37 +85,37 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
         CustomRecipe recipe = CustomRecipeRegistry.getRecipe(stackInSlot);
         if (recipe != null)
             return recipe.getOutput();
-        return FurnaceRecipes.instance().getSmeltingResult(stackInSlot);
+        //return FurnaceRecipes.instance().getSmeltingResult(stackInSlot); TODO: 15/08/2019 1.13 port
+        return ItemStack.EMPTY;
 
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void read(NBTTagCompound compound)
     {
-        super.readFromNBT(compound);
+        super.read(compound);
         readRestorableFromNBT(compound);
-        state = FurnaceState.VALUES[compound.getInteger("state")];
+        state = FurnaceState.VALUES[compound.getInt("state")];
     }
 
     //saved things when the block is broken
     @Override
     public void readRestorableFromNBT(NBTTagCompound compound)
     {
-        progress = compound.getInteger("progress");
+        progress = compound.getInt("progress");
         if (compound.hasKey("itemsIn"))
             inputHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsIn"));
         if (compound.hasKey("itemsOut"))
             outputHandler.deserializeNBT((NBTTagCompound) compound.getTag("itemsOut"));
-        energyStorage.setEnergy(compound.getInteger("energy"));
+        energyStorage.setEnergy(compound.getInt("energy"));
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound write(NBTTagCompound compound)
     {
-        super.writeToNBT(compound);
+        super.write(compound);
         writeRestorableToNBT(compound);
-        compound.setInteger("state", state.ordinal());
+        compound.setInt("state", state.ordinal());
         return compound;
     }
 
@@ -124,10 +123,10 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
     @Override
     public void writeRestorableToNBT(NBTTagCompound compound)
     {
-        compound.setInteger("progress", progress);
+        compound.setInt("progress", progress);
         compound.setTag("itemsIn", inputHandler.serializeNBT());
         compound.setTag("itemsOut", outputHandler.serializeNBT());
-        compound.setInteger("energy", energyStorage.getEnergyStored());
+        compound.setInt("energy", energyStorage.getEnergyStored());
     }
 
     boolean canInteractWith(EntityPlayer player)
@@ -136,7 +135,7 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!world.isRemote)
         {

@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /*************************************************
@@ -32,18 +33,18 @@ public class RenderSphere extends Render<EntitySphere> {
     }
 
     @Override
-    public void doRender(EntitySphere entity, double x, double y, double z, float entityYaw, float partialTicks)
+    public void doRender(@Nonnull EntitySphere entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
         GlStateManager.depthMask(false);
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, z);
+        GlStateManager.translated(x, y, z);
         rotateToPlayer();
 
         this.bindTexture(sphere);
 
         GlStateManager.enableRescaleNormal();
-        GlStateManager.color(1F, 1F, 1F);
+        GlStateManager.color3f(1F, 1F, 1F);
 
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
@@ -69,14 +70,14 @@ public class RenderSphere extends Render<EntitySphere> {
     }
 
     private void rotateToPlayer() {
-        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
-        GlStateManager.rotate(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+        RenderManager renderManager = Minecraft.getInstance().getRenderManager();
+        GlStateManager.rotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(EntitySphere entitySphere)
+    protected ResourceLocation getEntityTexture(@Nonnull EntitySphere entitySphere)
     {
         return null;
     }

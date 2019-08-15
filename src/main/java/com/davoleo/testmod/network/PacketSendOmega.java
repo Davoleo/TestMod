@@ -3,9 +3,9 @@ package com.davoleo.testmod.network;
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.render.OverlayRenderer;
 import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
+
+import java.util.function.Supplier;
 
 /*************************************************
  * Author: Davoleo
@@ -15,32 +15,19 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class PacketSendOmega implements IMessage {
+public class PacketSendOmega {
 
     private float omega;
     private float influence;
     private float playerOmega;
 
-    @SuppressWarnings("unused")
-    public PacketSendOmega()
-    { }
-
-    public PacketSendOmega(float omega, float influence, float playerOmega)
-    {
-        this.omega = omega;
-        this.influence = influence;
-        this.playerOmega = playerOmega;
-    }
-
-    @Override
-    public void fromBytes(ByteBuf byteBuf)
+    public PacketSendOmega(ByteBuf byteBuf)
     {
         omega = byteBuf.readFloat();
         influence = byteBuf.readFloat();
         playerOmega = byteBuf.readFloat();
     }
 
-    @Override
     public void toBytes(ByteBuf byteBuf)
     {
         byteBuf.writeFloat(omega);
@@ -48,18 +35,7 @@ public class PacketSendOmega implements IMessage {
         byteBuf.writeFloat(playerOmega);
     }
 
-    public static class Handler implements IMessageHandler<PacketSendOmega, IMessage>
-    {
-        @Override
-        public IMessage onMessage(PacketSendOmega packetSendOmega, MessageContext messageContext)
-        {
-            TestMod.proxy.addScheduledTaskClient(() -> handle(packetSendOmega));
-            return null;
-        }
-
-        private void handle(PacketSendOmega message)
-        {
-            OverlayRenderer.instance.setOmega(message.omega, message.influence, message.playerOmega);
-        }
+    public void handle(Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> OverlayRenderer.instance.setOmega(omega, influence, playerOmega));
     }
 }

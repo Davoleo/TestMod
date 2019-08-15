@@ -2,6 +2,7 @@ package com.davoleo.testmod.entity.guard;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.entity.ai.GuardAIFollow;
+import com.davoleo.testmod.init.ModEntities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -34,7 +35,7 @@ public class EntityGuard extends EntityCreature implements IAnimal {
 
     public EntityGuard(World worldIn)
     {
-        super(worldIn);
+        super(ModEntities.TYPE_GUARD, worldIn);
         this.setSize(0.6F, 1.95F);
         this.experienceValue = 5;
     }
@@ -48,23 +49,23 @@ public class EntityGuard extends EntityCreature implements IAnimal {
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityLiving.class, 4, false, true,
-                entity -> entity != null && IMob.VISIBLE_MOB_SELECTOR.apply(entity)));
+                entity -> entity != null && IMob.VISIBLE_MOB_SELECTOR.test(entity)));
     }
 
     @Override
-    public void onLivingUpdate()
+    public void tick()
     {
-        super.onLivingUpdate();
+        super.tick();
         if (this.attackTimer > 0)
             --this.attackTimer;
     }
 
     @Override
-    protected void applyEntityAttributes()
+    protected void registerAttributes()
     {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(50.0D);
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(50.0D);
     }
 
     @Nullable

@@ -7,6 +7,8 @@ import com.davoleo.testmod.init.ModItems;
 import com.davoleo.testmod.input.KeyBindings;
 import com.davoleo.testmod.input.KeyInputHandler;
 import com.davoleo.testmod.render.OverlayRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -35,14 +37,19 @@ public class ClientProxy implements IProxy {
         MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
         KeyBindings.init();
 
-        //MEybe not needed anymore
-        ModBlocks.initModels();
-        ModItems.initModels();
-        ModEntities.initModels();
-
+        //MEybe not needed anymore TODO 1.13
+        //ModBlocks.initModels();
+        //ModItems.initModels();
+        //ModEntities.initModels();
 
     }
-//      TODO 1.13 Port
+
+    @Override
+    public EntityPlayer getClientPlayer() {
+        return Minecraft.getInstance().player;
+    }
+
+    //      TODO 1.13 Port
 //    @Override
 //    public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)
 //    {

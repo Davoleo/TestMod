@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedDataStorage;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
@@ -42,14 +43,16 @@ public class WorldOmega extends WorldSavedData {
     }
 
     public static WorldOmega get(World world) {
-        MapStorage storage = world.getPerWorldStorage();
-        WorldOmega instance = (WorldOmega) storage.getOrLoadData(WorldOmega.class, NAME);
-
-        if (instance == null) {
-            instance = new WorldOmega();
-            storage.setData(NAME, instance);
-        }
-        return instance;
+        // TODO: 15/08/2019 1.13 port
+        //WorldSavedDataStorage mapStorage = world.getMapStorage();
+        //MapStorage storage = world.getPerWorldStorage();
+//        WorldOmega instance = (WorldOmega) storage.getOrLoadData(WorldOmega.class, NAME);
+//
+//        if (instance == null) {
+//            instance = new WorldOmega();
+//            storage.setData(NAME, instance);
+//        }
+//        return instance;
     }
 
     public float getOmegaInfluence(World world, BlockPos pos) {

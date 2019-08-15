@@ -1,11 +1,12 @@
 package com.davoleo.testmod.world;
 
-import gnu.trove.map.hash.TIntObjectHashMap;
+import io.netty.util.collection.IntObjectHashMap;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayDeque;
 import java.util.Random;
@@ -22,18 +23,18 @@ public class WorldTickHandler {
 
     public static WorldTickHandler instance = new WorldTickHandler();
 
-    public static TIntObjectHashMap<ArrayDeque<ChunkPos>> chunksToGenerate = new TIntObjectHashMap<>();
+    public static IntObjectHashMap<ArrayDeque<ChunkPos>> chunksToGenerate = new IntObjectHashMap<>();
 
     @SubscribeEvent
     public void onTickEnd(TickEvent.WorldTickEvent event)
     {
-        if(event.side != Side.SERVER)
+        if(event.side != LogicalSide.SERVER)
             return;
 
         if (event.phase == TickEvent.Phase.END)
         {
             World world = event.world;
-            int dimension = world.provider.getDimension();
+            int dimension = world.getDimension().getType().getId();
 
             ArrayDeque<ChunkPos> chunks = chunksToGenerate.get(dimension);
 

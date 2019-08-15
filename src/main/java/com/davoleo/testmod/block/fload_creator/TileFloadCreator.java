@@ -1,9 +1,10 @@
 package com.davoleo.testmod.block.fload_creator;
 
+import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.init.ModFluids;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
-import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.BlockFlowingFluid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,9 +14,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -36,18 +39,23 @@ public class TileFloadCreator extends TileEntity implements ITickable, IRestorab
 
     public static final int INPUT_SLOTS = 1;
 
+    public TileFloadCreator()
+    {
+        super(ModBlocks.TYPE_FLOAD_CREATOR);
+    }
+
     @Override
-    public void update() {
+    public void tick() {
         if (!world.isRemote) {
             // Do something is we have a full water block below. We have a feather ready in our inventory
             // and we can find a tank that can accept 100mb of Fload
             IBlockState stateDown = world.getBlockState(pos.down());
-            if (stateDown.getBlock() == Blocks.WATER && stateDown.getValue(BlockStaticLiquid.LEVEL) == 0) {
+            if (stateDown.getBlock() == Blocks.WATER && stateDown.get(BlockFlowingFluid.LEVEL) == 0) {
                 // Test extracting a feather
                 ItemStack extracted = inputHandler.extractItem(0, 1, true);
                 if (extracted.getItem() == Items.FEATHER && findTankAndFill()) {
                     // All is ok. Really extract the feature and remove the water block
-                    world.setBlockToAir(pos.down());
+                    world.removeBlock(pos.down());
                     inputHandler.extractItem(0, 1, false);
                 }
             }
@@ -55,14 +63,13 @@ public class TileFloadCreator extends TileEntity implements ITickable, IRestorab
     }
 
     private boolean findTankAndFill() {
-        for (EnumFacing facing : EnumFacing.VALUES) {
+        for (EnumFacing facing : EnumFacing.values()) {
             if (facing != EnumFacing.DOWN) {
                 TileEntity te = world.getTileEntity(pos.offset(facing));
-                if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())) {
-                    IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
-                    // Simulate filling
-                    if (handler != null && handler.fill(new FluidStack(ModFluids.fload, 100), true) != 0)
-                        return true;
+                if (te != null) {
+                    return te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())
+                            .filter(iFluidHandler -> iFluidHandler.fill(new FluidStack(ModFluids.fload, 100), true) != 0)
+                            .isPresent();
                 }
             }
         }
@@ -91,8 +98,8 @@ public class TileFloadCreator extends TileEntity implements ITickable, IRestorab
     //-----------------------------------------------------------------------------------
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
+    public void read(NBTTagCompound compound) {
+        super.read(compound);
         readRestorableFromNBT(compound);
     }
 
@@ -105,8 +112,8 @@ public class TileFloadCreator extends TileEntity implements ITickable, IRestorab
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
+    public NBTTagCompound write(NBTTagCompound compound) {
+        super.write(compound);
         writeRestorableToNBT(compound);
         return compound;
     }
@@ -118,7 +125,7 @@ public class TileFloadCreator extends TileEntity implements ITickable, IRestorab
 
     public boolean canInteractWith(EntityPlayer playerIn) {
         // If we are too far away from this tile entity you cannot use it
-        return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
+        return !isRemoved() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
     @Override
@@ -131,19 +138,20 @@ public class TileFloadCreator extends TileEntity implements ITickable, IRestorab
         return new GuiFloadCreator(this, new ContainerFloadCreator(player.inventory, this));
     }
 
+    @Nonnull
     @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return true;
-        }
-        return super.hasCapability(capability, facing);
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return LazyOptional.of(() -> ((T) inputHandler));
+        return super.getCapability(capability);
     }
 
+    @Nonnull
     @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inputHandler);
-        }
-        return super.getCapability(capability, facing);
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return LazyOptional.of(() -> ((T) inputHandler));
+        return super.getCapability(capability);
     }
 }

@@ -2,8 +2,8 @@ package com.davoleo.testmod.input;
 
 import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.network.PacketToggleMode;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /*************************************************
  * Author: Davoleo

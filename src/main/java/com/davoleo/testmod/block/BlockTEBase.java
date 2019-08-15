@@ -105,7 +105,7 @@ public class BlockTEBase extends Block {
     public void harvestBlock(@Nonnull World worldIn, EntityPlayer player, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
         super.harvestBlock(worldIn, player, pos, state, te, stack);
-        worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+        worldIn.removeBlock(pos);
     }
 
     @Override

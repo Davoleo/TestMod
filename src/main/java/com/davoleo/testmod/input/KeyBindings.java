@@ -1,11 +1,13 @@
 package com.davoleo.testmod.input;
 
+import net.java.games.input.Keyboard;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 /*************************************************
  * Author: Davoleo
@@ -15,14 +17,15 @@ import org.lwjgl.input.Keyboard;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class KeyBindings {
 
     public static KeyBinding wandMode;
 
     public static void init()
     {
-        wandMode = new KeyBinding("key.wandmode", KeyConflictContext.IN_GAME, Keyboard.KEY_M, "key.categories.testmod");
+        wandMode = new KeyBinding("key.wandmode", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW.GLFW_KEY_M), "key.categories.testmod");
+
         ClientRegistry.registerKeyBinding(wandMode);
     }
 }

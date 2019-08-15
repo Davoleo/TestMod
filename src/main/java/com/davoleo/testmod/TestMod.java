@@ -16,6 +16,7 @@ import com.davoleo.testmod.recipe.OreDictHandler;
 import com.davoleo.testmod.util.TestTab;
 import com.davoleo.testmod.world.WorldTickHandler;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.INBTBase;
 import net.minecraft.tileentity.TileEntityType;
@@ -65,7 +66,7 @@ public class TestMod {
     //public static final Item.ToolMaterial COPPER_TOOL_MATERIAL = EnumHelper.addToolMaterial("COPPER",  2, 500, 6,2, 14);
     //public static final ItemArmor.ArmorMaterial COPPER_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("COPPER", TestMod.MODID + ":copper", 15, new int[]{2,5,6,2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON , 0.0F);
 
-    private static final Logger logger = LogManager.getLogger();
+    public static final Logger logger = LogManager.getLogger();
 
     //Right after the registry events are fired
     private void setup(final FMLCommonSetupEvent event)
@@ -127,6 +128,11 @@ public class TestMod {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         ModItems.registerItems(event.getRegistry());
+    }
+
+    public static void registerEntities(RegistryEvent.Register<EntityType<?>> event)
+    {
+        ModEntities.registerEntities(event.getRegistry());
     }
 
     @SubscribeEvent

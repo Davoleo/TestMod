@@ -5,6 +5,7 @@ import com.davoleo.testmod.world.EnumOreType;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil;
 
 /*************************************************
  * Author: Davoleo
@@ -16,25 +17,23 @@ import net.minecraft.util.ResourceLocation;
 
 public class BlockOre extends Block {
 
-    private String name;
+    public static final ResourceLocation ORE_OVERWORLD = new ResourceLocation(TestMod.MODID, "ore_overworld");
+    public static final ResourceLocation ORE_NETHER = new ResourceLocation(TestMod.MODID, "ore_nether");
+    public static final ResourceLocation ORE_END = new ResourceLocation(TestMod.MODID, "ore_end");
+
     private final EnumOreType type;
 
-    /**
-     * Creates a new instance of a BlockOre
-     * @param name the name of the block
-     */
-    public BlockOre(String name, EnumOreType oreType, int harvestLevel)
+    public BlockOre(String name, EnumOreType oreType, ResourceLocation ore)
     {
         super(Properties
                 .create(Material.ROCK)
                 .hardnessAndResistance(3.0F, 5.0F)
         );
-        setRegistryName(new ResourceLocation(TestMod.MODID, name));
+        setRegistryName(name);
         //TODO move to itemblock
         //setCreativeTab(TestMod.testTab);
         //TODO 1.13 port
         //setHarvestLevel("pickaxe", harvestLevel);
-        this.name = name;
         this.type = oreType;
     }
 

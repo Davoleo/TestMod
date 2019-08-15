@@ -1,8 +1,9 @@
 package com.davoleo.testmod.network;
 
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
+import com.davoleo.testmod.TestMod;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 /*************************************************
  * Author: Davoleo
@@ -14,7 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class Messages {
 
-    public static SimpleNetworkWrapper INSTANCE;
+    public static SimpleChannel INSTANCE;
 
     private static int ID = 0;
 
@@ -23,16 +24,36 @@ public class Messages {
     //Sends packets
     public static void registerMessages(String channelName)
     {
-        INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(channelName);
+        INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(TestMod.MODID, channelName), () -> "1.0", s -> true, s -> true);
 
         //Server-side (From Client 2 Server)
-        INSTANCE.registerMessage(PacketToggleMode.Handler.class, PacketToggleMode.class, nextID(), Side.SERVER);
-        INSTANCE.registerMessage(PacketRequestUpdatePedestal.Handler.class, PacketRequestUpdatePedestal.class, nextID(), Side.SERVER);
+        INSTANCE.registerMessage(nextID(),
+                PacketToggleMode.class,
+                PacketToggleMode::toBytes,
+                PacketToggleMode::new,
+                PacketToggleMode::handle);
+        INSTANCE.registerMessage(nextID(),
+                PacketRequestUpdatePedestal.class,
+                PacketRequestUpdatePedestal::toBytes,
+                PacketRequestUpdatePedestal::new,
+                PacketRequestUpdatePedestal::handle);
 
         //Client-side (From Server 2 Client)
-        INSTANCE.registerMessage(PacketSyncMachineState.Handler.class, PacketSyncMachineState.class, nextID(), Side.CLIENT);
-        INSTANCE.registerMessage(PacketSendOmega.Handler.class, PacketSendOmega.class, nextID(), Side.CLIENT);
-        INSTANCE.registerMessage(PacketUpdatePedestal.Handler.class, PacketUpdatePedestal.class, nextID(), Side.CLIENT);
+        INSTANCE.registerMessage(nextID(),
+                PacketSyncMachineState.class,
+                PacketSyncMachineState::toBytes,
+                PacketSyncMachineState::new,
+                PacketSyncMachineState::handle);
+        INSTANCE.registerMessage(nextID(),
+                PacketSendOmega.class,
+                PacketSendOmega::toBytes,
+                PacketSendOmega::new,
+                PacketSendOmega::handle);
+        INSTANCE.registerMessage(nextID(),
+                PacketUpdatePedestal.class,
+                PacketUpdatePedestal::toBytes,
+                PacketUpdatePedestal::new,
+                PacketUpdatePedestal::handle);
     }
 
 }

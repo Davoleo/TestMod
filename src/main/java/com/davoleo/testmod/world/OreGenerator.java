@@ -9,14 +9,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayDeque;
@@ -45,20 +44,20 @@ public class OreGenerator implements IWorldGenerator {
     {
         if (!newGen && !OreGenConfig.RETROGEN)
             return;
-        if (world.provider.getDimension() == DimensionType.OVERWORLD.getId()) {
+        if (world.getDimension().getType() == DimensionType.OVERWORLD) {
             if (OreGenConfig.GENERATE_OVERWORLD) {
                 addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
                 addOreSpawn(ModBlocks.oreAluminum, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
                 addOreSpawn(ModBlocks.oreCopper, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
             }
         } else
-        if (world.provider.getDimension() == DimensionType.NETHER.getId()) {
+        if (world.getDimension().getType() == DimensionType.NETHER) {
             if (OreGenConfig.GENERATE_NETHER) {
                 addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
                 addOreSpawn(ModBlocks.oreNetherGold, (byte) EnumOreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
             }
         } else
-        if (world.provider.getDimension() == DimensionType.THE_END.getId()) {
+        if (world.getDimension().getType() == DimensionType.THE_END) {
             if (OreGenConfig.GENERATE_END) {
                 addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
                 addOreSpawn(ModBlocks.oreZephyrite, (byte) EnumOreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
@@ -69,14 +68,15 @@ public class OreGenerator implements IWorldGenerator {
 
     public void addOreSpawn(Block block, byte blockMeta, Block targetBlock, World world, Random random, int blockXPos, int blockZPos, int minVeinSize, int maxVeinSize, int chancesToSpawn, int yMin, int yMax)
     {
-        WorldGenMinable minable = new WorldGenMinable(block.getStateFromMeta(blockMeta), (minVeinSize + random.nextInt(maxVeinSize - minVeinSize + 1)), BlockMatcher.forBlock(targetBlock));
-        for (int i = 0; i < chancesToSpawn; i++)
-        {
-            int posX = blockXPos + random.nextInt(16);
-            int posY = yMin + random.nextInt(yMax - yMin);
-            int posZ = blockZPos + random.nextInt(16);
-            minable.generate(world, random, new BlockPos(posX, posY, posZ));
-        }
+        // TODO: 15/08/2019 1.13 port
+//        WorldGenMinable minable = new WorldGenMinable(block.getStateFromMeta(blockMeta), (minVeinSize + random.nextInt(maxVeinSize - minVeinSize + 1)), BlockMatcher.forBlock(targetBlock));
+//        for (int i = 0; i < chancesToSpawn; i++)
+//        {
+//            int posX = blockXPos + random.nextInt(16);
+//            int posY = yMin + random.nextInt(yMax - yMin);
+//            int posZ = blockZPos + random.nextInt(16);
+//            minable.generate(world, random, new BlockPos(posX, posY, posZ));
+//        }
     }
 
     //Retrogen data save & load
@@ -84,7 +84,7 @@ public class OreGenerator implements IWorldGenerator {
     @SubscribeEvent
     public void onChunkSave(ChunkDataEvent.Save event)
     {
-        NBTTagCompound genTag = event.getData().getCompoundTag(RETRO_NAME);
+        NBTTagCompound genTag = event.getData().getCompound(RETRO_NAME);
         if (!genTag.hasKey("generated"))
             genTag.setBoolean("generated", true);
         event.getData().setTag(RETRO_NAME, genTag);
@@ -93,7 +93,7 @@ public class OreGenerator implements IWorldGenerator {
     @SubscribeEvent
     public void onChunkLoad(ChunkDataEvent.Load event)
     {
-        int dimension = event.getWorld().provider.getDimension();
+        int dimension = event.getWorld().getDimension().getType().getId();
 
         boolean regen = false;
         NBTTagCompound tag = (NBTTagCompound) event.getData().getTag(RETRO_NAME);

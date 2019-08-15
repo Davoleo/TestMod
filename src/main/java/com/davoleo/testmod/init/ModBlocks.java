@@ -21,6 +21,7 @@ import com.davoleo.testmod.superchest.BlockSuperChest;
 import com.davoleo.testmod.superchest.BlockSuperChestPart;
 import com.davoleo.testmod.superchest.TileSuperChest;
 import com.davoleo.testmod.superchest.TileSuperChestPart;
+import com.davoleo.testmod.world.EnumOreType;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -51,11 +52,14 @@ public class ModBlocks {
     public static BlockCornCrops cornCrops = new BlockCornCrops();
 
     //Ores
-    public static BlockOre oreAngel = new BlockOre("angel_ore", new boolean[]{true, true, true}, 2);
+    public static BlockOre oreAngel = new BlockOre("angel_ore", EnumOreType.ORE_OVERWORLD, BlockOre.ORE_OVERWORLD);
     public static BlockOre oreCopper = new BlockOre("copper_ore", new boolean[]{true, false, false}, 1);
     public static BlockOre oreAluminum = new BlockOre("aluminum_ore", new boolean[]{true, false, false}, 1);
     public static BlockOre oreNetherGold = new BlockOre("nether_gold_ore", new boolean[]{false, true, false}, 2);
     public static BlockOre oreZephyrite = new BlockOre("zephyrite_ore", new boolean[]{false, false, true}, 3);
+
+//    Types
+    public static TileEntityType<?> TYPE_FLOAD_CREATOR;
 
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
@@ -82,7 +86,7 @@ public class ModBlocks {
     {
         registry.registerAll(
                 TileEntityType.Builder.create(TileFastFurnace::new).build(null).setRegistryName(BlockFastFurnace.FAST_FURNACE),
-                TileEntityType.Builder.create(TileFloadCreator::new).build(null).setRegistryName(BlockFloadCreator.FLOAD_CREATOR),
+                TYPE_FLOAD_CREATOR = TileEntityType.Builder.create(TileFloadCreator::new).build(null).setRegistryName(BlockFloadCreator.FLOAD_CREATOR),
                 TileEntityType.Builder.create(TilePuzzle::new).build(null).setRegistryName(BlockPuzzle.PUZZLE),
                 TileEntityType.Builder.create(TileTank::new).build(null).setRegistryName(BlockTank.TANK),
                 TileEntityType.Builder.create(TileSuperChest::new).build(null).setRegistryName(BlockSuperChest.SUPERCHEST),

@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -41,31 +42,24 @@ public class ItemWand extends Item {
 
     public ItemWand()
     {
-        setTranslationKey(TestMod.MODID + ".wand");
+        super(new Properties().group(TestMod.testTab));
         setRegistryName(new ResourceLocation(TestMod.MODID, "wand"));
-        setCreativeTab(TestMod.testTab);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void initModel()
-    {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         WandMode mode = getMode(stack);
-        tooltip.add("Mode: " + mode.name());
+        tooltip.add(new TextComponentString("Mode: " + mode.name()));
     }
 
     //Wand mode is stored in NBT so that it's not shared between all the wands
     private WandMode getMode(ItemStack stack)
     {
-        if (!stack.hasTagCompound())
+        if (!stack.hasTag())
             return WandMode.SPHERE;
-        return WandMode.values()[stack.getTagCompound().getInteger("mode")];
+        return WandMode.values()[stack.getTag().getInt("mode")];
     }
 
     public void toggleMode(EntityPlayer player, ItemStack stack)
@@ -76,9 +70,9 @@ public class ItemWand extends Item {
         else
             mode = WandMode.SPHERE;
         player.sendStatusMessage(new TextComponentString(TextFormatting.GREEN + "Switched to " + mode.name() + " mode"), false);
-        if (!stack.hasTagCompound())
-            stack.setTagCompound(new NBTTagCompound());
-        stack.getTagCompound().setInteger("mode", mode.ordinal());
+        if (!stack.hasTag())
+            stack.setTag(new NBTTagCompound());
+        stack.getTag().setInt("mode", mode.ordinal());
     }
 
     @Nonnull

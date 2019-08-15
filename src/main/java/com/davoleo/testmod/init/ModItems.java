@@ -16,6 +16,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -52,16 +53,16 @@ public class ModItems {
     public static void registerItems(IForgeRegistry<Item> registry)
     {
         //ItemBlocks
-        registry.register(new ItemBlock(ModBlocks.blockFastFurnace).setRegistryName(BlockFastFurnace.FAST_FURNACE));
-        registry.register(new ItemBlock(ModBlocks.blockGenerator).setRegistryName(BlockGenerator.GENERATOR));
-        registry.register(new ItemBlock(ModBlocks.blockFloadCreator).setRegistryName(BlockFloadCreator.FLOAD_CREATOR));
-        registry.register(new ItemBlock(ModBlocks.blockPuzzle).setRegistryName(BlockPuzzle.PUZZLE));
-        registry.register(new ItemBlock(ModBlocks.blockTank).setRegistryName(BlockTank.TANK));
-        registry.register(new ItemBlock(ModBlocks.blockSuperChest).setRegistryName(BlockSuperChest.SUPERCHEST));
-        registry.register(new ItemBlock(ModBlocks.blockSuperChestPart).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART));
-        registry.register(new ItemBlock(ModBlocks.blockCopper).setRegistryName(new ResourceLocation(TestMod.MODID, "copper_block")));
-        registry.register(new ItemBlock(ModBlocks.blockPedestal).setRegistryName(BlockPedestal.PEDESTAL));
-        registry.register(new ItemBlock(ModBlocks.blockCounter).setRegistryName(BlockCounter.COUNTER));
+        registry.register(new ItemBlock(ModBlocks.blockFastFurnace, new Item.Properties().group(TestMod.testTab)).setRegistryName(BlockFastFurnace.FAST_FURNACE));
+        registry.register(new ItemBlock(ModBlocks.blockGenerator, new Item.Properties().group(TestMod.testTab)).setRegistryName(BlockGenerator.GENERATOR));
+        registry.register(new ItemBlock(ModBlocks.blockFloadCreator, new Item.Properties().group(TestMod.testTab)).setRegistryName(BlockFloadCreator.FLOAD_CREATOR));
+        registry.register(new ItemBlock(ModBlocks.blockPuzzle, new Item.Properties().group(TestMod.testTab)).setRegistryName(BlockPuzzle.PUZZLE));
+        registry.register(new ItemBlock(ModBlocks.blockTank, new Item.Properties().group(TestMod.testTab)).setRegistryName(BlockTank.TANK));
+        registry.register(new ItemBlock(ModBlocks.blockSuperChest, new Item.Properties().group(TestMod.testTab)).setRegistryName(BlockSuperChest.SUPERCHEST));
+        registry.register(new ItemBlock(ModBlocks.blockSuperChestPart, new Item.Properties().group(TestMod.testTab)).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART));
+        registry.register(new ItemBlock(ModBlocks.blockCopper, new Item.Properties().group(TestMod.testTab)).setRegistryName(new ResourceLocation(TestMod.MODID, "copper_block")));
+        registry.register(new ItemBlock(ModBlocks.blockPedestal, new Item.Properties().group(TestMod.testTab)).setRegistryName(BlockPedestal.PEDESTAL));
+        registry.register(new ItemBlock(ModBlocks.blockCounter, new Item.Properties().group(TestMod.testTab)).setRegistryName(BlockCounter.COUNTER));
 
         //Items
         registry.register(angelIngot);
@@ -79,28 +80,6 @@ public class ModItems {
         registry.register(new ItemBlockOre(ModBlocks.oreNetherGold));
         registry.register(new ItemBlockOre(ModBlocks.oreZephyrite));
 
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void initModels()
-    {
-        angelIngot.initModel();
-        copperIngot.initModel();
-        wand.initModel();
-        corn.initModel();
-        cornSeeds.initModel();
-        paninazzo.initModel();
-
-        copperAxe.initModel();
-        copperHoe.initModel();
-        copperPickaxe.initModel();
-        copperShovel.initModel();
-        copperSword.initModel();
-
-        copperHelmet.initModel();
-        copperChestplate.initModel();
-        copperLeggings.initModel();
-        copperBoots.initModel();
     }
 
 }
