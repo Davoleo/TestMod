@@ -28,10 +28,10 @@ public class SuperChestMultiBlock implements IMultiBlockType {
     private boolean isValidFormedBlockPart(World world, BlockPos pos, int dx, int dy, int dz) {
         BlockPos p = pos;
         if (isFormedSuperchestController(world, p)) {
-            SuperChestPartIndex index = world.getBlockState(p).getValue(BlockSuperChest.FORMED);
+            SuperChestPartIndex index = world.getBlockState(p).get(BlockSuperChest.FORMED);
             return index == SuperChestPartIndex.getIndex(dx, dy, dz);
         } else if (isFormedSuperchestPart(world, p)) {
-            SuperChestPartIndex index = world.getBlockState(p).getValue(BlockSuperChest.FORMED);
+            SuperChestPartIndex index = world.getBlockState(p).get(BlockSuperChest.FORMED);
             return index == SuperChestPartIndex.getIndex(dx, dy, dz);
         } else {
             // We can already stop here
@@ -54,7 +54,7 @@ public class SuperChestMultiBlock implements IMultiBlockType {
     public BlockPos getBottomLowerLeft(World world, BlockPos pos) {
         if (isBlockPart(world, pos)) {
             IBlockState state = world.getBlockState(pos);
-            SuperChestPartIndex index = state.getValue(BlockSuperChest.FORMED);
+            SuperChestPartIndex index = state.get(BlockSuperChest.FORMED);
             return pos.add(-index.getDx(), -index.getDy(), -index.getDz());
         } else {
             return null;
@@ -64,13 +64,13 @@ public class SuperChestMultiBlock implements IMultiBlockType {
     @Override
     public void unformBlock(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        world.setBlockState(pos, state.withProperty(BlockSuperChest.FORMED, SuperChestPartIndex.UNFORMED), 3);
+        world.setBlockState(pos, state.with(BlockSuperChest.FORMED, SuperChestPartIndex.UNFORMED), 3);
     }
 
     @Override
     public void formBlock(World world, BlockPos pos, int dx, int dy, int dz) {
         IBlockState state = world.getBlockState(pos);
-        world.setBlockState(pos, state.withProperty(BlockSuperChest.FORMED, SuperChestPartIndex.getIndex(dx, dy, dz)), 3);
+        world.setBlockState(pos, state.with(BlockSuperChest.FORMED, SuperChestPartIndex.getIndex(dx, dy, dz)), 3);
     }
 
     @Override
@@ -129,22 +129,22 @@ public class SuperChestMultiBlock implements IMultiBlockType {
 
     private static boolean isUnformedSuperchestController(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        return state.getBlock() == ModBlocks.blockSuperChest && state.getValue(BlockSuperChest.FORMED) == SuperChestPartIndex.UNFORMED;
+        return state.getBlock() == ModBlocks.blockSuperChest && state.get(BlockSuperChest.FORMED) == SuperChestPartIndex.UNFORMED;
     }
 
     public static boolean isFormedSuperchestController(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        return state.getBlock() == ModBlocks.blockSuperChest && state.getValue(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED;
+        return state.getBlock() == ModBlocks.blockSuperChest && state.get(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED;
     }
 
     private static boolean isUnformedSuperchestPart(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        return state.getBlock() == ModBlocks.blockSuperChestPart && state.getValue(BlockSuperChest.FORMED) == SuperChestPartIndex.UNFORMED;
+        return state.getBlock() == ModBlocks.blockSuperChestPart && state.get(BlockSuperChest.FORMED) == SuperChestPartIndex.UNFORMED;
     }
 
     private static boolean isFormedSuperchestPart(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        return state.getBlock() == ModBlocks.blockSuperChestPart && state.getValue(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED;
+        return state.getBlock() == ModBlocks.blockSuperChestPart && state.get(BlockSuperChest.FORMED) != SuperChestPartIndex.UNFORMED;
     }
 
 

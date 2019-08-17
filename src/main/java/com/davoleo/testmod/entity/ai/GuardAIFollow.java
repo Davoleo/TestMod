@@ -40,7 +40,7 @@ public class GuardAIFollow extends EntityAIBase {
     @Override
     public boolean shouldExecute()
     {
-        List<EntityPlayer> list = this.entity.world.getEntitiesWithinAABB(EntityPlayer.class, this.entity.getEntityBoundingBox().grow((double) this.areaSize));
+        List<EntityPlayer> list = this.entity.world.getEntitiesWithinAABB(EntityPlayer.class, this.entity.getBoundingBox().grow((double) this.areaSize));
 
         for (EntityPlayer player : list)
             if (!player.isInvisible())
@@ -75,7 +75,7 @@ public class GuardAIFollow extends EntityAIBase {
     }
 
     @Override
-    public void updateTask()
+    public void tick()
     {
         if (this.followedPlayer != null && !this.entity.getLeashed())
         {

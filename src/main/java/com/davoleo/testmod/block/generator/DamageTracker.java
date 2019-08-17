@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -38,17 +39,17 @@ public class DamageTracker {
         dimensionTracking.get(pos).add(entity);
     }
 
-    public void remove(Integer dimension, BlockPos pos)
+    public void remove(DimensionType dimension, BlockPos pos)
     {
-        if (trackedMobs.containsKey(dimension))
-            trackedMobs.get(dimension).remove(pos);
+        if (trackedMobs.containsKey(dimension.getId()))
+            trackedMobs.get(dimension.getId()).remove(pos);
     }
 
-    public void clear(Integer dimension, BlockPos pos)
+    public void clear(DimensionType dimension, BlockPos pos)
     {
-        if (trackedMobs.containsKey(dimension))
+        if (trackedMobs.containsKey(dimension.getId()))
         {
-            Map<BlockPos, Set<UUID>> dimensionTracking = trackedMobs.get(dimension);
+            Map<BlockPos, Set<UUID>> dimensionTracking = trackedMobs.get(dimension.getId());
             if (dimensionTracking.containsKey(pos))
                 dimensionTracking.get(pos).clear();
         }

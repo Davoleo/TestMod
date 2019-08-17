@@ -9,10 +9,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -29,6 +31,10 @@ import javax.annotation.Nullable;
 
 public class TileSuperChest extends TileEntity implements IRestorableTileEntity, IGuiTileEntity {
 
+    public TileSuperChest() {
+        super(ModBlocks.TYPE_SUPERCHEST);
+    }
+
     private ItemStackHandler itemHandler = new ItemStackHandler(3*9)
     {
         @Override
@@ -39,57 +45,42 @@ public class TileSuperChest extends TileEntity implements IRestorableTileEntity,
         }
     };
 
+    @Nonnull
     @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-    {
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() != ModBlocks.blockSuperChest || state.getValue(BlockSuperChest.FORMED) == SuperChestPartIndex.UNFORMED)
-            return false;
-
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return true;
-
-        return super.hasCapability(capability, facing);
-    }
-
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() != ModBlocks.blockSuperChest || state.getValue(BlockSuperChest.FORMED) == SuperChestPartIndex.UNFORMED)
+        if (state.getBlock() != ModBlocks.blockSuperChest || state.get(BlockSuperChest.FORMED) == SuperChestPartIndex.UNFORMED)
             return null;
-
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
-
-        return super.getCapability(capability, facing);
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return LazyOptional.of(() -> ((T) itemHandler));
+        return super.getCapability(cap);
     }
 
     boolean canInteractWith(EntityPlayer player)
     {
-        return !isInvalid() && (player.getDistanceSq(pos.add(0.5, 0.5, 0.5)) <= 64);
+        return !isRemoved() && (player.getDistanceSq(pos.add(0.5, 0.5, 0.5)) <= 64);
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
-    }
+    // TODO: 17/08/2019 1.13 port
+//    @Override
+//    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newSate)
+//    {
+//        return oldState.getBlock() != newSate.getBlock();
+//    }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void read(NBTTagCompound compound)
     {
-        super.readFromNBT(compound);
+        super.read(compound);
         readRestorableFromNBT(compound);
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound write(NBTTagCompound compound)
     {
         writeRestorableToNBT(compound);
-        return super.writeToNBT(compound);
+        return super.write(compound);
     }
 
     @Override

@@ -38,11 +38,12 @@ public class TilePuzzle extends TileEntity implements ITickable {
     private int timer = 0;
     private boolean solved = false;
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
-    }
+    // TODO: 17/08/2019 1.13 port
+//    @Override
+//    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newSate)
+//    {
+//        return oldState.getBlock() != newSate.getBlock();
+//    }
 
     public int getPower()
     {
@@ -80,22 +81,22 @@ public class TilePuzzle extends TileEntity implements ITickable {
                   Items.ARROW,
                   Items.DIAMOND,
                   Items.EMERALD,
-                  Items.BED,
+                  Items.BLUE_BED,
                   Items.BEEF,
                   Items.BLAZE_ROD,
-                  Items.BOAT,
+                  Items.OAK_BOAT,
                   Items.BONE,
                   Items.BOOK,
                   Items.BOWL,
                   Items.BREAD,
                   Items.BAKED_POTATO,
                   Items.BUCKET,
-                  Items.CAKE,
+//                  Items.CAKE, todo 1.13 port
                   Items.CARROT,
                   Items.CLOCK,
                   Items.COAL,
                   Items.COMPASS,
-                  Items.FISH,
+                  Items.TROPICAL_FISH,
                   Items.IRON_BOOTS,
                   Items.IRON_INGOT,
                   Items.ENDER_EYE,
@@ -103,14 +104,14 @@ public class TilePuzzle extends TileEntity implements ITickable {
                   Items.NETHER_STAR,
                   Items.NETHER_WART,
                   Items.SPIDER_EYE,
-                  Items.MELON,
+                  Items.MELON_SLICE,
                   Items.GOLD_INGOT,
                   Items.GOLD_NUGGET
             };
 
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!world.isRemote)
         {
@@ -126,7 +127,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
 
     public void activate(IBlockState state, EntityPlayer player)
     {
-        Boolean open = state.getValue(BlockPuzzle.OPEN);
+        Boolean open = state.get(BlockPuzzle.OPEN);
 
         // Already open, do nothing
         if (open)
@@ -203,7 +204,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
         TileEntity te = world.getTileEntity(block);
         TilePuzzle puzzle = (TilePuzzle) te;
         assert puzzle != null;
-        if (!puzzle.solved && state.getValue(BlockPuzzle.OPEN))
+        if (!puzzle.solved && state.get(BlockPuzzle.OPEN))
             return true;
         return false;
     }
@@ -275,7 +276,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
         Queue<BlockPos> todo = new ArrayDeque<>();
         todo.add(pos);
 
-        EnumFacing thisFacing = world.getBlockState(pos).getValue(BlockPuzzle.FACING);
+        EnumFacing thisFacing = world.getBlockState(pos).get(BlockPuzzle.FACING);
 
         Set<BlockPos> gameblocks = new HashSet<>();
 
@@ -284,10 +285,10 @@ public class TilePuzzle extends TileEntity implements ITickable {
             if (world.isBlockLoaded(todoPos)) {
                 IBlockState state = world.getBlockState(todoPos);
                 TileEntity te = world.getTileEntity(todoPos);
-                if (te instanceof TilePuzzle && state.getBlock() == ModBlocks.blockPuzzle && state.getValue(BlockPuzzle.FACING) == thisFacing) {
+                if (te instanceof TilePuzzle && state.getBlock() == ModBlocks.blockPuzzle && state.get(BlockPuzzle.FACING) == thisFacing) {
                     gameblocks.add(todoPos);
                     // Add connected positions to the todo
-                    for (EnumFacing facing : EnumFacing.VALUES) {
+                    for (EnumFacing facing : EnumFacing.values()) {
                         if (facing.getAxis() != thisFacing.getAxis()) {
                             BlockPos newPos = todoPos.offset(facing);
                             if (!gameblocks.contains(newPos)) {
@@ -304,14 +305,14 @@ public class TilePuzzle extends TileEntity implements ITickable {
     private void openMe()
     {
         IBlockState state = world.getBlockState(pos);
-        world.setBlockState(pos, state.withProperty(BlockPuzzle.OPEN, true), 3);
+        world.setBlockState(pos, state.with(BlockPuzzle.OPEN, true), 3);
         world.playSound(null, pos, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 1, 2);
     }
 
     private void closeMe()
     {
         IBlockState state = world.getBlockState(pos);
-        world.setBlockState(pos, state.withProperty(BlockPuzzle.OPEN, false), 3);
+        world.setBlockState(pos, state.with(BlockPuzzle.OPEN, false), 3);
         world.playSound(null, pos, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 1, 2);
         //UI_BUTTON_CLICK
     }
@@ -330,7 +331,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
     {
         NBTTagCompound nbtTag = super.getUpdateTag();
         NBTTagCompound itemTag = new NBTTagCompound();
-        item.writeToNBT(itemTag);
+        item.write(itemTag);
         nbtTag.setTag("item", itemTag);
         nbtTag.setBoolean("solved", solved);
         return nbtTag;
@@ -351,25 +352,25 @@ public class TilePuzzle extends TileEntity implements ITickable {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void read(NBTTagCompound compound)
     {
-        super.readFromNBT(compound);
+        super.read(compound);
         item = new ItemStack(compound.getCompoundTag("item"));
-        power = compound.getInteger("power");
-        timer = compound.getInteger("timer");
+        power = compound.getInt("power");
+        timer = compound.getInt("timer");
         solved = compound.getBoolean("solved");
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound write(NBTTagCompound compound)
     {
         NBTTagCompound itemTag = new NBTTagCompound();
-        item.writeToNBT(itemTag);
+        item.write(itemTag);
         compound.setTag("item", itemTag);
-        compound.setInteger("power", power);
-        compound.setInteger("timer", timer);
+        compound.setInt("power", power);
+        compound.setInt("timer", timer);
         compound.setBoolean("solved", solved);
-        return super.writeToNBT(compound);
+        return super.write(compound);
     }
 }

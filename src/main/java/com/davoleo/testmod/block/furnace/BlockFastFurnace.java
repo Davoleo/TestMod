@@ -35,7 +35,7 @@ public class BlockFastFurnace extends BlockTEBase {
 
      public static final ResourceLocation FAST_FURNACE = new ResourceLocation(TestMod.MODID, "fast_furnace");
 
-     public static final DirectionProperty FACING = DirectionProperty.create("facing");
+     public static final DirectionProperty FACING = DirectionProperty.create("facing", EnumFacing.values());
      public static final EnumProperty<FurnaceState> STATE = EnumProperty.create("state", FurnaceState.class);
 
     public BlockFastFurnace()

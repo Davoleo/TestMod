@@ -38,5 +38,6 @@ public class PacketToggleMode {
                 wand.toggleMode(player, heldItem);
             }
         });
+        ctx.get().setPacketHandled(true);
     }
 }

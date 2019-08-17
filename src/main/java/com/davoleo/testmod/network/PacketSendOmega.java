@@ -21,6 +21,12 @@ public class PacketSendOmega {
     private float influence;
     private float playerOmega;
 
+    public PacketSendOmega(float omega, float influence, float playerOmega) {
+        this.omega = omega;
+        this.influence = influence;
+        this.playerOmega = playerOmega;
+    }
+
     public PacketSendOmega(ByteBuf byteBuf)
     {
         omega = byteBuf.readFloat();
@@ -37,5 +43,6 @@ public class PacketSendOmega {
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> OverlayRenderer.instance.setOmega(omega, influence, playerOmega));
+        ctx.get().setPacketHandled(true);
     }
 }

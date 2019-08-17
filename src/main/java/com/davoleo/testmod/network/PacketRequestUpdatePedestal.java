@@ -46,5 +46,6 @@ public class PacketRequestUpdatePedestal {
 //            else
 //                return null;
         });
+        ctx.get().setPacketHandled(true);
     }
 }

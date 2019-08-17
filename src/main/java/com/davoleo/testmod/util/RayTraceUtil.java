@@ -36,11 +36,11 @@ public class RayTraceUtil {
         double dist = beam.getDist();
         World world = beam.getWorld();
         EntityPlayer player = beam.getPlayer();
-        List<Entity> targets = world.getEntitiesInAABBexcluding(player, player.getEntityBoundingBox().expand(lookVec.x * dist, lookVec.y * dist, lookVec.z * dist).grow(1.0D, 1.0D, 1.0D),
-                Predicates.and(EntitySelectors.NOT_SPECTATING, ent -> ent != null && ent.canBeCollidedWith()));
+        List<Entity> targets = world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(lookVec.x * dist, lookVec.y * dist, lookVec.z * dist).grow(1.0D, 1.0D, 1.0D),
+                EntitySelectors.NOT_SPECTATING.and(entity -> entity != null && entity.canBeCollidedWith()));
         List<Pair<Entity, Double>> hitTargets = new ArrayList<>();
         for (Entity target : targets) {
-            AxisAlignedBB targetBB = target.getEntityBoundingBox().grow(target.getCollisionBorderSize());
+            AxisAlignedBB targetBB = target.getBoundingBox().grow(target.getCollisionBorderSize());
             if (targetBB.contains(start)) {
                 hitTargets.add(Pair.of(target, 0.0));
             } else {
@@ -77,13 +77,13 @@ public class RayTraceUtil {
 
         private void calculate()
         {
-            start = this.player.getPositionEyes(1F);
+            start = this.player.getEyePosition(1F);
             lookVec = this.player.getLookVec();
             end = start.add(lookVec.x * this.maxDist, lookVec.y * this.maxDist, lookVec.z * this.maxDist);
 
             RayTraceResult result = this.world.rayTraceBlocks(start, end);
             dist = this.maxDist;
-            if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK)
+            if (result != null && result.type == RayTraceResult.Type.BLOCK)
             {
                 dist = result.hitVec.distanceTo(start);
                 end = start.add(lookVec.x * dist, lookVec.y * dist, lookVec.z * dist);

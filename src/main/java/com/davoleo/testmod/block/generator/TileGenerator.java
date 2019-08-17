@@ -2,6 +2,7 @@ package com.davoleo.testmod.block.generator;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.config.GeneratorConfig;
+import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import com.davoleo.testmod.util.TestEnergyStorage;
@@ -19,8 +20,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,19 +43,21 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
     private AxisAlignedBB trackingBox;
     private int clientEnergy = -1;
 
-    @Nullable
-    private final IAnimationStateMachine asm;
+    //@Nullable
+    //private final IAnimationStateMachine asm;
 
     public TileGenerator()
     {
-        asm = TestMod.proxy.load(new ResourceLocation(TestMod.MODID, "asms/block/generator.json"), ImmutableMap.of());
+        super(ModBlocks.TYPE_GENERATOR);
+        // TODO: 17/08/2019 1.13 port
+        //asm = TestMod.proxy.load(new ResourceLocation(TestMod.MODID, "asms/block/generator.json"), ImmutableMap.of());
     }
     //----------------------------------------------------------------------------------------------------------
 
     private TestEnergyStorage energyStorage = new TestEnergyStorage(GeneratorConfig.MAX_POWER, 0);
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!world.isRemote)
         {
@@ -72,7 +77,7 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
     {
         if (energyStorage.getEnergyStored() > 0)
         {                            // The six faces of the cube
-            for (EnumFacing facing : EnumFacing.VALUES)
+            for (EnumFacing facing : EnumFacing.values())
             {
                 TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
                 if (tileEntity != null && tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
@@ -112,11 +117,11 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
 
     private void findEntities()
     {
-        DamageTracker.instance.clear(world.provider.getDimension(), pos);
+        DamageTracker.instance.clear(world.getDimension().getType(), pos);
 
         List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, getTrackingBox());
         for (EntityLivingBase entity : entities)
-            DamageTracker.instance.register(world.provider.getDimension(), pos, entity.getUniqueID());
+            DamageTracker.instance.register(world.getDimension().getType().getId(), pos, entity.getUniqueID());
     }
 
     private AxisAlignedBB getTrackingBox()
@@ -136,30 +141,30 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
     //Overrides
 
     @Override
-    public void invalidate()
+    public void remove()
     {
-        super.invalidate();
-        DamageTracker.instance.remove(world.provider.getDimension(), pos);
+        super.remove();
+        DamageTracker.instance.remove(world.getDimension().getType(), pos);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void read(NBTTagCompound compound)
     {
-        super.readFromNBT(compound);
+        super.read(compound);
         readRestorableFromNBT(compound);
     }
 
     @Override
     public void readRestorableFromNBT(NBTTagCompound compound)
     {
-        energyStorage.setEnergy(compound.getInteger("energy"));
+        energyStorage.setEnergy(compound.getInt("energy"));
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound write(NBTTagCompound compound)
     {
-        super.writeToNBT(compound);
+        super.write(compound);
         writeRestorableToNBT(compound);
         return compound;
     }
@@ -167,7 +172,7 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
     @Override
     public void writeRestorableToNBT(NBTTagCompound compound)
     {
-        compound.setInteger("energy", energyStorage.getEnergyStored());
+        compound.setInt("energy", energyStorage.getEnergyStored());
     }
 
     @Override
@@ -184,7 +189,7 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
 
     protected boolean canInteractWith(EntityPlayer player)
     {
-        return !isInvalid() && player.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
+        return !isRemoved() && player.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
     @Override
@@ -193,24 +198,14 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
         return true;
     }
 
+    @Nonnull
     @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityEnergy.ENERGY)
-            return true;
-        if (capability == CapabilityAnimation.ANIMATION_CAPABILITY)
-            return true;
-        return super.hasCapability(capability, facing);
-    }
-
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityEnergy.ENERGY)
-            return CapabilityEnergy.ENERGY.cast(energyStorage);
-        if (capability == CapabilityAnimation.ANIMATION_CAPABILITY)
-            return CapabilityAnimation.ANIMATION_CAPABILITY.cast(asm);
-        return super.getCapability(capability, facing);
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
+        if (cap == CapabilityEnergy.ENERGY)
+            return LazyOptional.of(() -> ((T) energyStorage));
+        // TODO: 17/08/2019 1.13 port
+        //if (cap == CapabilityAnimation.ANIMATION_CAPABILITY)
+        //    return LazyOptional.of(() -> ((T) CapabilityAnimation.ANIMATION_CAPABILITY));
+        return super.getCapability(cap);
     }
 }

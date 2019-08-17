@@ -9,6 +9,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraftforge.fml.network.NetworkDirection;
 
 import javax.annotation.Nonnull;
 
@@ -39,7 +40,7 @@ public class ContainerGenerator extends Container implements IMachineStateContai
             {
                 int x = 10 + column * 18;
                 int y = row * 18 + 70;
-                this.addSlotToContainer(new Slot(playerInventory, column + row * 9 + 9, x, y));
+                this.addSlot(new Slot(playerInventory, column + row * 9 + 9, x, y));
             }
 
         //Hotbar
@@ -47,7 +48,7 @@ public class ContainerGenerator extends Container implements IMachineStateContai
         {
             int x = 10 + row * 18;
             int y = 58 + 70;
-            this.addSlotToContainer(new Slot(playerInventory, row, x, y));
+            this.addSlot(new Slot(playerInventory, row, x, y));
         }
     }
 
@@ -70,7 +71,7 @@ public class ContainerGenerator extends Container implements IMachineStateContai
             if (listener instanceof EntityPlayerMP)
             {
                 EntityPlayerMP player = (EntityPlayerMP) listener;
-                Messages.INSTANCE.sendTo(new PacketSyncMachineState(tileEntity.getEnergy(), 0), player);
+                Messages.INSTANCE.sendTo(new PacketSyncMachineState(tileEntity.getEnergy(), 0), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             }
         }
     }

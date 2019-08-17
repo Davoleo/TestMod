@@ -19,8 +19,9 @@ public class ModFluids {
 
     public static void init()
     {
-        FluidRegistry.registerFluid(fload);
-        FluidRegistry.addBucketForFluid(fload);
+        // TODO: 17/08/2019 1.13 port
+        //FluidRegistry.registerFluid(fload);
+        //FluidRegistry.addBucketForFluid(fload);
     }
 
     public static boolean isValidFloadStack(FluidStack stack)

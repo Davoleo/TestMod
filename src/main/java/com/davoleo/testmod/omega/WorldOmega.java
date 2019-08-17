@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraft.world.storage.WorldSavedDataStorage;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.network.NetworkDirection;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -53,6 +54,7 @@ public class WorldOmega extends WorldSavedData {
 //            storage.setData(NAME, instance);
 //        }
 //        return instance;
+        return null;
     }
 
     public float getOmegaInfluence(World world, BlockPos pos) {
@@ -155,8 +157,10 @@ public class WorldOmega extends WorldSavedData {
         for (EntityPlayer player : world.playerEntities) {
             float omegaStrength = getOmegaStrength(world, player.getPosition());
             float maxInfluence = getOmegaInfluence(world, player.getPosition());
-            PlayerOmega playerOmega = PlayerProperties.getPlayerOmega(player);
-            Messages.INSTANCE.sendTo(new PacketSendOmega(omegaStrength, maxInfluence, playerOmega.getOmega()), (EntityPlayerMP) player);
+            PlayerOmega playerOmega = player.getCapability(PlayerProperties.PLAYER_OMEGA).ifPresent(playerOmega1 -> {
+                Messages.INSTANCE.sendTo(new PacketSendOmega(omegaStrength, maxInfluence, playerOmega1.getOmega()), ((EntityPlayerMP) player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            });
+
         }
     }
 

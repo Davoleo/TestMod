@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 public class BlockPuzzle extends BlockTEBase {
 
-    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", EnumFacing.values());
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
     public static final ResourceLocation PUZZLE = new ResourceLocation(TestMod.MODID, "puzzle");

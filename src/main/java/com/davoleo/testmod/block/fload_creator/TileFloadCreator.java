@@ -140,16 +140,7 @@ public class TileFloadCreator extends TileEntity implements ITickable, IRestorab
 
     @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return LazyOptional.of(() -> ((T) inputHandler));
-        return super.getCapability(capability);
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return LazyOptional.of(() -> ((T) inputHandler));
         return super.getCapability(capability);

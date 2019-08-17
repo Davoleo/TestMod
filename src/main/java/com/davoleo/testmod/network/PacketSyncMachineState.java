@@ -22,6 +22,12 @@ public class PacketSyncMachineState {
     private int energy;
     private int progress;       //Percentage 0 to 100%
 
+
+    public PacketSyncMachineState(int energy, int progress) {
+        this.energy = energy;
+        this.progress = progress;
+    }
+
     public PacketSyncMachineState(ByteBuf buf)
     {
         energy = buf.readInt();
@@ -40,5 +46,6 @@ public class PacketSyncMachineState {
             if (player.openContainer instanceof IMachineStateContainer)
                 ((IMachineStateContainer) player.openContainer).sync(energy, progress);
         });
+        ctx.get().setPacketHandled(true);
     }
 }

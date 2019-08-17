@@ -42,7 +42,7 @@ public class ModBlocks {
     public static BlockGenerator blockGenerator = new BlockGenerator();
     public static BlockFloadCreator blockFloadCreator = new BlockFloadCreator();
     public static BlockPuzzle blockPuzzle = new BlockPuzzle();
-    public static BlockFload blockFload = new BlockFload();
+    //public static BlockFload blockFload = new BlockFload();
     public static BlockTank blockTank = new BlockTank();
     public static BlockSuperChest blockSuperChest = new BlockSuperChest();
     public static BlockSuperChestPart blockSuperChestPart = new BlockSuperChestPart();
@@ -60,7 +60,14 @@ public class ModBlocks {
 
 //    Types
     public static TileEntityType<?> TYPE_FLOAD_CREATOR;
-
+    public static TileEntityType<?> TYPE_COUNTER;
+    public static TileEntityType<?> TYPE_FAST_FURNACE;
+    public static TileEntityType<?> TYPE_GENERATOR;
+    public static TileEntityType<?> TYPE_PEDESTAL;
+    public static TileEntityType<?> TYPE_TANK;
+    public static TileEntityType<?> TYPE_PUZZLE;
+    public static TileEntityType<?> TYPE_SUPERCHEST;
+    public static TileEntityType<?> TYPE_SUPERCHEST_PART;
 
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
@@ -85,14 +92,14 @@ public class ModBlocks {
     public static void registerTileEntities(IForgeRegistry<TileEntityType<?>> registry)
     {
         registry.registerAll(
-                TileEntityType.Builder.create(TileFastFurnace::new).build(null).setRegistryName(BlockFastFurnace.FAST_FURNACE),
+                TYPE_FAST_FURNACE TileEntityType.Builder.create(TileFastFurnace::new).build(null).setRegistryName(BlockFastFurnace.FAST_FURNACE),
                 TYPE_FLOAD_CREATOR = TileEntityType.Builder.create(TileFloadCreator::new).build(null).setRegistryName(BlockFloadCreator.FLOAD_CREATOR),
-                TileEntityType.Builder.create(TilePuzzle::new).build(null).setRegistryName(BlockPuzzle.PUZZLE),
-                TileEntityType.Builder.create(TileTank::new).build(null).setRegistryName(BlockTank.TANK),
-                TileEntityType.Builder.create(TileSuperChest::new).build(null).setRegistryName(BlockSuperChest.SUPERCHEST),
-                TileEntityType.Builder.create(TileSuperChestPart::new).build(null).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART),
-                TileEntityType.Builder.create(TileEntityPedestal::new).build(null).setRegistryName(BlockCounter.COUNTER),
-                TileEntityType.Builder.create(TileEntityCounter::new).build(null).setRegistryName(BlockPedestal.PEDESTAL)
+                TYPE_PUZZLE = TileEntityType.Builder.create(TilePuzzle::new).build(null).setRegistryName(BlockPuzzle.PUZZLE),
+                TYPE_TANK = TileEntityType.Builder.create(TileTank::new).build(null).setRegistryName(BlockTank.TANK),
+                TYPE_SUPERCHEST = TileEntityType.Builder.create(TileSuperChest::new).build(null).setRegistryName(BlockSuperChest.SUPERCHEST),
+                TYPE_SUPERCHEST_PART = TileEntityType.Builder.create(TileSuperChestPart::new).build(null).setRegistryName(BlockSuperChestPart.SUPERCHEST_PART),
+                TYPE_COUNTER = TileEntityType.Builder.create(TileEntityPedestal::new).build(null).setRegistryName(BlockCounter.COUNTER),
+                TYPE_PEDESTAL = TileEntityType.Builder.create(TileEntityCounter::new).build(null).setRegistryName(BlockPedestal.PEDESTAL)
         );
     }
 

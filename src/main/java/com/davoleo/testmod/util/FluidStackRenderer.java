@@ -28,17 +28,18 @@ public class FluidStackRenderer {
         if (fluid == null)
             return false;
 
-        Minecraft mc = Minecraft.getMinecraft();
-        TextureMap textureMapBlocks = mc.getTextureMapBlocks();
+        Minecraft mc = Minecraft.getInstance();
+        TextureMap textureMapBlocks = mc.getTextureMap();
         ResourceLocation fluidStill = fluid.getStill();
         TextureAtlasSprite fluidStillSprite = null;
         if (fluidStill == null)
-            fluidStillSprite = textureMapBlocks.getTextureExtry(fluidStack.toString());
-        if (fluidStillSprite == null)
-            fluidStillSprite = textureMapBlocks.getMissingSprite();
+            fluidStillSprite = textureMapBlocks.getAtlasSprite(fluidStack.toString());
+        //if (fluidStillSprite == null)
+            // TODO: 17/08/2019 1.13 port
+            //fluidStillSprite = textureMapBlocks.getMissingSprite();
 
         int color = fluid.getColor(fluidStack);
-        mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         setGLColorFromInt(color);
         drawFluidTexture(x, y, fluidStillSprite);
 
@@ -68,6 +69,6 @@ public class FluidStackRenderer {
         float green = (color >> 8 & 0xFF) / 255.0F;
         float blue = (color & 0xFF) / 255.0F;
 
-        GlStateManager.color(red, green, blue, 1.0F);
+        GlStateManager.color4f(red, green, blue, 1.0F);
     }
 }

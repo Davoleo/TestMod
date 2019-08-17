@@ -40,7 +40,7 @@ public class ContainerSuperChest extends Container {
             for (int col = 0; col < 9; ++col) {
                 int x = 10 + col * 18;
                 int y = row * 18 + 70;
-                this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, x, y));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, x, y));
             }
         }
 
@@ -48,7 +48,7 @@ public class ContainerSuperChest extends Container {
         for (int row = 0; row < 9; ++row) {
             int x = 10 + row * 18;
             int y = 58 + 70;
-            this.addSlotToContainer(new Slot(playerInventory, row, x, y));
+            this.addSlot(new Slot(playerInventory, row, x, y));
         }
     }
 
@@ -60,7 +60,7 @@ public class ContainerSuperChest extends Container {
             for (int col = 0; col < 9; ++col) {
                 int x = 10 + col * 18;
                 int y = row * 18 + 8;
-                this.addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex++, x, y));
+                this.addSlot(new SlotItemHandler(itemHandler, slotIndex++, x, y));
             }
         }
     }

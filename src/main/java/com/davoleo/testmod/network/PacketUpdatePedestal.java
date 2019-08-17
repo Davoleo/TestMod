@@ -46,5 +46,6 @@ public class PacketUpdatePedestal {
                 te.lastUpdateTick = lastUpdateTick;
             });
         });
+        ctx.get().setPacketHandled(true);
     }
 }

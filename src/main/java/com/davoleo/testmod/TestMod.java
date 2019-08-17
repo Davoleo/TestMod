@@ -26,6 +26,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -94,7 +95,6 @@ public class TestMod {
             }
         }, () -> null);
 
-        ModEntities.init();
         ModFluids.init();
 
         //old Init
@@ -130,6 +130,7 @@ public class TestMod {
         ModItems.registerItems(event.getRegistry());
     }
 
+    @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityType<?>> event)
     {
         ModEntities.registerEntities(event.getRegistry());
