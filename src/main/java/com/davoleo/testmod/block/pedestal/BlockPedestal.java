@@ -5,6 +5,7 @@ import com.davoleo.testmod.block.BlockTEBase;
 import com.davoleo.testmod.config.PedestalConfig;
 import com.davoleo.testmod.util.Utils;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +16,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -31,54 +33,58 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class BlockPedestal extends BlockTEBase implements ITileEntityProvider {
+public class BlockPedestal extends BlockTEBase {
 
     public static final ResourceLocation PEDESTAL = new ResourceLocation(TestMod.MODID, "pedestal");
 
     public BlockPedestal()
     {
-        super(Material.ROCK);
+        super(Properties
+                .create(Material.ROCK)
+                .hardnessAndResistance(3F, 4F)
+                .sound(SoundType.STONE)
+        );
         setRegistryName(PEDESTAL);
-        setTranslationKey(TestMod.MODID + ".pedestal");
-        setHardness(3F);
-        setHarvestLevel("pickaxe", 1);
-        setResistance(4F);
+        // TODO: 20/08/2019 1.13 port
+        //setHarvestLevel("pickaxe", 1);
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
+    public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote)
         {
             TileEntityPedestal tile = (TileEntityPedestal) worldIn.getTileEntity(pos);
-            IItemHandler itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-            if (!playerIn.isSneaking())
-            {
-                if (playerIn.getHeldItem(hand).isEmpty())
+            tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
+
+                if (!player.isSneaking())
                 {
-                    playerIn.setHeldItem(hand, itemHandler.extractItem(0, 64, false));
+                    if (player.getHeldItem(hand).isEmpty())
+                    {
+                        player.setHeldItem(hand, itemHandler.extractItem(0, 64, false));
+                    } else
+                    {
+                        player.setHeldItem(hand, itemHandler.insertItem(0, player.getHeldItem(hand), false));
+                    }
+                    tile.markDirty();
                 } else
                 {
-                    playerIn.setHeldItem(hand, itemHandler.insertItem(0, playerIn.getHeldItem(hand), false));
-                }
-                tile.markDirty();
-            } else
-            {
-                if (PedestalConfig.GUI)
-                    playerIn.openGui(TestMod.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
-                else
-                {
-                    //NO-GUI Pedestal
-                    ItemStack stack = itemHandler.getStackInSlot(0);
-                    if (!stack.isEmpty())
-                    {
-                        String localized = Utils.localize(stack.getTranslationKey() + ".name");
-                        playerIn.sendMessage(new TextComponentString(stack.getCount() + "x " + localized));
+                    if (PedestalConfig.GUI) {
+                        //player.openGui(TestMod.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
                     }
                     else
-                        playerIn.sendMessage(new TextComponentString("Il Pedestallo è vuoto"));
+                    {
+                        //NO-GUI Pedestal
+                        ItemStack stack = itemHandler.getStackInSlot(0);
+                        if (!stack.isEmpty())
+                        {
+                            String localized = Utils.localize(stack.getTranslationKey() + ".name");
+                            player.sendMessage(new TextComponentString(stack.getCount() + "x " + localized));
+                        }
+                        else
+                            player.sendMessage(new TextComponentString("Il Pedestallo è vuoto"));
+                    }
                 }
-            }
+            });
         }
         return true;
     }
@@ -92,16 +98,8 @@ public class BlockPedestal extends BlockTEBase implements ITileEntityProvider {
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
-    {
+    public TileEntity createTileEntity(IBlockState state, IBlockReader world) {
         return new TileEntityPedestal();
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
     }
 
     @SuppressWarnings("deprecation")

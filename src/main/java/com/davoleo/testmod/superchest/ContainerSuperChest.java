@@ -53,16 +53,16 @@ public class ContainerSuperChest extends Container {
     }
 
     private void addOwnSlots() {
-        IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-        int slotIndex = 0;
-        for (int row = 0; row < 3; ++row) {
-            for (int col = 0; col < 9; ++col) {
-                int x = 10 + col * 18;
-                int y = row * 18 + 8;
-                this.addSlot(new SlotItemHandler(itemHandler, slotIndex++, x, y));
+        this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler -> {
+            int slotIndex = 0;
+            for (int row = 0; row < 3; ++row) {
+                for (int col = 0; col < 9; ++col) {
+                    int x = 10 + col * 18;
+                    int y = row * 18 + 8;
+                    this.addSlot(new SlotItemHandler(itemHandler, slotIndex++, x, y));
+                }
             }
-        }
+        });
     }
 
     @Nonnull

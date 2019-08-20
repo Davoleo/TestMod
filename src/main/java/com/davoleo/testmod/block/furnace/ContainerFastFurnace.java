@@ -11,6 +11,7 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -48,7 +49,7 @@ public class ContainerFastFurnace extends Container implements IMachineStateCont
             {
                 int x = 10 + col * 18;
                 int y = row * 18 + 70;
-                this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, x, y));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, x, y));
             }
         }
 
@@ -57,31 +58,34 @@ public class ContainerFastFurnace extends Container implements IMachineStateCont
         {
             int x = 10 + row * 18;
             int y = 58 + 70;
-            this.addSlotToContainer(new Slot(playerInventory, row, x, y));
+            this.addSlot(new Slot(playerInventory, row, x, y));
         }
     }
 
     private void addOwnSlots()
     {
-        IItemHandler handler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(handler -> {
 
-        //TE Slots
-        int slotIndex = 0;
+            //TE Slots
+            int slotIndex = 0;
+            //inputs
+            int x = 10;
+            int y = 40;
 
-        //inputs
-        int x = 10;
-        int y = 40;
-        addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
-        addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
-        addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y));
+            addSlot(new SlotItemHandler(handler, slotIndex++, x, y));
+            x += 18;
+            addSlot(new SlotItemHandler(handler, slotIndex++, x, y));
+            x += 18;
+            addSlot(new SlotItemHandler(handler, slotIndex++, x, y));
 
-        //outputs
-        x = 118;
-        addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
-        addSlotToContainer(new SlotItemHandler(handler, slotIndex++, x, y)); x+=18;
-        addSlotToContainer(new SlotItemHandler(handler, slotIndex, x, y));
-
-
+            //outputs
+            x = 118;
+            addSlot(new SlotItemHandler(handler, slotIndex++, x, y));
+            x += 18;
+            addSlot(new SlotItemHandler(handler, slotIndex++, x, y));
+            x += 18;
+            addSlot(new SlotItemHandler(handler, slotIndex, x, y));
+        });
     }
 
     @Override
@@ -96,7 +100,7 @@ public class ContainerFastFurnace extends Container implements IMachineStateCont
                     if (listener instanceof EntityPlayerMP) {
                         EntityPlayerMP player = (EntityPlayerMP) listener;
                         int progressPercentage = 100 - te.getProgress() * 100 / FastFurnaceConfig.MAX_PROGRESS;
-                        Messages.INSTANCE.sendTo(new PacketSyncMachineState(te.getEnergy(), progressPercentage), player);
+                        Messages.INSTANCE.sendTo(new PacketSyncMachineState(te.getEnergy(), progressPercentage), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
                     }
                 }
             }

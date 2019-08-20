@@ -1,22 +1,24 @@
 package com.davoleo.testmod.block.pedestal;
 
+import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.network.PacketRequestUpdatePedestal;
 import com.davoleo.testmod.network.PacketUpdatePedestal;
 import com.davoleo.testmod.util.IGuiTileEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /*************************************************
  * Author: Davoleo
@@ -28,14 +30,19 @@ import javax.annotation.Nullable;
 
 public class TileEntityPedestal extends TileEntity implements IGuiTileEntity {
 
+    public TileEntityPedestal() {
+        super(ModBlocks.TYPE_PEDESTAL);
+    }
+
     public long lastUpdateTick;
     public ItemStackHandler inventory = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot)
         {
             if (!world.isRemote) {
-                lastUpdateTick = world.getTotalWorldTime();
-                Messages.INSTANCE.sendToAllAround(new PacketUpdatePedestal(TileEntityPedestal.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+                lastUpdateTick = world.getGameTime();
+                // TODO: 20/08/2019 1.13 port - Fix Player Stub
+                Messages.INSTANCE.sendTo(new PacketUpdatePedestal(TileEntityPedestal.this), Minecraft.getInstance().player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             }
         }
     };
@@ -59,37 +66,27 @@ public class TileEntityPedestal extends TileEntity implements IGuiTileEntity {
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound write(NBTTagCompound compound)
     {
         compound.setTag("inventory", inventory.serializeNBT());
         compound.setLong("lastUpdateTick", lastUpdateTick);
-        return super.writeToNBT(compound);
+        return super.write(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void read(NBTTagCompound compound)
     {
-        inventory.deserializeNBT(compound.getCompoundTag("inventory"));
+        inventory.deserializeNBT(compound.getCompound("inventory"));
         lastUpdateTick = compound.getLong("lastUpdateTick");
-        super.readFromNBT(compound);
+        super.read(compound);
     }
 
+    @Nonnull
     @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return true;
-        return super.hasCapability(capability, facing);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return (T) inventory;
-        return super.getCapability(capability, facing);
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return LazyOptional.of(() -> ((T) inventory));
+        return super.getCapability(cap);
     }
 
     @Override

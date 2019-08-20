@@ -23,6 +23,12 @@ public class PacketUpdatePedestal {
     private ItemStack item;
     private long lastUpdateTick;
 
+    public PacketUpdatePedestal(TileEntityPedestal te) {
+        this.pos = te.getPos();
+        this.item = te.inventory.getStackInSlot(0);
+        this.lastUpdateTick = te.lastUpdateTick;
+    }
+
     public PacketUpdatePedestal(ByteBuf buf)
     {
         pos = BlockPos.fromLong(buf.readLong());

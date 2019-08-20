@@ -1,12 +1,9 @@
 package com.davoleo.testmod.item.tool;
 
 import com.davoleo.testmod.TestMod;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*************************************************
  * Author: Davoleo
@@ -20,16 +17,7 @@ public class ItemCopperAxe extends ItemAxe {
 
     public ItemCopperAxe()
     {
-        super(TestMod.COPPER_TOOL_MATERIAL, 8F, -3.1F);
-        setTranslationKey(TestMod.MODID + ".copper_axe");
+        super(ToolMaterials.COPPER, 2F, -3.1F, new Item.Properties().group(TestMod.testTab));
         setRegistryName(new ResourceLocation(TestMod.MODID, "copper_axe"));
-        setCreativeTab(TestMod.testTab);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void initModel()
-    {
-        assert getRegistryName() != null;
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 }

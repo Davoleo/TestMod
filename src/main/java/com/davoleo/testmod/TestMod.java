@@ -64,7 +64,6 @@ public class TestMod {
 
     public static TestTab testTab = new TestTab();
     //TODO 1.13 Port
-    //public static final Item.ToolMaterial COPPER_TOOL_MATERIAL = EnumHelper.addToolMaterial("COPPER",  2, 500, 6,2, 14);
     //public static final ItemArmor.ArmorMaterial COPPER_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("COPPER", TestMod.MODID + ":copper", 15, new int[]{2,5,6,2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON , 0.0F);
 
     public static final Logger logger = LogManager.getLogger();

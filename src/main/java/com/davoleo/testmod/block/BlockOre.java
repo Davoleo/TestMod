@@ -21,9 +21,10 @@ public class BlockOre extends Block {
     public static final ResourceLocation ORE_NETHER = new ResourceLocation(TestMod.MODID, "ore_nether");
     public static final ResourceLocation ORE_END = new ResourceLocation(TestMod.MODID, "ore_end");
 
+    private String name;
     private final EnumOreType type;
 
-    public BlockOre(String name, EnumOreType oreType, ResourceLocation ore)
+    public BlockOre(String name, EnumOreType oreType)
     {
         super(Properties
                 .create(Material.ROCK)
@@ -34,7 +35,12 @@ public class BlockOre extends Block {
         //setCreativeTab(TestMod.testTab);
         //TODO 1.13 port
         //setHarvestLevel("pickaxe", harvestLevel);
+        this.name = name;
         this.type = oreType;
+    }
+
+    public String getName() {
+        return name;
     }
 
     //TODO 1.13 port

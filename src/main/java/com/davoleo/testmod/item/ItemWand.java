@@ -6,7 +6,6 @@ import com.davoleo.testmod.omega.WorldOmega;
 import com.davoleo.testmod.omega.player.PlayerOmega;
 import com.davoleo.testmod.omega.player.PlayerProperties;
 import com.davoleo.testmod.util.RayTraceUtil;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,9 +21,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -107,19 +103,19 @@ public class ItemWand extends Item {
     {
         WorldOmega worldOmega = WorldOmega.get(worldIn);
         float amount = worldOmega.extractOmega(worldIn, playerIn.getPosition());
-        PlayerOmega playerOmega = PlayerProperties.getPlayerOmega(playerIn);
-        playerOmega.setOmega(playerOmega.getOmega() + amount);
+        playerIn.getCapability(PlayerProperties.PLAYER_OMEGA).ifPresent(playerOmega1 -> playerOmega1.setOmega(playerOmega1.getOmega() + amount));
     }
 
     private void fireSphere(World world, EntityPlayer player)
     {
-        PlayerOmega playerOmega = PlayerProperties.getPlayerOmega(player);
-        if (playerOmega.getOmega() >= 0.5) {
-            world.playSound(null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1F, 1F);
-            playerOmega.setOmega(playerOmega.getOmega() - 0.5F);
-            RayTraceUtil.Beam beam = new RayTraceUtil.Beam(world, player, 20);
-            spawnSphere(player, beam);
-        }
+        player.getCapability(PlayerProperties.PLAYER_OMEGA).ifPresent(playerOmega -> {
+            if (playerOmega.getOmega() >= 0.5) {
+                world.playSound(null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1F, 1F);
+                playerOmega.setOmega(playerOmega.getOmega() - 0.5F);
+                RayTraceUtil.Beam beam = new RayTraceUtil.Beam(world, player, 20);
+                spawnSphere(player, beam);
+            }
+        });
     }
 
     private void spawnSphere(EntityPlayer player, RayTraceUtil.Beam beam)
@@ -140,19 +136,22 @@ public class ItemWand extends Item {
 
     private void levitate(World world, EntityPlayer player)
     {
-        PlayerOmega playerOmega = PlayerProperties.getPlayerOmega(player);
-        if (playerOmega.getOmega() >= .1f) {
-            world.playSound(null, player.getPosition(), SoundEvents.ENTITY_ENDERPEARL_THROW, SoundCategory.NEUTRAL, 1.0f, 1.0f);
-            playerOmega.setOmega(playerOmega.getOmega() - .1f);
-            RayTraceUtil.Beam beam = new RayTraceUtil.Beam(world, player, 20);
-            RayTraceUtil.rayTrace(beam, entity -> {
-                if (entity instanceof EntityLivingBase) {
-                    ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 60, 1));
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-        }
+        player.getCapability(PlayerProperties.PLAYER_OMEGA).ifPresent(playerOmega -> {
+
+            if (playerOmega.getOmega() >= .1f) {
+                world.playSound(null, player.getPosition(), SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 1.0f, 1.0f);
+                playerOmega.setOmega(playerOmega.getOmega() - .1f);
+                RayTraceUtil.Beam beam = new RayTraceUtil.Beam(world, player, 20);
+                RayTraceUtil.rayTrace(beam, entity -> {
+                    if (entity instanceof EntityLivingBase) {
+                        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 60, 1));
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            }
+
+        });
     }
 }

@@ -157,7 +157,7 @@ public class WorldOmega extends WorldSavedData {
         for (EntityPlayer player : world.playerEntities) {
             float omegaStrength = getOmegaStrength(world, player.getPosition());
             float maxInfluence = getOmegaInfluence(world, player.getPosition());
-            PlayerOmega playerOmega = player.getCapability(PlayerProperties.PLAYER_OMEGA).ifPresent(playerOmega1 -> {
+            player.getCapability(PlayerProperties.PLAYER_OMEGA).ifPresent(playerOmega1 -> {
                 Messages.INSTANCE.sendTo(new PacketSendOmega(omegaStrength, maxInfluence, playerOmega1.getOmega()), ((EntityPlayerMP) player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             });
 

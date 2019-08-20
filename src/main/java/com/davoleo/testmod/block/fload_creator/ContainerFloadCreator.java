@@ -40,7 +40,7 @@ public class ContainerFloadCreator extends Container {
             {
                 int x = 10 + col * 18;
                 int y = row * 18 + 70;
-                this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, x, y));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, x, y));
             }
         }
 
@@ -49,18 +49,16 @@ public class ContainerFloadCreator extends Container {
         {
             int x = 10 + row * 18;
             int y = 58 + 70;
-            this.addSlotToContainer(new Slot(playerInventory, row, x, y));
+            this.addSlot(new Slot(playerInventory, row, x, y));
         }
     }
 
     private void addTESlots()
     {
-        IItemHandler handler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         int x = 10;
         int y = 26;
-
         int slotIndex = 0;
-        addSlotToContainer(new SlotItemHandler(handler,slotIndex, x, y));
+        this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(handler -> addSlot(new SlotItemHandler(handler, slotIndex, x, y)));
     }
 
     @Nonnull

@@ -1,13 +1,16 @@
 package com.davoleo.testmod.block.tank;
 
+import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
@@ -25,6 +28,10 @@ import javax.annotation.Nullable;
 public class TileTank extends TileEntity implements IRestorableTileEntity {
 
     public static final int MAX_SIZE = 10000; //10b = 10000mb
+
+    public TileTank() {
+        super(ModBlocks.TYPE_TANK);
+    }
 
     private FluidTank tank = new FluidTank(MAX_SIZE)
     {
@@ -58,28 +65,28 @@ public class TileTank extends TileEntity implements IRestorableTileEntity {
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
-        tank.readFromNBT(pkt.getNbtCompound().getCompoundTag("tank"));
+        tank.readFromNBT(pkt.getNbtCompound().getCompound("tank"));
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void read(NBTTagCompound compound)
     {
-        super.readFromNBT(compound);
+        super.read(compound);
         readRestorableFromNBT(compound);
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound write(NBTTagCompound compound)
     {
         writeRestorableToNBT(compound);
-        return super.writeToNBT(compound);
+        return super.write(compound);
     }
 
     @Override
     public void readRestorableFromNBT(NBTTagCompound compound)
     {
-        tank.readFromNBT(compound.getCompoundTag("tank"));
+        tank.readFromNBT(compound.getCompound("tank"));
     }
 
     @Override
@@ -95,20 +102,11 @@ public class TileTank extends TileEntity implements IRestorableTileEntity {
         return tank;
     }
 
+    @Nonnull
     @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return true;
-        return super.hasCapability(capability, facing);
-    }
-
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
-        return super.getCapability(capability, facing);
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
+        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return LazyOptional.of(() -> ((T) tank));
+        return super.getCapability(cap);
     }
 }

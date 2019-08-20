@@ -26,7 +26,7 @@ public class ContainerPedestal extends Container {
         addPlayerSlots(playerInventory);
 
         //Add pedestal inventory slot
-        addSlotToContainer(new SlotItemHandler(te.inventory, 0, 80, 35)
+        addSlot(new SlotItemHandler(te.inventory, 0, 80, 35)
         {
             @Override
             public void onSlotChanged()
@@ -44,14 +44,14 @@ public class ContainerPedestal extends Container {
         {
             for (int col=0; col < 9; col++)
             {
-                addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, 8 + col* 18, 84 + row * 18));
+                addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col* 18, 84 + row * 18));
             }
         }
 
         //Hotbar Slots
         for (int col = 0; col < 9; col++)
         {
-            addSlotToContainer(new Slot(playerInventory, col, 8+col*18, 142));
+            addSlot(new Slot(playerInventory, col, 8+col*18, 142));
         }
     }
 

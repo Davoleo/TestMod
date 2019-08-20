@@ -2,7 +2,6 @@ package com.davoleo.testmod.init;
 
 import com.davoleo.testmod.block.BlockCopper;
 import com.davoleo.testmod.block.BlockCornCrops;
-import com.davoleo.testmod.block.BlockFload;
 import com.davoleo.testmod.block.BlockOre;
 import com.davoleo.testmod.block.counter.BlockCounter;
 import com.davoleo.testmod.block.counter.TileEntityCounter;
@@ -52,11 +51,12 @@ public class ModBlocks {
     public static BlockCornCrops cornCrops = new BlockCornCrops();
 
     //Ores
-    public static BlockOre oreAngel = new BlockOre("angel_ore", EnumOreType.ORE_OVERWORLD, BlockOre.ORE_OVERWORLD);
-    public static BlockOre oreCopper = new BlockOre("copper_ore", new boolean[]{true, false, false}, 1);
-    public static BlockOre oreAluminum = new BlockOre("aluminum_ore", new boolean[]{true, false, false}, 1);
-    public static BlockOre oreNetherGold = new BlockOre("nether_gold_ore", new boolean[]{false, true, false}, 2);
-    public static BlockOre oreZephyrite = new BlockOre("zephyrite_ore", new boolean[]{false, false, true}, 3);
+    public static BlockOre oreAngel = new BlockOre("angel_ore", EnumOreType.ORE_OVERWORLD);
+
+    public static BlockOre oreCopper = new BlockOre("copper_ore", EnumOreType.ORE_OVERWORLD);
+    public static BlockOre oreAluminum = new BlockOre("aluminum_ore", EnumOreType.ORE_OVERWORLD);
+    public static BlockOre oreNetherGold = new BlockOre("nether_gold_ore", EnumOreType.ORE_NETHER);
+    public static BlockOre oreZephyrite = new BlockOre("zephyrite_ore", EnumOreType.ORE_END);
 
 //    Types
     public static TileEntityType<?> TYPE_FLOAD_CREATOR;
@@ -82,7 +82,7 @@ public class ModBlocks {
         registry.register(blockPedestal);
         registry.register(blockCounter);
 
-        registry.register(blockFload);
+        //registry.register(blockFload);
         registry.register(blockCopper);
 
         //Ores
@@ -92,7 +92,7 @@ public class ModBlocks {
     public static void registerTileEntities(IForgeRegistry<TileEntityType<?>> registry)
     {
         registry.registerAll(
-                TYPE_FAST_FURNACE TileEntityType.Builder.create(TileFastFurnace::new).build(null).setRegistryName(BlockFastFurnace.FAST_FURNACE),
+                TYPE_FAST_FURNACE = TileEntityType.Builder.create(TileFastFurnace::new).build(null).setRegistryName(BlockFastFurnace.FAST_FURNACE),
                 TYPE_FLOAD_CREATOR = TileEntityType.Builder.create(TileFloadCreator::new).build(null).setRegistryName(BlockFloadCreator.FLOAD_CREATOR),
                 TYPE_PUZZLE = TileEntityType.Builder.create(TilePuzzle::new).build(null).setRegistryName(BlockPuzzle.PUZZLE),
                 TYPE_TANK = TileEntityType.Builder.create(TileTank::new).build(null).setRegistryName(BlockTank.TANK),

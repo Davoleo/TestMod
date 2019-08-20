@@ -1,7 +1,9 @@
 package com.davoleo.testmod.block.counter;
 
+import com.davoleo.testmod.init.ModBlocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 
 import javax.annotation.Nonnull;
 
@@ -17,19 +19,23 @@ public class TileEntityCounter extends TileEntity {
 
     private int count;
 
+    public TileEntityCounter() {
+        super(ModBlocks.TYPE_COUNTER);
+    }
+
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound write(NBTTagCompound compound)
     {
-        compound.setInteger("count", count);
-        return super.writeToNBT(compound);
+        compound.setInt("count", count);
+        return super.write(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void read(NBTTagCompound compound)
     {
-        count = compound.getInteger("count");
-        super.readFromNBT(compound);
+        count = compound.getInt("count");
+        super.read(compound);
     }
 
     int getCount()

@@ -1,11 +1,8 @@
 package com.davoleo.testmod.item;
 
 import com.davoleo.testmod.TestMod;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*************************************************
  * Author: Davoleo
@@ -19,16 +16,8 @@ public class ItemCorn extends ItemFood {
 
     public ItemCorn()
     {
-        super(3, 0.6F, false);
-        setTranslationKey(TestMod.MODID + ".corn");
+        super(3, 0.6F, false, new Item.Properties().group(TestMod.testTab));
         setRegistryName(TestMod.MODID, "corn");
-        setCreativeTab(TestMod.testTab);
     }
 
-    @SideOnly(Side.CLIENT)
-    public void initModel()
-    {
-        assert getRegistryName() != null;
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-    }
 }

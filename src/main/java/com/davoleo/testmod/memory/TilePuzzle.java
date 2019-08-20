@@ -11,13 +11,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,6 +36,10 @@ public class TilePuzzle extends TileEntity implements ITickable {
     private int power = 0;
     private int timer = 0;
     private boolean solved = false;
+
+    public TilePuzzle() {
+        super(ModBlocks.TYPE_PUZZLE);
+    }
 
     // TODO: 17/08/2019 1.13 port
 //    @Override
@@ -347,7 +350,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
-        item = new ItemStack(pkt.getNbtCompound().getCompoundTag("item"));
+        item = ItemStack.read(pkt.getNbtCompound());
         solved = pkt.getNbtCompound().getBoolean("solved");
     }
 
@@ -355,7 +358,7 @@ public class TilePuzzle extends TileEntity implements ITickable {
     public void read(NBTTagCompound compound)
     {
         super.read(compound);
-        item = new ItemStack(compound.getCompoundTag("item"));
+        item = ItemStack.read(compound);
         power = compound.getInt("power");
         timer = compound.getInt("timer");
         solved = compound.getBoolean("solved");

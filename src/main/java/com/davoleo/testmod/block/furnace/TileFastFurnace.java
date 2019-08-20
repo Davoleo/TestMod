@@ -1,11 +1,13 @@
 package com.davoleo.testmod.block.furnace;
 
 import com.davoleo.testmod.config.FastFurnaceConfig;
+import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.recipe.custom.CustomRecipe;
 import com.davoleo.testmod.recipe.custom.CustomRecipeRegistry;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import com.davoleo.testmod.util.TestEnergyStorage;
+import com.google.gson.internal.LazilyParsedNumber;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,13 +17,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,6 +50,9 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
     private int clientProgress = -1;
     private int clientEnergy = -1;
 
+    public TileFastFurnace() {
+        super(ModBlocks.TYPE_FAST_FURNACE);
+    }
 
     private ItemStackHandler inputHandler = new ItemStackHandler(INPUT_SLOTS)
     {
@@ -131,7 +139,7 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
 
     boolean canInteractWith(EntityPlayer player)
     {
-        return !isInvalid() && player.getDistanceSq(pos.add(0.5,0.5,0.5)) <= 64;
+        return !isRemoved() && player.getDistanceSq(pos.add(0.5,0.5,0.5)) <= 64;
     }
 
     @Override
@@ -232,14 +240,14 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
     public NBTTagCompound getUpdateTag()
     {
         NBTTagCompound compound = super.getUpdateTag();
-        compound.setInteger("state", state.ordinal());
+        compound.setInt("state", state.ordinal());
         return compound;
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
     {
-        int stateIndex = pkt.getNbtCompound().getInteger("state");
+        int stateIndex = pkt.getNbtCompound().getInt("state");
 
         if (world.isRemote && stateIndex != state.ordinal())
         {
@@ -250,21 +258,23 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
 
     private TestEnergyStorage energyStorage = new TestEnergyStorage(FastFurnaceConfig.MAX_POWER, FastFurnaceConfig.RF_PER_TICK_INPUT);
 
+    @Nonnull
     @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (facing == null)
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(combinedHandler);
-            else if (facing == EnumFacing.UP)
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inputHandler);
-            else if (facing == EnumFacing.DOWN)
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(outputHandler);
-        }
-        if (capability == CapabilityEnergy.ENERGY)
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, EnumFacing facing) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
-            return CapabilityEnergy.ENERGY.cast(energyStorage);
+            if (facing == null)
+                return LazyOptional.of(() -> ((T) combinedHandler));
+            else if (facing == EnumFacing.UP)
+                return LazyOptional.of(() -> ((T) inputHandler));
+            else if (facing == EnumFacing.DOWN)
+                return LazyOptional.of(() -> ((T) outputHandler));
         }
-        return super.getCapability(capability, facing);
+
+        if (cap == CapabilityEnergy.ENERGY)
+            return LazyOptional.of(() -> ((T) energyStorage));
+
+        return super.getCapability(cap);
     }
 
     public void setState(FurnaceState state)

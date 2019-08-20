@@ -80,16 +80,19 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
             for (EnumFacing facing : EnumFacing.values())
             {
                 TileEntity tileEntity = world.getTileEntity(pos.offset(facing));
-                if (tileEntity != null && tileEntity.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))
+                if (tileEntity != null)
                 {
-                    IEnergyStorage handler = tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
-                    if (handler != null && handler.canReceive())
-                    {
-                        int accepted = handler.receiveEnergy(energyStorage.getEnergyStored(), false);
-                        energyStorage.consumePower(accepted);
-                        if (energyStorage.getEnergyStored() <= 0)
-                            break;
-                    }
+                    tileEntity.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite()).ifPresent(handler -> {
+
+                        if (handler != null && handler.canReceive())
+                        {
+                            int accepted = handler.receiveEnergy(energyStorage.getEnergyStored(), false);
+                            energyStorage.consumePower(accepted);
+                        }
+                    });
+
+                    if (energyStorage.getEnergyStored() <= 0)
+                        break;
                 }
             }
             markDirty();

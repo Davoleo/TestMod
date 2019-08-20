@@ -17,14 +17,7 @@ public class ItemBlockOre extends ItemBlock {
 
     public ItemBlockOre(Block block)
     {
-        super(block);
+        super(block, new ItemBlock.Properties().group(TestMod.testTab));
         setRegistryName(TestMod.MODID, ((BlockOre) block).getName());
-        setHasSubtypes(true);
-    }
-
-    @Override
-    public int getMetadata(int damage)
-    {
-        return damage;
     }
 }

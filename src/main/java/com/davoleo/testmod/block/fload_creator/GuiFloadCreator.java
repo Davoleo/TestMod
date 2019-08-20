@@ -36,9 +36,9 @@ public class GuiFloadCreator extends GuiContainer {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(mouseX, mouseY, partialTicks);
         FluidStackRenderer.renderFluidStack(new FluidStack(ModFluids.fload, 1000), guiLeft + 30, guiTop + 26);
         renderHoveredToolTip(mouseX, mouseY);
     }

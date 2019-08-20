@@ -2,7 +2,7 @@ package com.davoleo.testmod.block.counter;
 
 import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTEBase;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,9 +12,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /*************************************************
@@ -25,50 +25,50 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class BlockCounter extends BlockTEBase implements ITileEntityProvider {
+public class BlockCounter extends BlockTEBase {
 
     public static final ResourceLocation COUNTER = new ResourceLocation(TestMod.MODID, "counter");
 
     public BlockCounter()
     {
-        super(Material.ANVIL);
+        super(Properties
+                .create(Material.GLASS)
+                .hardnessAndResistance(1F)
+                .sound(SoundType.METAL)
+        );
         setRegistryName(COUNTER);
-        setTranslationKey(COUNTER.getNamespace() + "." + COUNTER.getPath());
-        setHarvestLevel("pickaxe", 1);
-        setHardness(3);
+        //setHarvestLevel("pickaxe", 1); todo 1.13
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
+    public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntity te = worldIn.getTileEntity(pos);
 
         if (!worldIn.isRemote && te instanceof TileEntityCounter)
         {
             TileEntityCounter counter = (TileEntityCounter) te;
-            if (facing == EnumFacing.DOWN)
+            if (side == EnumFacing.DOWN)
             {
-                if (playerIn.isSneaking())
+                if (player.isSneaking())
                     counter.decrementCountEx();
                 else
                     counter.decrementCount();
             }
-            else if (facing == EnumFacing.UP)
+            else if (side == EnumFacing.UP)
             {
-                if (playerIn.isSneaking())
+                if (player.isSneaking())
                     counter.incrementCountEx();
                 else
                     counter.incrementCount();
             }
-            playerIn.sendStatusMessage(new TextComponentString("Counter number: " + counter.getCount()), false);
+            player.sendStatusMessage(new TextComponentString("Counter number: " + counter.getCount()), false);
         }
         return true;
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta)
-    {
+    public TileEntity createTileEntity(IBlockState state, IBlockReader world) {
         return new TileEntityCounter();
     }
 }

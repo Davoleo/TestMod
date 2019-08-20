@@ -3,10 +3,8 @@ package com.davoleo.testmod.network;
 import com.davoleo.testmod.block.pedestal.TileEntityPedestal;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import java.nio.channels.NetworkChannel;
 import java.util.function.Supplier;
 
 /*************************************************
@@ -21,6 +19,11 @@ public class PacketRequestUpdatePedestal {
 
     private BlockPos pos;
     private int dimension;
+
+    public PacketRequestUpdatePedestal(TileEntityPedestal te) {
+        this.pos = te.getPos();
+        this.dimension = te.getWorld().getDimension().getType().getId();
+    }
 
     public PacketRequestUpdatePedestal(ByteBuf buf)
     {
