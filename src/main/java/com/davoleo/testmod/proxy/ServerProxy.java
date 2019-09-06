@@ -1,6 +1,7 @@
 package com.davoleo.testmod.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /*************************************************
@@ -20,5 +21,10 @@ public class ServerProxy implements IProxy {
     @Override
     public EntityPlayer getClientPlayer() {
         throw new IllegalStateException("Can't get the client player Server-Side");
+    }
+
+    @Override
+    public World getClientWorld() {
+        throw new IllegalStateException("Can't get the client world Server-Side");
     }
 }

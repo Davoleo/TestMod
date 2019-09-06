@@ -1,11 +1,14 @@
 package com.davoleo.testmod.init;
 
+import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.util.IGuiTileEntity;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.network.FMLPlayMessages;
 
 import javax.annotation.Nullable;
 
@@ -17,28 +20,19 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class GuiHandler implements IGuiHandler {
-
-
-    @Nullable
-    @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        BlockPos pos = new BlockPos(x, y, z);
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof IGuiTileEntity) {
-            return ((IGuiTileEntity) te).createContainer(player);
-        }
-        return null;
-    }
+public class GuiHandler {
 
     @Nullable
-    @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        BlockPos pos = new BlockPos(x, y, z);
+    public static GuiScreen getClientGuiElement(FMLPlayMessages.OpenContainer container) {
+        PacketBuffer buf  = container.getAdditionalData();
+        BlockPos pos = buf.readBlockPos();
+        World world = TestMod.proxy.getClientWorld();
+        EntityPlayer player = TestMod.proxy.getClientPlayer();
         TileEntity te = world.getTileEntity(pos);
-        if (te instanceof IGuiTileEntity) {
+
+        if (te instanceof IGuiTileEntity)
             return ((IGuiTileEntity) te).createGui(player);
-        }
+
         return null;
     }
 }

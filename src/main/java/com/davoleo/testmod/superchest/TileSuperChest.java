@@ -6,20 +6,14 @@ import com.davoleo.testmod.util.IRestorableTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /*************************************************
  * Author: Davoleo
@@ -94,12 +88,6 @@ public class TileSuperChest extends TileEntity implements IRestorableTileEntity,
     public void writeRestorableToNBT(NBTTagCompound compound)
     {
         compound.setTag("items", itemHandler.serializeNBT());
-    }
-
-    @Override
-    public Container createContainer(EntityPlayer player)
-    {
-        return new ContainerSuperChest(player.inventory, this);
     }
 
     @Override

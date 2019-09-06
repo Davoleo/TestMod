@@ -1,29 +1,26 @@
 package com.davoleo.testmod.block.generator;
 
-import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.config.GeneratorConfig;
 import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import com.davoleo.testmod.util.TestEnergyStorage;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.model.animation.CapabilityAnimation;
-import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,7 +34,7 @@ import java.util.List;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class TileGenerator extends TileEntity implements ITickable, IRestorableTileEntity, IGuiTileEntity {
+public class TileGenerator extends TileEntity implements ITickable, IRestorableTileEntity, IGuiTileEntity, IInteractionObject {
 
     private int trackTimer;
     private AxisAlignedBB trackingBox;
@@ -179,15 +176,38 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
     }
 
     @Override
-    public Container createContainer(EntityPlayer player)
-    {
-        return new ContainerGenerator(player.inventory, this);
-    }
-
-    @Override
     public GuiContainer createGui(EntityPlayer player)
     {
         return new GuiGenerator(this, new ContainerGenerator(player.inventory, this));
+    }
+
+    @Nonnull
+    @Override
+    public Container createContainer(@Nonnull InventoryPlayer playerInventory, @Nonnull EntityPlayer playerIn) {
+        return new ContainerGenerator(playerInventory, this);
+    }
+
+    @Nonnull
+    @Override
+    public String getGuiID() {
+        return "testmod:generator";
+    }
+
+    @Nonnull
+    @Override
+    public ITextComponent getName() {
+        return new TextComponentString("Generator GUI");
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public ITextComponent getCustomName() {
+        return null;
     }
 
     protected boolean canInteractWith(EntityPlayer player)

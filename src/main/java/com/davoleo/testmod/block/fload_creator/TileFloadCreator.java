@@ -8,24 +8,27 @@ import net.minecraft.block.BlockFlowingFluid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /*************************************************
  * Author: Davoleo
@@ -35,7 +38,7 @@ import javax.annotation.Nonnull;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class TileFloadCreator extends TileEntity implements ITickable, IRestorableTileEntity, IGuiTileEntity {
+public class TileFloadCreator extends TileEntity implements ITickable, IRestorableTileEntity, IGuiTileEntity, IInteractionObject {
 
     public static final int INPUT_SLOTS = 1;
 
@@ -128,9 +131,33 @@ public class TileFloadCreator extends TileEntity implements ITickable, IRestorab
         return !isRemoved() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
+    @Nonnull
     @Override
-    public Container createContainer(EntityPlayer player) {
-        return new ContainerFloadCreator(player.inventory, this);
+    public Container createContainer(@Nonnull InventoryPlayer playerInventory, @Nonnull EntityPlayer playerIn) {
+        return new ContainerFloadCreator(playerInventory, this);
+    }
+
+    @Nonnull
+    @Override
+    public String getGuiID() {
+        return "testmod:fload_creator";
+    }
+
+    @Nonnull
+    @Override
+    public ITextComponent getName() {
+        return new TextComponentString("Fload Creator GUI");
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public ITextComponent getCustomName() {
+        return null;
     }
 
     @Override

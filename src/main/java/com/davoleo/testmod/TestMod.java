@@ -1,10 +1,7 @@
 package com.davoleo.testmod;
 
 import com.davoleo.testmod.block.generator.DamageTracker;
-import com.davoleo.testmod.init.ModBlocks;
-import com.davoleo.testmod.init.ModEntities;
-import com.davoleo.testmod.init.ModFluids;
-import com.davoleo.testmod.init.ModItems;
+import com.davoleo.testmod.init.*;
 import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.omega.OmegaTickHandler;
 import com.davoleo.testmod.omega.player.PlayerOmega;
@@ -26,9 +23,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
@@ -47,6 +45,7 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
+@SuppressWarnings("unused")
 @Mod(TestMod.MODID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestMod {
@@ -59,12 +58,13 @@ public class TestMod {
 
     public TestMod() {
         FluidRegistry.enableUniversalBucket();
+
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
     }
 
     public static TestTab testTab = new TestTab();
-    //TODO 1.13 Port
-    //public static final ItemArmor.ArmorMaterial COPPER_ARMOR_MATERIAL = EnumHelper.addArmorMaterial("COPPER", TestMod.MODID + ":copper", 15, new int[]{2,5,6,2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON , 0.0F);
 
     public static final Logger logger = LogManager.getLogger();
 
@@ -97,8 +97,6 @@ public class TestMod {
         ModFluids.init();
 
         //old Init
-        //TODO 1.13 Port
-        //NetworkRegistry.INSTANCE.registerGuiHandler(TestMod.instance, new GuiHandler());
         //Oredict initialization
         OreDictHandler.initOreDictEntries();
 

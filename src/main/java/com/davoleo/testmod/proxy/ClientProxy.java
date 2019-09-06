@@ -1,14 +1,13 @@
 package com.davoleo.testmod.proxy;
 
 import com.davoleo.testmod.TestMod;
-import com.davoleo.testmod.init.ModBlocks;
 import com.davoleo.testmod.init.ModEntities;
-import com.davoleo.testmod.init.ModItems;
 import com.davoleo.testmod.input.KeyBindings;
 import com.davoleo.testmod.input.KeyInputHandler;
 import com.davoleo.testmod.render.OverlayRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.obj.OBJLoader;
@@ -48,6 +47,11 @@ public class ClientProxy implements IProxy {
     @Override
     public EntityPlayer getClientPlayer() {
         return Minecraft.getInstance().player;
+    }
+
+    @Override
+    public World getClientWorld() {
+        return Minecraft.getInstance().world;
     }
 
     @SubscribeEvent

@@ -2,7 +2,6 @@ package com.davoleo.testmod.util;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 
 /*************************************************
  * Author: Davoleo
@@ -14,7 +13,6 @@ import net.minecraft.inventory.Container;
 
 public interface IGuiTileEntity {
 
-    Container createContainer(EntityPlayer player);
-
     GuiContainer createGui(EntityPlayer player);
+
 }

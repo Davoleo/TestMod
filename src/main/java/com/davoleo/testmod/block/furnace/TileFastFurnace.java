@@ -7,26 +7,27 @@ import com.davoleo.testmod.recipe.custom.CustomRecipeRegistry;
 import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import com.davoleo.testmod.util.TestEnergyStorage;
-import com.google.gson.internal.LazilyParsedNumber;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
-import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,7 +40,7 @@ import javax.annotation.Nullable;
  * Copyright - © - Davoleo - 2018
  **************************************************/
 
-public class TileFastFurnace extends TileEntity implements ITickable, IRestorableTileEntity, IGuiTileEntity {
+public class TileFastFurnace extends TileEntity implements ITickable, IRestorableTileEntity, IInteractionObject, IGuiTileEntity {
 
     public static final int INPUT_SLOTS = 3;
     public static final int OUTPUT_SLOTS = 3;
@@ -216,10 +217,33 @@ public class TileFastFurnace extends TileEntity implements ITickable, IRestorabl
         }
     }
 
+    @Nonnull
     @Override
-    public Container createContainer(EntityPlayer player)
-    {
-        return new ContainerFastFurnace(player.inventory,  this);
+    public Container createContainer(@Nonnull InventoryPlayer playerInventory, @Nonnull EntityPlayer playerIn) {
+        return new ContainerFastFurnace(playerInventory,  this);
+    }
+
+    @Nonnull
+    @Override
+    public String getGuiID() {
+        return "testmod:fast_furnace";
+    }
+
+    @Nonnull
+    @Override
+    public ITextComponent getName() {
+        return new TextComponentString("Fast Furnace GUI");
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public ITextComponent getCustomName() {
+        return null;
     }
 
     @Override

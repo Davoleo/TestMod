@@ -1,14 +1,13 @@
 package com.davoleo.testmod.block;
 
-import com.davoleo.testmod.util.IGuiTileEntity;
 import com.davoleo.testmod.util.IRestorableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,7 +17,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
@@ -38,8 +39,6 @@ import java.util.stream.Collectors;
 
 public class BlockTEBase extends Block {
 
-    private int id = 0;
-
     public BlockTEBase(Block.Properties properties)
     {
         super(properties);
@@ -57,20 +56,21 @@ public class BlockTEBase extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        //Se client side - non si fa niente
-        if(worldIn.isRemote)
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+
+        if (world.isRemote)
             return true;
 
-        TileEntity te = worldIn.getTileEntity(pos);
-
-        if (!(te instanceof IGuiTileEntity))
+        TileEntity te = world.getTileEntity(pos);
+        if (!(te instanceof IInteractionObject))
             return false;
 
-        //TODO 1.13 Port
-        //playerIn.openGui(TestMod.instance, id, worldIn, pos.getX(), pos.getY(), pos.getZ());
-        id++;
+        NetworkHooks.openGui((EntityPlayerMP) player, (IInteractionObject)te, buf -> buf.writeBlockPos(pos));
         return true;
     }
 

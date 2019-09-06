@@ -13,7 +13,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
@@ -30,7 +29,7 @@ public class ContainerFastFurnace extends Container implements IMachineStateCont
 
     private TileFastFurnace te;
 
-    private static final int PROGRESS_ID = 0;
+    //private static final int PROGRESS_ID = 0;
 
     public ContainerFastFurnace(IInventory playerInventory, TileFastFurnace te)
     {

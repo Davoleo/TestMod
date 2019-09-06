@@ -8,10 +8,14 @@ import com.davoleo.testmod.util.IGuiTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -19,6 +23,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /*************************************************
  * Author: Davoleo
@@ -28,7 +33,7 @@ import javax.annotation.Nonnull;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class TileEntityPedestal extends TileEntity implements IGuiTileEntity {
+public class TileEntityPedestal extends TileEntity implements IGuiTileEntity, IInteractionObject {
 
     public TileEntityPedestal() {
         super(ModBlocks.TYPE_PEDESTAL);
@@ -90,15 +95,38 @@ public class TileEntityPedestal extends TileEntity implements IGuiTileEntity {
     }
 
     @Override
-    public Container createContainer(EntityPlayer player)
+    public GuiContainer createGui(EntityPlayer player)
     {
-        return new ContainerPedestal(player.inventory, this);
+        return new GuiPedestal(new ContainerPedestal(player.inventory, this));
+    }
+
+    @Nonnull
+    @Override
+    public Container createContainer(@Nonnull InventoryPlayer playerInventory, @Nonnull EntityPlayer playerIn) {
+        return new ContainerPedestal(playerInventory, this);
+    }
+
+    @Nonnull
+    @Override
+    public String getGuiID() {
+        return "testmod:pedestal";
+    }
+
+    @Nonnull
+    @Override
+    public ITextComponent getName() {
+        return new TextComponentString("Pedestal GUI");
     }
 
     @Override
-    public GuiContainer createGui(EntityPlayer player)
-    {
-        return new GuiPedestal(createContainer(player));
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public ITextComponent getCustomName() {
+        return null;
     }
 }
 

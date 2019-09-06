@@ -23,8 +23,6 @@ import com.davoleo.testmod.superchest.TileSuperChestPart;
 import com.davoleo.testmod.world.EnumOreType;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /*************************************************
@@ -102,25 +100,4 @@ public class ModBlocks {
                 TYPE_PEDESTAL = TileEntityType.Builder.create(TileEntityCounter::new).build(null).setRegistryName(BlockPedestal.PEDESTAL)
         );
     }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void initModels()
-    {
-//        blockFastFurnace.initModel();
-//        blockGenerator.initModel();
-//        blockFloadCreator.initModel();
-//        blockPuzzle.initModel();
-//        blockFload.initModel();
-//        blockTank.initModel();
-//        blockSuperChest.initModel();
-//        blockSuperChestPart.initModel();
-//        blockCopper.initModel();
-//        oreAngel.initModel();
-//        oreCopper.initModel();
-//        oreAluminum.initModel();
-//        oreNetherGold.initModel();
-//        oreZephyrite.initModel();
-//        blockPedestal.initModel();
-    }
-
 }

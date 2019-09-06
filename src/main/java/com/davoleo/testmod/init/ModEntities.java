@@ -26,8 +26,6 @@ public class ModEntities {
 
     public static void registerEntities(IForgeRegistry<EntityType<?>> registry)
     {
-        int id = 1;
-
         TYPE_GUARD = EntityType.Builder.create(EntityGuard.class, EntityGuard::new).build("testmod_guard");
         TYPE_GUARD.setRegistryName(TestMod.MODID, "testmod_guard");
         registry.register(TYPE_GUARD);
