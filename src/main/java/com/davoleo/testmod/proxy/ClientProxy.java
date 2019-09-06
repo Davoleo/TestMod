@@ -10,8 +10,10 @@ import com.davoleo.testmod.render.OverlayRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -40,13 +42,18 @@ public class ClientProxy implements IProxy {
         //MEybe not needed anymore TODO 1.13
         //ModBlocks.initModels();
         //ModItems.initModels();
-        //ModEntities.initModels();
 
     }
 
     @Override
     public EntityPlayer getClientPlayer() {
         return Minecraft.getInstance().player;
+    }
+
+    @SubscribeEvent
+    public static void registerModels (ModelRegistryEvent event)
+    {
+        ModEntities.initModels();
     }
 
     //      TODO 1.13 Port

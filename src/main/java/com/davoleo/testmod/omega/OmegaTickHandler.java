@@ -19,10 +19,11 @@ public class OmegaTickHandler {
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event)
     {
-        if (event.phase == TickEvent.Phase.START)
-            return;
-        World world = event.world;
-        WorldOmega.get(world).tick(world);
+        // TODO: 06/09/2019 1.13 Port
+//        if (event.phase == TickEvent.Phase.START)
+//            return;
+//        World world = event.world;
+//        WorldOmega.get(world).tick(world);
     }
 
 }

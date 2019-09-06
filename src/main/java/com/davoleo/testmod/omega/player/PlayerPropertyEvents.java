@@ -25,7 +25,7 @@ public class PlayerPropertyEvents {
     {
         if (event.getObject() instanceof EntityPlayer) {
             if (!event.getObject().getCapability(PlayerProperties.PLAYER_OMEGA).isPresent())
-                event.addCapability(new ResourceLocation(TestMod.MODID, "Omega"), new PropertiesDispatcher());
+                event.addCapability(new ResourceLocation(TestMod.MODID, "omega"), new PropertiesDispatcher());
         }
     }
 
