@@ -4,10 +4,8 @@ import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.config.OreGenConfig;
 import com.davoleo.testmod.init.ModBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -42,25 +40,25 @@ public class OreGenerator implements IWorldGenerator {
 
     public void generateWorld(Random random, int chunkX, int chunkZ, World world, boolean newGen)
     {
-        if (!newGen && !OreGenConfig.RETROGEN)
+        if (!newGen && !OreGenConfig.RETROGEN.get())
             return;
         if (world.getDimension().getType() == DimensionType.OVERWORLD) {
-            if (OreGenConfig.GENERATE_OVERWORLD) {
-                addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
-                addOreSpawn(ModBlocks.oreAluminum, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
-                addOreSpawn(ModBlocks.oreCopper, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+            if (OreGenConfig.GENERATE_OVERWORLD.get()) {
+                addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE.get(), OreGenConfig.MAX_VEIN_SIZE.get(), OreGenConfig.SPAWN_CHANCES.get(), OreGenConfig.MIN_Y.get(), OreGenConfig.MAX_Y.get());
+                addOreSpawn(ModBlocks.oreAluminum, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE.get(), OreGenConfig.MAX_VEIN_SIZE.get(), OreGenConfig.SPAWN_CHANCES.get(), OreGenConfig.MIN_Y.get(), OreGenConfig.MAX_Y.get());
+                addOreSpawn(ModBlocks.oreCopper, (byte) EnumOreType.ORE_OVERWORLD.ordinal(), Blocks.STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE.get(), OreGenConfig.MAX_VEIN_SIZE.get(), OreGenConfig.SPAWN_CHANCES.get(), OreGenConfig.MIN_Y.get(), OreGenConfig.MAX_Y.get());
             }
         } else
         if (world.getDimension().getType() == DimensionType.NETHER) {
-            if (OreGenConfig.GENERATE_NETHER) {
-                addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
-                addOreSpawn(ModBlocks.oreNetherGold, (byte) EnumOreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+            if (OreGenConfig.GENERATE_NETHER.get()) {
+                addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE.get(), OreGenConfig.MAX_VEIN_SIZE.get(), OreGenConfig.SPAWN_CHANCES.get(), OreGenConfig.MIN_Y.get(), OreGenConfig.MAX_Y.get());
+                addOreSpawn(ModBlocks.oreNetherGold, (byte) EnumOreType.ORE_NETHER.ordinal(), Blocks.NETHERRACK, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE.get(), OreGenConfig.MAX_VEIN_SIZE.get(), OreGenConfig.SPAWN_CHANCES.get(), OreGenConfig.MIN_Y.get(), OreGenConfig.MAX_Y.get());
             }
         } else
         if (world.getDimension().getType() == DimensionType.THE_END) {
-            if (OreGenConfig.GENERATE_END) {
-                addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
-                addOreSpawn(ModBlocks.oreZephyrite, (byte) EnumOreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE, OreGenConfig.MAX_VEIN_SIZE, OreGenConfig.SPAWN_CHANCES, OreGenConfig.MIN_Y, OreGenConfig.MAX_Y);
+            if (OreGenConfig.GENERATE_END.get()) {
+                addOreSpawn(ModBlocks.oreAngel, (byte) EnumOreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE.get(), OreGenConfig.MAX_VEIN_SIZE.get(), OreGenConfig.SPAWN_CHANCES.get(), OreGenConfig.MIN_Y.get(), OreGenConfig.MAX_Y.get());
+                addOreSpawn(ModBlocks.oreZephyrite, (byte) EnumOreType.ORE_END.ordinal(), Blocks.END_STONE, world, random, chunkX * 16, chunkZ * 16, OreGenConfig.MIN_VEIN_SIZE.get(), OreGenConfig.MAX_VEIN_SIZE.get(), OreGenConfig.SPAWN_CHANCES.get(), OreGenConfig.MIN_Y.get(), OreGenConfig.MAX_Y.get());
             }
         }
 
@@ -104,7 +102,7 @@ public class OreGenerator implements IWorldGenerator {
             boolean generated = false;
             if (generated)
             {
-                if (OreGenConfig.VERBOSE)
+                if (OreGenConfig.VERBOSE.get())
                 {
                     TestMod.logger.log(Level.DEBUG, "Queuing Retrogen for chunk: " + coordinates.toString() + ".");
                 }
@@ -112,7 +110,7 @@ public class OreGenerator implements IWorldGenerator {
             }
         }
         else
-            regen = OreGenConfig.RETROGEN;
+            regen = OreGenConfig.RETROGEN.get();
 
         if (regen)
         {

@@ -1,7 +1,6 @@
 package com.davoleo.testmod.config;
 
-//import com.davoleo.testmod.TestMod;
-//import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 /*************************************************
  * Author: Davoleo
@@ -11,17 +10,29 @@ package com.davoleo.testmod.config;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-//@net.minecraftforge.common.config.Config(modid = TestMod.MODID, category = "fast_furnace")
 public class FastFurnaceConfig {
 
-//    @Config.Comment(value = "Number of ticks to smelt one item")
-//    @Config.RangeInt(min = 1)
-    public static int MAX_PROGRESS = 40;
-//    @Config.Comment(value = "Fast furnace internal power storage size")
-    public static int MAX_POWER = 100000;
+    public static ForgeConfigSpec.IntValue MAX_PROGRESS;
+    public static ForgeConfigSpec.IntValue MAX_POWER;
+    public static ForgeConfigSpec.IntValue RF_PER_TICK_INPUT;
+    public static ForgeConfigSpec.IntValue RF_PER_TICK;
 
-//    @Config.Comment(value = "Maximum rate at which the furnace can receive power")
-    public static int RF_PER_TICK_INPUT = 100;
-//    @Config.Comment(value = "How much per tick does the furnace consume while active")
-    public static int RF_PER_TICK = 20;
+    public static void init(final ForgeConfigSpec.Builder SERVER_BUILDER, final ForgeConfigSpec.Builder CLIENT_BUILDER) {
+        SERVER_BUILDER.comment("Fast Furnace");
+        //CLIENT_BUILDER.comment("Fast Furnace");
+
+        MAX_PROGRESS = SERVER_BUILDER
+                .comment("Number of ticks to smelt one item")
+                .defineInRange("fast_furnace.maxProgress", 40, 1, 1000000000);
+        MAX_POWER = SERVER_BUILDER
+                .comment("Fast furnace internal power storage size")
+                .defineInRange("fast_furnace.maxPower", 100000,  1, 1000000000);
+        RF_PER_TICK_INPUT = SERVER_BUILDER
+                .comment("Maximum rate at which the furnace can receive power")
+                .defineInRange("fast_furnace.rfPerTickInput", 100, 1, 1000000000);
+        RF_PER_TICK = SERVER_BUILDER
+                .comment("How much per tick does the furnace consume while active")
+                .defineInRange("fast_furnace.rfPerTick", 20,  1, 1000000000);
+    }
+
 }

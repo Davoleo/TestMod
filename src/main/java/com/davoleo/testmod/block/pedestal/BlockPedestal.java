@@ -4,7 +4,6 @@ import com.davoleo.testmod.TestMod;
 import com.davoleo.testmod.block.BlockTEBase;
 import com.davoleo.testmod.config.PedestalConfig;
 import com.davoleo.testmod.util.Utils;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -20,9 +19,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /*************************************************
@@ -68,7 +65,7 @@ public class BlockPedestal extends BlockTEBase {
                     tile.markDirty();
                 } else
                 {
-                    if (PedestalConfig.GUI) {
+                    if (PedestalConfig.GUI.get()) {
                         //player.openGui(TestMod.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
                     }
                     else

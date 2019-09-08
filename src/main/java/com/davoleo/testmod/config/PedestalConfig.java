@@ -1,7 +1,6 @@
 package com.davoleo.testmod.config;
 
-//import com.davoleo.testmod.TestMod;
-//import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 /*************************************************
  * Author: Davoleo
@@ -11,10 +10,17 @@ package com.davoleo.testmod.config;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-//@Config(modid = TestMod.MODID, category = "pedestal")
 public class PedestalConfig {
 
-//    @Config.Comment("When set to false the pedestal has no GUI")
-    public static boolean GUI = true;
+    public static ForgeConfigSpec.BooleanValue GUI;
+
+    public static void init(final ForgeConfigSpec.Builder SERVER_BUILDER, final ForgeConfigSpec.Builder CLIENT_BUILDER) {
+        SERVER_BUILDER.comment("Pedestal");
+        //CLIENT_BUILDER.comment("Pedestal");
+
+        GUI = SERVER_BUILDER
+                .comment("When set to false the pedestal has no GUI")
+                .define("pedestal.GUI", true);
+    }
 
 }

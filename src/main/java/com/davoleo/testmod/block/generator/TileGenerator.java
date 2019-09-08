@@ -51,7 +51,7 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
     }
     //----------------------------------------------------------------------------------------------------------
 
-    private TestEnergyStorage energyStorage = new TestEnergyStorage(GeneratorConfig.MAX_POWER, 0);
+    private TestEnergyStorage energyStorage = new TestEnergyStorage(GeneratorConfig.MAX_POWER.get(), 0);
 
     @Override
     public void tick()
@@ -134,7 +134,7 @@ public class TileGenerator extends TileEntity implements ITickable, IRestorableT
     public void senseDamage(EntityLivingBase entity, float amount)
     {
         if (getTrackingBox().contains(entity.getPositionVector()))
-            energyStorage.generatePower((int) (amount * GeneratorConfig.POWER_DAMAGE_FACTOR));
+            energyStorage.generatePower((int) (amount * GeneratorConfig.POWER_DAMAGE_FACTOR.get()));
     }
 
     //----------------------------------------------------------------------------------------------------------

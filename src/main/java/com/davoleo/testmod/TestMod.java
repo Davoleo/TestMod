@@ -1,6 +1,7 @@
 package com.davoleo.testmod;
 
 import com.davoleo.testmod.block.generator.DamageTracker;
+import com.davoleo.testmod.config.Config;
 import com.davoleo.testmod.init.*;
 import com.davoleo.testmod.network.Messages;
 import com.davoleo.testmod.omega.OmegaTickHandler;
@@ -28,10 +29,12 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,9 +62,15 @@ public class TestMod {
     public TestMod() {
         FluidRegistry.enableUniversalBucket();
 
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_CONFIG);
+
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
+
+        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("testmod-client.toml"));
+        Config.loadConfig(Config.SERVER_CONFIG, FMLPaths.CONFIGDIR.get().resolve("testmod-server.toml"));
     }
 
     public static TestTab testTab = new TestTab();
