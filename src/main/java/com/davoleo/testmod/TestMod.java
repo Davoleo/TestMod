@@ -35,10 +35,10 @@ import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 /*************************************************
  * Author: Davoleo
@@ -75,7 +75,7 @@ public class TestMod {
 
     public static TestTab testTab = new TestTab();
 
-    public static final Logger logger = LogManager.getLogManager().getLogger(MODID);
+    public static final Logger logger = LogManager.getLogger();
 
     //Right after the registry events are fired
     private void setup(final FMLCommonSetupEvent event)
