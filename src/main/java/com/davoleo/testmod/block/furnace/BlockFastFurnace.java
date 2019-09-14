@@ -10,7 +10,6 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -22,6 +21,8 @@ import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.List;
+
+import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
 /*************************************************
  * Author: Davoleo
@@ -35,7 +36,6 @@ public class BlockFastFurnace extends BlockTEBase {
 
      public static final ResourceLocation FAST_FURNACE = new ResourceLocation(TestMod.MODID, "fast_furnace");
 
-     public static final DirectionProperty FACING = DirectionProperty.create("facing", EnumFacing.values());
      public static final EnumProperty<FurnaceState> STATE = EnumProperty.create("state", FurnaceState.class);
 
     public BlockFastFurnace()
@@ -49,7 +49,7 @@ public class BlockFastFurnace extends BlockTEBase {
         //TODO 1.13 port
         //setHarvestLevel("pickaxe", 1);
 
-        setDefaultState(getStateContainer().getBaseState().with(FACING, EnumFacing.NORTH));
+        setDefaultState(getStateContainer().getBaseState().with(HORIZONTAL_FACING, EnumFacing.NORTH));
     }
 
     @Nullable
@@ -89,7 +89,7 @@ public class BlockFastFurnace extends BlockTEBase {
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
     {
-        builder.add(FACING).add(STATE);
+        builder.add(HORIZONTAL_FACING).add(STATE);
     }
 
     @Nullable
@@ -97,6 +97,6 @@ public class BlockFastFurnace extends BlockTEBase {
     public IBlockState getStateForPlacement(BlockItemUseContext context)
     {
         //TODO 1.13 port
-        return this.getDefaultState().with(FACING, EnumFacing.getFacingFromVector(context.getHitX(), context.getHitY(), context.getHitZ()));
+        return this.getDefaultState().with(HORIZONTAL_FACING, EnumFacing.getFacingFromVector(context.getHitX(), context.getHitY(), context.getHitZ()));
     }
 }

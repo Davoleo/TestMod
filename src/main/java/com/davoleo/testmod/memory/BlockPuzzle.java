@@ -8,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -22,6 +21,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import javax.annotation.Nullable;
 
+import static net.minecraft.state.properties.BlockStateProperties.FACING;
+
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 25/02/2019 / 19:28
@@ -31,8 +32,6 @@ import javax.annotation.Nullable;
  **************************************************/
 
 public class BlockPuzzle extends BlockTEBase {
-
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", EnumFacing.values());
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
     public static final ResourceLocation PUZZLE = new ResourceLocation(TestMod.MODID, "puzzle");

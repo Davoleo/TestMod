@@ -9,7 +9,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -26,6 +25,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static net.minecraft.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 06/02/2019 / 17:37
@@ -36,8 +37,6 @@ import java.util.List;
 
 public class BlockGenerator extends BlockTEBase {
 
-    public static final DirectionProperty FACING_HORIZONTAL = DirectionProperty.create("facing", EnumFacing.Plane.HORIZONTAL);
-
     public static final ResourceLocation GENERATOR = new ResourceLocation(TestMod.MODID, "generator");
 
     public BlockGenerator()
@@ -47,7 +46,7 @@ public class BlockGenerator extends BlockTEBase {
         //TODO 1.13 port
         //setHarvestLevel("pickaxe", 1);
 
-        setDefaultState(getStateContainer().getBaseState().with(FACING_HORIZONTAL, EnumFacing.NORTH));
+        setDefaultState(getStateContainer().getBaseState().with(HORIZONTAL_FACING, EnumFacing.NORTH));
     }
 
     @Override
@@ -72,13 +71,13 @@ public class BlockGenerator extends BlockTEBase {
     @Override
     public IBlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getDefaultState().with(FACING_HORIZONTAL, context.getPlayer().getHorizontalFacing().getOpposite());
+        return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlayer().getHorizontalFacing().getOpposite());
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
     {
-        builder.add(FACING_HORIZONTAL);
+        builder.add(HORIZONTAL_FACING);
     }
 
     //TODO 1.13 Port
@@ -87,7 +86,7 @@ public class BlockGenerator extends BlockTEBase {
 //    protected BlockStateContainer createBlockState()
 //    {
 //        return new ExtendedBlockState(this,
-//                new IProperty[]{Properties.StaticProperty, FACING_HORIZONTAL},
+//                new IProperty[]{Properties.StaticProperty, HORIZONTAL_FACING},
 //                new IUnlistedProperty[]{Properties.AnimationProperty});
 //    }
 
