@@ -12,7 +12,7 @@ import com.davoleo.testmod.proxy.IProxy;
 import com.davoleo.testmod.proxy.ServerProxy;
 import com.davoleo.testmod.recipe.OreDictHandler;
 import com.davoleo.testmod.util.TestTab;
-import com.davoleo.testmod.world.WorldTickHandler;
+import com.davoleo.testmod.world.OreGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -35,10 +35,10 @@ import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /*************************************************
  * Author: Davoleo
@@ -75,16 +75,16 @@ public class TestMod {
 
     public static TestTab testTab = new TestTab();
 
-    public static final Logger logger = LogManager.getLogger();
+    public static final Logger logger = LogManager.getLogManager().getLogger(MODID);
 
     //Right after the registry events are fired
     private void setup(final FMLCommonSetupEvent event)
     {
         //Old PreInit --------------------------------------------
         Messages.registerMessages("testmod");
-        //TODO 1.13 Port
-        //GameRegistry.registerWorldGenerator(OreGenerator.instance, 5);
-        //MinecraftForge.EVENT_BUS.register(OreGenerator.instance);
+
+        OreGenerator.setup();
+
         MinecraftForge.EVENT_BUS.register(OmegaTickHandler.instance);
         MinecraftForge.EVENT_BUS.register(PlayerPropertyEvents.instance);
 
@@ -109,7 +109,6 @@ public class TestMod {
         //Oredict initialization
         OreDictHandler.initOreDictEntries();
 
-        MinecraftForge.EVENT_BUS.register(WorldTickHandler.instance);
         MinecraftForge.EVENT_BUS.register(DamageTracker.instance);
 
         //old postInit
