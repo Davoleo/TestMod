@@ -1,21 +1,25 @@
-*.class
-local.properties
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
 
-# Package Files #
-*.war
-*.ear
-
-# Gradle files and folders
-.gradle/
-gradlew
-
-# Production files and folders
-out/
-run/
-build/
-
-# IDEA Project files
+# idea
+out
 *.ipr
 *.iws
 *.iml
-.idea/
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+
+# Files from Forge MDK
+forge*changelog.txt
