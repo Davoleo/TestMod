@@ -1,13 +1,12 @@
 package io.github.davoleo.testmod.handler;
 
 import io.github.davoleo.testmod.block.ModBlocks;
+import io.github.davoleo.testmod.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.rmi.registry.Registry;
 
 /*************************************************
  * Author: Davoleo
@@ -28,5 +27,6 @@ public class RegistrationHandler {
     @SubscribeEvent
     public static void registerItems(final RegistryEvent.Register<Item> event) {
         event.getRegistry().register(ModBlocks.copperBlock.createItemBlock());
+        event.getRegistry().register(ModItems.copperIngot);
     }
 }
