@@ -3,6 +3,7 @@
   "block.testmod.copper_block": "Copper Block",
 
   "_comment": "Creative Tabs",
+  "itemGroup.test_tab": "Test Mod",
 
   "_comment": "Entities",
 

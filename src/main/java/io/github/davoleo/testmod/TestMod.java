@@ -2,6 +2,7 @@ package io.github.davoleo.testmod;
 
 import io.github.davoleo.testmod.proxy.ClientProxy;
 import io.github.davoleo.testmod.proxy.IProxy;
+import io.github.davoleo.testmod.proxy.ModSetup;
 import io.github.davoleo.testmod.proxy.ServerProxy;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -26,6 +27,8 @@ public class TestMod {
     @SuppressWarnings("Convert2MethodRef")
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
+    public static ModSetup setup = new ModSetup();
+
     private static final Logger LOGGER = LogManager.getLogger();
 
     public TestMod() {
@@ -34,6 +37,9 @@ public class TestMod {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        setup.init();
+        proxy.init();
+
         //All the blocks, TEs and Entities are registered
         //Preinitialization
         LOGGER.info("TESTMOD: Pre-Initialization");
