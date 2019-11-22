@@ -11,5 +11,6 @@ package io.github.davoleo.testmod.block;
 public class ModBlocks {
 
     public static CopperBlock copperBlock = new CopperBlock();
+    public static GeneratorBlock generatorBlock = new GeneratorBlock();
 
 }

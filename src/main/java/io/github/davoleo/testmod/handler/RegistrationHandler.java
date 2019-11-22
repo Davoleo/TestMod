@@ -22,11 +22,16 @@ public class RegistrationHandler {
     @SubscribeEvent
     public static void registerBlocks(final RegistryEvent.Register<Block> event) {
         event.getRegistry().register(ModBlocks.copperBlock);
+        event.getRegistry().register(ModBlocks.generatorBlock);
     }
 
     @SubscribeEvent
     public static void registerItems(final RegistryEvent.Register<Item> event) {
+        //ItemBlocks
         event.getRegistry().register(ModBlocks.copperBlock.createItemBlock());
+        event.getRegistry().register(ModBlocks.generatorBlock.createItemBlock());
+
+        //Items
         event.getRegistry().register(ModItems.copperIngot);
     }
 }
