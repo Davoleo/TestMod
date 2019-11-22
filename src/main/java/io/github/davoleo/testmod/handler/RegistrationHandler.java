@@ -2,8 +2,10 @@ package io.github.davoleo.testmod.handler;
 
 import io.github.davoleo.testmod.block.ModBlocks;
 import io.github.davoleo.testmod.item.ModItems;
+import io.github.davoleo.testmod.tileentity.GeneratorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,5 +35,10 @@ public class RegistrationHandler {
 
         //Items
         event.getRegistry().register(ModItems.copperIngot);
+    }
+
+    @SubscribeEvent
+    public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event) {
+        event.getRegistry().register(TileEntityType.Builder.create(GeneratorTileEntity::new, ModBlocks.generatorBlock).build(null).setRegistryName(ModBlocks.generatorBlock.getRegistryName()));
     }
 }

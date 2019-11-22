@@ -1,6 +1,7 @@
 package io.github.davoleo.testmod.block;
 
 import io.github.davoleo.testmod.TestMod;
+import io.github.davoleo.testmod.tileentity.GeneratorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -11,9 +12,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -56,5 +59,17 @@ public class GeneratorBlock extends Block {
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         super.fillStateContainer(builder);
         builder.add(BlockStateProperties.FACING);
+    }
+
+    //TILE ENTITY SECTION ---------------------------
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new GeneratorTileEntity();
     }
 }
