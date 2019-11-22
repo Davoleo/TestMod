@@ -1,5 +1,10 @@
 {
   "variants": {
-    "": {"model": "testmod:block/generator" }
+    "facing=north": {"model": "testmod:block/generator" },
+    "facing=south": {"model": "testmod:block/generator", "y": 180 },
+    "facing=west": {"model": "testmod:block/generator", "y": 270 },
+    "facing=east": {"model": "testmod:block/generator", "y": 90 },
+    "facing=up": {"model": "testmod:block/generator", "x": -90 },
+    "facing=down": {"model": "testmod:block/generator", "x": 90 }
   }
 }

@@ -1,6 +1,7 @@
 {
   "_comment": "Blocks",
   "block.testmod.copper_block": "Copper Block",
+  "block.testmod.generator": "Generator",
 
   "_comment": "Creative Tabs",
   "itemGroup.test_tab": "Test Mod",

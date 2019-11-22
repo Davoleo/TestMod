@@ -1,6 +1,12 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/cube",
   "textures": {
-    "all": "testmod:block/generator"
+    "particle": "testmod:block/generator",
+    "north": "testmod:block/generator_front",
+    "south": "testmod:block/generator",
+    "west": "testmod:block/generator",
+    "east": "testmod:block/generator",
+    "up": "testmod:block/generator",
+    "down": "testmod:block/generator"
   }
 }
