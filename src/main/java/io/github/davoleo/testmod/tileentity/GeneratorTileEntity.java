@@ -1,11 +1,17 @@
 package io.github.davoleo.testmod.tileentity;
 
+import io.github.davoleo.testmod.container.GeneratorContainer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -26,19 +32,12 @@ import static io.github.davoleo.testmod.block.ModBlocks.GENERATOR_TILE_ENTITY;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class GeneratorTileEntity extends TileEntity implements ITickableTileEntity {
+public class GeneratorTileEntity extends TileEntity implements INamedContainerProvider {
 
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createInventoryHandler);
 
     public GeneratorTileEntity() {
         super(GENERATOR_TILE_ENTITY);
-    }
-
-    @Override
-    public void tick() {
-        if (world.isRemote) {
-            System.out.println("tick tick tick, I'm a TE");
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -87,5 +86,20 @@ public class GeneratorTileEntity extends TileEntity implements ITickableTileEnti
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return handler.cast();
         return super.getCapability(cap, side);
+    }
+
+    // INamedContainerProvider IMPLEMENTATION --------------------------------------------------------
+    // TODO: 08/12/2019 localized display title
+    @Nonnull
+    @Override
+    public ITextComponent getDisplayName() {
+        return new StringTextComponent(getType().getRegistryName().getPath());
+    }
+
+    //Server-Side Container creation
+    @Nullable
+    @Override
+    public Container createMenu(int id, @Nonnull PlayerInventory playerInventory, @Nonnull PlayerEntity player) {
+        return new GeneratorContainer(id, world, pos, playerInventory);
     }
 }

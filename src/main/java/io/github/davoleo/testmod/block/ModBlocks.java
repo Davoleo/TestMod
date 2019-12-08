@@ -1,7 +1,8 @@
 package io.github.davoleo.testmod.block;
 
-import com.mojang.datafixers.types.Type;
+import io.github.davoleo.testmod.container.GeneratorContainer;
 import io.github.davoleo.testmod.tileentity.GeneratorTileEntity;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -16,11 +17,15 @@ import net.minecraftforge.registries.ObjectHolder;
 public class ModBlocks {
 
     //Blocks
-    public static CopperBlock copperBlock = new CopperBlock();
-    public static GeneratorBlock generatorBlock = new GeneratorBlock();
+    public static final CopperBlock COPPER_BLOCK = new CopperBlock();
+    public static final GeneratorBlock GENERATOR_BLOCK = new GeneratorBlock();
 
     //TE Types
     @ObjectHolder("testmod:generator")
     public static TileEntityType<GeneratorTileEntity> GENERATOR_TILE_ENTITY;
+
+    //Container Types
+    @ObjectHolder("testmod:generator")
+    public static ContainerType<GeneratorContainer> GENERATOR_CONTAINER;
 
 }
