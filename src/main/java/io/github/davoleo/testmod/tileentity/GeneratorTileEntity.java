@@ -5,11 +5,12 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -27,7 +28,7 @@ import static io.github.davoleo.testmod.block.ModBlocks.GENERATOR_TILE_ENTITY;
 
 public class GeneratorTileEntity extends TileEntity implements ITickableTileEntity {
 
-    private ItemStackHandler handler;
+    private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createInventoryHandler);
 
     public GeneratorTileEntity() {
         super(GENERATOR_TILE_ENTITY);
@@ -40,48 +41,51 @@ public class GeneratorTileEntity extends TileEntity implements ITickableTileEnti
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void read(CompoundNBT compound) {
         CompoundNBT inventory = compound.getCompound("inventory");
-        getInventoryHandler().deserializeNBT(inventory);
+        handler.ifPresent(handler -> ((INBTSerializable<CompoundNBT>) handler).deserializeNBT(inventory));
         super.read(compound);
     }
 
+    @SuppressWarnings("unchecked")
     @Nonnull
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        CompoundNBT inventory = getInventoryHandler().serializeNBT();
-        compound.put("inventory", inventory);
+        if (handler.isPresent()){
+            CompoundNBT inventory = ((INBTSerializable<CompoundNBT>) handler).serializeNBT();
+            compound.put("inventory", inventory);
+        }
         return super.write(compound);
     }
 
-    public ItemStackHandler getInventoryHandler() {
-        if (handler == null)
-            handler = new ItemStackHandler(1) {
+    @Nonnull
+    public ItemStackHandler createInventoryHandler() {
+        return new ItemStackHandler(1) {
 
-                //GUI item restriction
-                @Override
-                public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                    return stack.getItem() == Items.SUGAR_CANE;
-                }
+            //GUI item restriction
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                return stack.getItem() == Items.SUGAR_CANE;
+            }
 
-                //Automation Item Restriction
-                @Nonnull
-                @Override
-                public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                    if (stack.getItem() != Items.DIAMOND)
-                        return stack;
-                    return super.insertItem(slot, stack, simulate);
-                }
-            };
-        return handler;
+            //Automation Item Restriction
+            @Nonnull
+            @Override
+            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                if (stack.getItem() != Items.DIAMOND)
+                    return stack;
+                return super.insertItem(slot, stack, simulate);
+            }
+        };
     }
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return LazyOptional.of(() -> ((T) getInventoryHandler()));
+            return handler.cast();
         return super.getCapability(cap, side);
     }
 }
