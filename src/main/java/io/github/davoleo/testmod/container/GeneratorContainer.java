@@ -9,13 +9,20 @@
 package io.github.davoleo.testmod.container;
 
 import io.github.davoleo.testmod.block.ModBlocks;
+import io.github.davoleo.testmod.util.TestEnergyStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -42,6 +49,23 @@ public class GeneratorContainer extends Container {
         });
 
         addPlayerInventorySlots(10, 70);
+
+        //Energy Tracking (between server and client)
+        trackInt(new IntReferenceHolder() {
+            @Override
+            public int get() {
+                return  getEnergy();
+            }
+
+            @Override
+            public void set(int i) {
+                tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(energyStorage -> ((TestEnergyStorage) energyStorage).setEnergy(i));
+            }
+        });
+    }
+
+    public int getEnergy() {
+        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
     }
 
     // TODO: 08/12/2019 generalize these methods
@@ -74,5 +98,45 @@ public class GeneratorContainer extends Container {
     @Override
     public boolean canInteractWith(@Nonnull PlayerEntity playerIn) {
         return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, ModBlocks.GENERATOR_BLOCK);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack transferStackInSlot(PlayerEntity player, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
+        if (slot != null && slot.getHasStack()) {
+            ItemStack stack = slot.getStack();
+            itemstack = stack.copy();
+            if (index == 0) {
+                if (!this.mergeItemStack(stack, 1, 37, true))
+                    return ItemStack.EMPTY;
+                slot.onSlotChange(stack, itemstack);
+            } else {
+                //Merge with the generator's inventory
+                if (stack.getItem() == Items.DIAMOND) {
+                    if (!this.mergeItemStack(stack, 0, 1, false))
+                        return ItemStack.EMPTY;
+                    //Merge with the hotbar
+                } else if (index < 28) {
+                    if (!this.mergeItemStack(stack, 28, 37, false))
+                        return ItemStack.EMPTY;
+                    //Merge with the player inventory
+                } else if (index < 37 && !this.mergeItemStack(stack, 1, 28, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (stack.isEmpty())
+                slot.putStack(ItemStack.EMPTY);
+            else
+                slot.onSlotChanged();
+
+            if (stack.getCount() == itemstack.getCount())
+                return ItemStack.EMPTY;
+
+            slot.onTake(player, stack);
+        }
+        return itemstack;
     }
 }

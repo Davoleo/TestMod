@@ -11,6 +11,7 @@ package io.github.davoleo.testmod.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.davoleo.testmod.TestMod;
 import io.github.davoleo.testmod.container.GeneratorContainer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -29,6 +30,11 @@ public class GeneratorScreen extends ContainerScreen<GeneratorContainer> {
         this.renderBackground();
         super.render(mouseX, mouseY, partialTicks);
         this.renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
+        drawString(Minecraft.getInstance().fontRenderer, "Energy: " + container.getEnergy(), 10, 10, 0xFFFFFF);
     }
 
     /**
