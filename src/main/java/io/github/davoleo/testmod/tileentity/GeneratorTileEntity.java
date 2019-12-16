@@ -43,8 +43,10 @@ public class GeneratorTileEntity extends TileEntity implements INamedContainerPr
     @SuppressWarnings("unchecked")
     @Override
     public void read(CompoundNBT compound) {
+
         CompoundNBT inventory = compound.getCompound("inventory");
         handler.ifPresent(handler -> ((INBTSerializable<CompoundNBT>) handler).deserializeNBT(inventory));
+
         super.read(compound);
     }
 
@@ -52,10 +54,12 @@ public class GeneratorTileEntity extends TileEntity implements INamedContainerPr
     @Nonnull
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        if (handler.isPresent()){
+
+        handler.ifPresent(handler -> {
             CompoundNBT inventory = ((INBTSerializable<CompoundNBT>) handler).serializeNBT();
             compound.put("inventory", inventory);
-        }
+        });
+
         return super.write(compound);
     }
 
@@ -73,7 +77,7 @@ public class GeneratorTileEntity extends TileEntity implements INamedContainerPr
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (stack.getItem() != Items.DIAMOND)
+                if (stack.getItem() != Items.SUGAR_CANE)
                     return stack;
                 return super.insertItem(slot, stack, simulate);
             }
