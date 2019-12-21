@@ -1,5 +1,6 @@
 package io.github.davoleo.testmod.tileentity;
 
+import io.github.davoleo.testmod.config.Config;
 import io.github.davoleo.testmod.container.GeneratorContainer;
 import io.github.davoleo.testmod.util.TestEnergyStorage;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,6 +26,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.github.davoleo.testmod.block.ModBlocks.GENERATOR_TILE_ENTITY;
 
@@ -52,17 +54,46 @@ public class GeneratorTileEntity extends TileEntity implements INamedContainerPr
         if (counter > 0) {
             counter--;
             if (counter <= 0) {
-                energyStorage.ifPresent(energyStorage -> ((TestEnergyStorage) energyStorage).addEnergy(1000));
+                energyStorage.ifPresent(energyStorage -> ((TestEnergyStorage) energyStorage).addEnergy(Config.generatorGenPower.get()));
             }
+            markDirty();
         } else {
             invHandler.ifPresent(handler -> {
                 ItemStack stack = handler.getStackInSlot(0);
                 if (stack.getItem() == Items.SUGAR_CANE) {
                     stack.shrink(1);
-                    counter = 20;
+                    counter = Config.generatorTicks.get();
+                    markDirty();
                 }
             });
         }
+
+        outputPower();
+    }
+
+    private void outputPower() {
+
+        energyStorage.ifPresent(energyStorage -> {
+            AtomicInteger energyStored = new AtomicInteger(energyStorage.getEnergyStored());
+            if (energyStored.get() > 0) {
+                for (Direction direction : Direction.values()) {
+                    TileEntity te = world.getTileEntity(pos.offset(direction));
+                    if (te != null) {
+                        boolean doContinue = te.getCapability(CapabilityEnergy.ENERGY, direction).map(neighborHandler -> {
+                            if (neighborHandler.canReceive()) {
+                                int energyReceived = neighborHandler.receiveEnergy(Math.min(energyStored.get(), Config.generatorPowerOut.get()), false);
+                                energyStored.addAndGet(-energyReceived);
+                                ((TestEnergyStorage) energyStorage).consumeEnergy(energyReceived);
+                                markDirty();
+                                return energyStored.get() > 0;
+                            } else return true;
+                        }).orElse(true);
+                        if (!doContinue)
+                            return;
+                    }
+                }
+            }
+        });
     }
 
     //Read and Write NBT Methods ---------------------------------
@@ -97,6 +128,11 @@ public class GeneratorTileEntity extends TileEntity implements INamedContainerPr
     public ItemStackHandler createInventoryHandler() {
         return new ItemStackHandler(1) {
 
+            @Override
+            protected void onContentsChanged(int slot) {
+                markDirty();
+            }
+
             //GUI item restriction
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
@@ -116,7 +152,7 @@ public class GeneratorTileEntity extends TileEntity implements INamedContainerPr
 
     //MaxTrasfer is set to 0 because there's no energy input for an energy generator
     private IEnergyStorage createEnergyStorage() {
-        return new TestEnergyStorage(100_000, 0);
+        return new TestEnergyStorage(Config.generatorMaxPower.get(), 0);
     }
 
     @Nonnull

@@ -27,4 +27,12 @@ public class TestEnergyStorage extends EnergyStorage {
         if (this.energy > getMaxEnergyStored())
             this.energy = getEnergyStored();
     }
+
+    public void consumeEnergy(int energy) {
+        this.energy -= energy;
+
+        //Block energy outtake if machine is empty
+        if (this.energy < 0)
+            this.energy = 0;
+    }
 }
