@@ -3,6 +3,7 @@ package io.github.davoleo.testmod.tileentity;
 import io.github.davoleo.testmod.config.Config;
 import io.github.davoleo.testmod.container.GeneratorContainer;
 import io.github.davoleo.testmod.util.TestEnergyStorage;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -10,6 +11,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -51,21 +53,33 @@ public class GeneratorTileEntity extends TileEntity implements INamedContainerPr
 
     @Override
     public void tick() {
+
+        if (world.isRemote)
+            return;
+
         if (counter > 0) {
             counter--;
             if (counter <= 0) {
                 energyStorage.ifPresent(energyStorage -> ((TestEnergyStorage) energyStorage).addEnergy(Config.generatorGenPower.get()));
             }
             markDirty();
-        } else {
+        }
+
+        if (counter <= 0) {
             invHandler.ifPresent(handler -> {
                 ItemStack stack = handler.getStackInSlot(0);
                 if (stack.getItem() == Items.SUGAR_CANE) {
-                    stack.shrink(1);
+                    handler.extractItem(0, 1, false);
                     counter = Config.generatorTicks.get();
                     markDirty();
                 }
             });
+        }
+
+        BlockState blockState = world.getBlockState(pos);
+        if (blockState.get(BlockStateProperties.POWERED) != counter > 0) {
+            //the 3rd flag notifies the blockstate change to the client
+            world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, counter > 0), 3);
         }
 
         outputPower();

@@ -22,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -41,6 +42,7 @@ public class GeneratorBlock extends Block {
         super(Properties.create(Material.IRON)
                 .sound(SoundType.METAL)
                 .hardnessAndResistance(2F)
+                .lightValue(14)
         );
 
         setRegistryName(new ResourceLocation(TestMod.MODID, "generator"));
@@ -50,7 +52,7 @@ public class GeneratorBlock extends Block {
         return new BlockItem(this, new Item.Properties().group(TestMod.setup.testTab)).setRegistryName(this.getRegistryName());
     }
 
-    //FACING PROP ---------------------------
+    //PROPERTIES ---------------------------
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null)
@@ -64,7 +66,13 @@ public class GeneratorBlock extends Block {
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         super.fillStateContainer(builder);
-        builder.add(BlockStateProperties.FACING);
+        builder.add(BlockStateProperties.FACING, BlockStateProperties.POWERED);
+    }
+
+    // TODO: 21/12/2019 Fix Lighting not turning off, YAY
+    @Override
+    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
+        return state.get(BlockStateProperties.POWERED) ? super.getLightValue(state, world, pos) : 0;
     }
 
     //TILE ENTITY ---------------------------------------------------------
