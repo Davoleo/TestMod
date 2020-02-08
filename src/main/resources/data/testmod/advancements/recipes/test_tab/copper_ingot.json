@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "testmod:copper_ingot"
+    ]
+  },
+  "criteria": {
+    "copper_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "testmod:copper_block"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "testmod:copper_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "copper_block",
+      "has_the_recipe"
+    ]
+  ]
+}

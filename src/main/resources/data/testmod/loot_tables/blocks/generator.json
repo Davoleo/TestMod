@@ -2,7 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "pool1",
+      "name": "generator_block",
       "rolls": 1,
       "entries": [
         {
@@ -17,8 +17,8 @@
               "source": "block_entity",
               "ops": [
                 {
-                  "source": "inventory",
-                  "target": "BlockEntityTag.inventory",
+                  "source": "inv",
+                  "target": "BlockEntityTag.inv",
                   "op": "replace"
                 },
                 {
@@ -39,11 +39,6 @@
             }
           ],
           "name": "testmod:generator"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ]
     }
