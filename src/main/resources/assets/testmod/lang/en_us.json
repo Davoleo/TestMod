@@ -12,6 +12,7 @@
 
   "_comment": "Items",
   "item.testmod.copper_ingot": "Copper Ingot",
+  "item.testmod.simple_mob_spawn": "Simple Mob Spawn Egg",
 
   "_comment": "KeyBindings",
 
