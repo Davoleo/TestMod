@@ -9,13 +9,12 @@
 package io.github.davoleo.testmod.block;
 
 import io.github.davoleo.testmod.TestMod;
+import io.github.davoleo.testmod.tileentity.BakedBlockTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.model.ItemTransformVec3f;
+import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.Direction;
@@ -125,6 +124,18 @@ public class BakedBlockModel implements IDynamicBakedModel {
     @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
+
+        BlockState mimic = extraData.getData(BakedBlockTileEntity.MIMIC);
+        if (mimic != null) {
+            ModelResourceLocation location = BlockModelShapes.getModelLocation(mimic);
+            if (location != null) {
+                IBakedModel model = Minecraft.getInstance().getModelManager().getModel(location);
+                if (model != null) {
+                    return model.getQuads(mimic, side, rand, extraData);
+                }
+            }
+        }
+
         //When it's called in general we return an empty list
         //We don't need to do "visibility calling because our model is smaller than a full block"
         if (side != null) {

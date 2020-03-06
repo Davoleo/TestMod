@@ -5,6 +5,7 @@ import io.github.davoleo.testmod.block.ModBlocks;
 import io.github.davoleo.testmod.container.GeneratorContainer;
 import io.github.davoleo.testmod.entity.ModEntities;
 import io.github.davoleo.testmod.item.ModItems;
+import io.github.davoleo.testmod.tileentity.BakedBlockTileEntity;
 import io.github.davoleo.testmod.tileentity.GeneratorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
@@ -53,6 +54,7 @@ public class RegistrationHandler {
     @SubscribeEvent
     public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event) {
         event.getRegistry().register(TileEntityType.Builder.create(GeneratorTileEntity::new, ModBlocks.GENERATOR_BLOCK).build(null).setRegistryName(ModBlocks.GENERATOR_BLOCK.getRegistryName()));
+        event.getRegistry().register(TileEntityType.Builder.create(BakedBlockTileEntity::new, ModBlocks.BAKED_BLOCK).build(null).setRegistryName(ModBlocks.BAKED_BLOCK.getRegistryName()));
     }
 
     //Registers Client-side Containers

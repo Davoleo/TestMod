@@ -1,6 +1,7 @@
 package io.github.davoleo.testmod.block;
 
 import io.github.davoleo.testmod.container.GeneratorContainer;
+import io.github.davoleo.testmod.tileentity.BakedBlockTileEntity;
 import io.github.davoleo.testmod.tileentity.GeneratorTileEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
@@ -24,6 +25,9 @@ public class ModBlocks {
     //TE Types
     @ObjectHolder("testmod:generator")
     public static TileEntityType<GeneratorTileEntity> GENERATOR_TILE_ENTITY;
+
+    @ObjectHolder("testmod:baked_block")
+    public static TileEntityType<BakedBlockTileEntity> BAKED_BLOCK_TILE_ENTITY;
 
     //Container Types
     @ObjectHolder("testmod:generator")
