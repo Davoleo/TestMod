@@ -21,5 +21,6 @@ public class LootTablesProvider extends BaseLootTablesProvider {
     protected void registerLootTables() {
         lootTables.put(ModBlocks.COPPER_BLOCK, createStandardTable("copper_block", ModBlocks.COPPER_BLOCK));
         lootTables.put(ModBlocks.GENERATOR_BLOCK, createStandardTable("generator_block", ModBlocks.GENERATOR_BLOCK));
+        lootTables.put(ModBlocks.BAKED_BLOCK, createStandardTable("baked_block", ModBlocks.BAKED_BLOCK));
     }
 }

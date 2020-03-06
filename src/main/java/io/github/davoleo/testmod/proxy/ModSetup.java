@@ -22,7 +22,5 @@ public class ModSetup {
     };
 
     public void init() {
-
     }
-
 }

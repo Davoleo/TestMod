@@ -19,6 +19,7 @@ public class ModBlocks {
     //Blocks
     public static final CopperBlock COPPER_BLOCK = new CopperBlock();
     public static final GeneratorBlock GENERATOR_BLOCK = new GeneratorBlock();
+    public static final BakedBlock BAKED_BLOCK = new BakedBlock();
 
     //TE Types
     @ObjectHolder("testmod:generator")

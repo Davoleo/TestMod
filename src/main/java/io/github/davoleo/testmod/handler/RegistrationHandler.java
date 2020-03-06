@@ -33,6 +33,7 @@ public class RegistrationHandler {
     public static void registerBlocks(final RegistryEvent.Register<Block> event) {
         event.getRegistry().register(ModBlocks.COPPER_BLOCK);
         event.getRegistry().register(ModBlocks.GENERATOR_BLOCK);
+        event.getRegistry().register(ModBlocks.BAKED_BLOCK);
     }
 
     @SubscribeEvent
@@ -40,6 +41,7 @@ public class RegistrationHandler {
         //ItemBlocks
         event.getRegistry().register(ModBlocks.COPPER_BLOCK.createItemBlock());
         event.getRegistry().register(ModBlocks.GENERATOR_BLOCK.createItemBlock());
+        event.getRegistry().register(ModBlocks.BAKED_BLOCK.createItemBlock());
 
         //Items
         event.getRegistry().register(ModItems.copperIngot);
