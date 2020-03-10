@@ -18,6 +18,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 
+// TODO: 10/03/2020 Move this screen in the center of the window :P
 public class SpawnScreen extends Screen {
 
     private static final int WIDTH = 179;

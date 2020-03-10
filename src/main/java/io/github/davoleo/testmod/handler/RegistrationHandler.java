@@ -2,7 +2,6 @@ package io.github.davoleo.testmod.handler;
 
 import io.github.davoleo.testmod.TestMod;
 import io.github.davoleo.testmod.block.ModBlocks;
-import io.github.davoleo.testmod.command.ModCommands;
 import io.github.davoleo.testmod.container.GeneratorContainer;
 import io.github.davoleo.testmod.entity.ModEntities;
 import io.github.davoleo.testmod.item.ModItems;
@@ -19,7 +18,6 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 /*************************************************
  * Author: Davoleo
@@ -72,11 +70,5 @@ public class RegistrationHandler {
     @SubscribeEvent
     public static void registerEntityTypes(final RegistryEvent.Register<EntityType<?>> event) {
         event.getRegistry().register(ModEntities.SIMPLE_MOB);
-    }
-
-    //------
-    @SubscribeEvent
-    public static void onServerLoad(FMLServerStartingEvent event) {
-        ModCommands.register(event.getCommandDispatcher());
     }
 }
