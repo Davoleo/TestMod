@@ -8,6 +8,7 @@
 
 package io.github.davoleo.testmod.network;
 
+import io.github.davoleo.testmod.gui.SpawnScreen;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -25,7 +26,7 @@ public class PacketOpenGUI {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(SpawnerScreen::open);
+        ctx.get().enqueueWork(SpawnScreen::open);
         ctx.get().setPacketHandled(true);
     }
 }
