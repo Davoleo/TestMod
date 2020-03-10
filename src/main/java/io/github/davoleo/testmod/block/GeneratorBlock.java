@@ -49,7 +49,7 @@ public class GeneratorBlock extends Block {
     }
 
     public Item createItemBlock() {
-        return new BlockItem(this, new Item.Properties().group(TestMod.setup.testTab)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(TestMod.testTab)).setRegistryName(this.getRegistryName());
     }
 
     //PROPERTIES ---------------------------
