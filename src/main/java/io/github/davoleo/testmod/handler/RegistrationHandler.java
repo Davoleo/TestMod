@@ -3,6 +3,7 @@ package io.github.davoleo.testmod.handler;
 import io.github.davoleo.testmod.TestMod;
 import io.github.davoleo.testmod.block.ModBlocks;
 import io.github.davoleo.testmod.container.GeneratorContainer;
+import io.github.davoleo.testmod.dimension.TestModDimension;
 import io.github.davoleo.testmod.entity.ModEntities;
 import io.github.davoleo.testmod.item.ModItems;
 import io.github.davoleo.testmod.tileentity.BakedBlockTileEntity;
@@ -14,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -70,5 +72,10 @@ public class RegistrationHandler {
     @SubscribeEvent
     public static void registerEntityTypes(final RegistryEvent.Register<EntityType<?>> event) {
         event.getRegistry().register(ModEntities.SIMPLE_MOB);
+    }
+
+    @SubscribeEvent
+    public static void registerDimensions(final RegistryEvent.Register<ModDimension> event) {
+        event.getRegistry().register(new TestModDimension());
     }
 }
