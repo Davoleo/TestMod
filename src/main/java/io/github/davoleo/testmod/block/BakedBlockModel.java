@@ -8,20 +8,22 @@
 
 package io.github.davoleo.testmod.block;
 
+import com.google.common.collect.ImmutableList;
 import io.github.davoleo.testmod.TestMod;
 import io.github.davoleo.testmod.tileentity.BakedBlockTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.*;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
+import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,22 +32,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-@SuppressWarnings("DuplicatedCode")
 public class BakedBlockModel implements IDynamicBakedModel {
 
-    private final VertexFormat format;
-    private final ItemCameraTransforms transforms = getAllTransforms();
-
-    /**
-     * @param format as a parameter because it's different between the inventory and the placed version
-     */
-    public BakedBlockModel(VertexFormat format) {
-        this.format = format;
-    }
-
     private TextureAtlasSprite getTexture() {
-        String name = TestMod.MODID + ":block/baked_block";
-        return Minecraft.getInstance().getTextureMap().getAtlasSprite(name);
+        ResourceLocation name = new ResourceLocation(TestMod.MODID, "block/baked_block");
+        return Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(name);
     }
 
     /**
@@ -61,12 +52,14 @@ public class BakedBlockModel implements IDynamicBakedModel {
      * @param g green color tint
      * @param b blue color tint
      */
-    private void addVertex(UnpackedBakedQuad.Builder builder, Vec3d normal,
+    private void addVertex(BakedQuadBuilder builder, Vec3d normal,
                            double x, double y, double z, float u, float v,
                            TextureAtlasSprite sprite, float r, float g, float b)
     {
-        for (int e = 0; e < format.getElementCount(); e++) {
-            switch (format.getElement(e).getUsage()) {
+        ImmutableList<VertexFormatElement> elements = builder.getVertexFormat().getElements();
+
+        for (int e = 0; e < elements.size(); e++) {
+            switch (elements.get(e).getUsage()) {
                 case POSITION:
                     builder.put(e, (float) x, (float) y, (float) z, 1.0F);
                     break;
@@ -74,7 +67,7 @@ public class BakedBlockModel implements IDynamicBakedModel {
                     builder.put(e, r, g, b, 1.0F);
                     break;
                 case UV:
-                    switch (format.getElement(e).getIndex()) {
+                    switch (elements.get(e).getIndex()) {
                         case 0:
                             float iu = sprite.getInterpolatedU(u);
                             float iv = sprite.getInterpolatedV(v);
@@ -106,7 +99,7 @@ public class BakedBlockModel implements IDynamicBakedModel {
     private BakedQuad createQuad(Vec3d v1, Vec3d v2, Vec3d v3, Vec3d v4, TextureAtlasSprite sprite) {
         Vec3d normal = v3.subtract(v2).crossProduct(v1.subtract(v2)).normalize();
 
-        UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
+        BakedQuadBuilder builder = new BakedQuadBuilder(sprite);
         builder.setTexture(sprite);
         builder.setQuadOrientation(Direction.getFacingFromVector(normal.x, normal.y, normal.z));
         addVertex(builder, normal, v1.x, v1.y, v1.z, 0, 0, sprite, 1F, 1F, 1F);
@@ -167,6 +160,11 @@ public class BakedBlockModel implements IDynamicBakedModel {
     }
 
     @Override
+    public boolean func_230044_c_() {
+        return true;
+    }
+
+    @Override
     public boolean isBuiltInRenderer() {
         return false;
     }
@@ -186,25 +184,6 @@ public class BakedBlockModel implements IDynamicBakedModel {
     @Nonnull
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
-        return transforms;
-    }
-
-    public ItemCameraTransforms getAllTransforms() {
-        ItemTransformVec3f tpLeft = this.getTransform(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND);
-        ItemTransformVec3f tpRight = this.getTransform(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
-        ItemTransformVec3f fpLeft = this.getTransform(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND);
-        ItemTransformVec3f fpRight = this.getTransform(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND);
-        ItemTransformVec3f head = this.getTransform(ItemCameraTransforms.TransformType.HEAD);
-        ItemTransformVec3f gui = this.getTransform(ItemCameraTransforms.TransformType.GUI);
-        ItemTransformVec3f ground = this.getTransform(ItemCameraTransforms.TransformType.GROUND);
-        ItemTransformVec3f fixed = this.getTransform(ItemCameraTransforms.TransformType.FIXED);
-        return new ItemCameraTransforms(tpLeft, tpRight, fpLeft, fpRight, head, gui, ground, fixed);
-    }
-
-    private ItemTransformVec3f getTransform(ItemCameraTransforms.TransformType type) {
-        if (type.equals(ItemCameraTransforms.TransformType.GUI))
-            return new ItemTransformVec3f(new Vector3f(200, 50, 100), new Vector3f(), new Vector3f(1F, 1F, 1F));
-
-        return ItemTransformVec3f.DEFAULT;
+        return ItemCameraTransforms.DEFAULT;
     }
 }

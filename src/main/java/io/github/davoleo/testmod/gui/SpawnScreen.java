@@ -8,7 +8,7 @@
 
 package io.github.davoleo.testmod.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.davoleo.testmod.TestMod;
 import io.github.davoleo.testmod.network.PacketManager;
 import io.github.davoleo.testmod.network.PacketSpawnEntity;
@@ -56,7 +56,7 @@ public class SpawnScreen extends Screen {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        GlStateManager.color4f(1F, 1F, 1F, 1F);
+        RenderSystem.color4f(1F, 1F, 1F, 1F);
         this.minecraft.getTextureManager().bindTexture(TEXTURE);
 
         this.blit(relX, relY, 0, 0, WIDTH, HEIGHT); //Draws the background (?)

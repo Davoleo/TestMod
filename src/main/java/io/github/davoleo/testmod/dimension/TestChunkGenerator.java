@@ -19,6 +19,7 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.WorldGenRegion;
 
 import javax.annotation.Nonnull;
 
@@ -30,12 +31,12 @@ public class TestChunkGenerator extends ChunkGenerator<TestChunkGenerator.Config
     }
 
     @Override
-    public void generateSurface(@Nonnull IChunk chunkIn) {
+    public void generateSurface(@Nonnull WorldGenRegion region, IChunk chunkIn) {
         BlockState bedrock = Blocks.BEDROCK.getDefaultState();
         BlockState copper = ModBlocks.COPPER_BLOCK.getDefaultState();
         ChunkPos chunkPos = chunkIn.getPos();
 
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable pos = new BlockPos.Mutable();
         int x, z;
 
         for (x = 0; x < 16; x++) {

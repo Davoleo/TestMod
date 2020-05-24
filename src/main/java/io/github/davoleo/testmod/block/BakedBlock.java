@@ -19,7 +19,9 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -44,12 +46,13 @@ public class BakedBlock extends Block {
     }
 
     public Item createItemBlock() {
-        return new BlockItem(this, new Item.Properties().group(TestMod.testTab)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(TestMod.testTab)).setRegistryName(new ResourceLocation(TestMod.MODID, "fancy_block"));
     }
 
+    @SuppressWarnings("deprecation")
     @Nonnull
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull IBlockReader worldIn, @Nonnull BlockPos pos, @Nonnull ISelectionContext context) {
         return shape;
     }
 
@@ -64,8 +67,10 @@ public class BakedBlock extends Block {
         return new BakedBlockTileEntity();
     }
 
+    @Nonnull
+    @SuppressWarnings("deprecation")
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(@Nonnull BlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, PlayerEntity player, @Nonnull Hand handIn, @Nonnull BlockRayTraceResult hit) {
         ItemStack item = player.getHeldItem(handIn);
         if (!item.isEmpty() && item.getItem() instanceof BlockItem) {
             if (!worldIn.isRemote) {
@@ -75,7 +80,7 @@ public class BakedBlock extends Block {
                     ((BakedBlockTileEntity) te).setMimic(mimicState);
                 }
             }
-            return true;
+            return ActionResultType.SUCCESS;
         }
         return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }

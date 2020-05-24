@@ -9,15 +9,16 @@
 package io.github.davoleo.testmod.dimension;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.feature.structure.Structure;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class TestBiomeProvider extends BiomeProvider {
 
@@ -25,12 +26,13 @@ public class TestBiomeProvider extends BiomeProvider {
     private static final List<Biome> SPAWN = Collections.singletonList(Biomes.PLAINS);
 
     public TestBiomeProvider() {
+        super(new HashSet<>(SPAWN));
         biome = Biomes.PLAINS;
     }
 
     @Nonnull
     @Override
-    public Biome getBiome(int x, int y) {
+    public Biome getNoiseBiome(int x, int y, int z) {
         return biome;
     }
 
@@ -38,26 +40,6 @@ public class TestBiomeProvider extends BiomeProvider {
     @Override
     public List<Biome> getBiomesToSpawnIn() {
         return SPAWN;
-    }
-
-    @Nonnull
-    @Override
-    public Biome[] getBiomes(int x, int z, int width, int length, boolean cacheFlag) {
-        Biome[] biomes = new Biome[width * length];
-        Arrays.fill(biomes, biome);
-        return biomes;
-    }
-
-    @Nonnull
-    @Override
-    public Set<Biome> getBiomesInSquare(int centerX, int centerZ, int sideLength) {
-        return Collections.singleton(biome);
-    }
-
-    @Nullable
-    @Override
-    public BlockPos findBiomePosition(int x, int z, int range, @Nonnull List<Biome> biomes, @Nonnull Random random) {
-        return new BlockPos(x, 65, z);
     }
 
     @Override

@@ -25,8 +25,7 @@ public class ModBlocks {
     //TE Types
     @ObjectHolder("testmod:generator")
     public static TileEntityType<GeneratorTileEntity> GENERATOR_TILE_ENTITY;
-
-    @ObjectHolder("testmod:baked_block")
+    @ObjectHolder("testmod:fancy_block")
     public static TileEntityType<BakedBlockTileEntity> BAKED_BLOCK_TILE_ENTITY;
 
     //Container Types

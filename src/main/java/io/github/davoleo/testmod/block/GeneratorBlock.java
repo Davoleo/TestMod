@@ -16,16 +16,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /*************************************************
@@ -49,29 +51,30 @@ public class GeneratorBlock extends Block {
     }
 
     public Item createItemBlock() {
-        return new BlockItem(this, new Item.Properties().group(TestMod.testTab)).setRegistryName(this.getRegistryName());
+        return new BlockItem(this, new Item.Properties().group(TestMod.testTab)).setRegistryName(new ResourceLocation(TestMod.MODID, "generator"));
     }
 
     //PROPERTIES ---------------------------
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+    public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable LivingEntity entity, @Nonnull ItemStack stack) {
         if (entity != null)
             world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)));
     }
 
     public static Direction getFacingFromEntity(BlockPos activatedBlock, LivingEntity entity) {
-        return Direction.getFacingFromVector((float) (entity.posX - activatedBlock.getX()), (float) (entity.posY - activatedBlock.getY()), (float) (entity.posZ - activatedBlock.getZ()));
+        Vec3d pos = entity.getPositionVec();
+        return Direction.getFacingFromVector((float) (pos.x - activatedBlock.getX()), (float) (pos.y - activatedBlock.getY()), (float) (pos.z - activatedBlock.getZ()));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void fillStateContainer(@Nonnull StateContainer.Builder<Block, BlockState> builder) {
         super.fillStateContainer(builder);
         builder.add(BlockStateProperties.FACING, BlockStateProperties.POWERED);
     }
 
     // TODO: 21/12/2019 Fix Lighting not turning off, YAY
     @Override
-    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
         return state.get(BlockStateProperties.POWERED) ? super.getLightValue(state, world, pos) : 0;
     }
 
@@ -88,16 +91,17 @@ public class GeneratorBlock extends Block {
     }
 
     //GUI ----------------------------------------------------------------
+    @Nonnull
     @SuppressWarnings("deprecation")
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(@Nonnull BlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand handIn, @Nonnull BlockRayTraceResult hit) {
         if (!worldIn.isRemote) {
             TileEntity te = worldIn.getTileEntity(pos);
             if (te instanceof INamedContainerProvider) {
                 NetworkHooks.openGui(((ServerPlayerEntity) player), ((INamedContainerProvider) te), te.getPos());
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
-        return false;
+        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
 }

@@ -1,7 +1,7 @@
 package io.github.davoleo.testmod.proxy;
 
 import io.github.davoleo.testmod.block.ModBlocks;
-import io.github.davoleo.testmod.entity.SimpleMobEntity;
+import io.github.davoleo.testmod.entity.ModEntities;
 import io.github.davoleo.testmod.entity.SimpleMobRenderer;
 import io.github.davoleo.testmod.gui.GeneratorScreen;
 import net.minecraft.client.Minecraft;
@@ -22,7 +22,7 @@ public class ClientProxy implements IProxy {
     @Override
     public void init() {
         ScreenManager.registerFactory(ModBlocks.GENERATOR_CONTAINER, GeneratorScreen::new);
-        RenderingRegistry.registerEntityRenderingHandler(SimpleMobEntity.class, SimpleMobRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.SIMPLE_MOB, SimpleMobRenderer::new);
     }
 
     @Override

@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 public class TestDimension extends Dimension {
 
     public TestDimension(World worldIn, DimensionType typeIn) {
-        super(worldIn, typeIn);
+        super(worldIn, typeIn, 0F);
     }
 
     @Nonnull

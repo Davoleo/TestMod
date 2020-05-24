@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 public class ItemIngot extends Item {
 
     public ItemIngot() {
-        super(new Properties().group(TestMod.testTab));
+        super(new Item.Properties().group(TestMod.testTab));
         setRegistryName(new ResourceLocation(TestMod.MODID, "copper_ingot"));
     }
 }

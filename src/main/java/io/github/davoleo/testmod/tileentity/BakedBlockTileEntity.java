@@ -43,15 +43,21 @@ public class BakedBlockTileEntity extends TileEntity {
         world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE + Constants.BlockFlags.NOTIFY_NEIGHBORS);
     }
 
+    @Nonnull
+    @Override
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT compound = super.getUpdateTag();
+        if (mimic != null) {
+            compound.put("mimic", NBTUtil.writeBlockState(mimic));
+        }
+        return compound;
+    }
+
     //returns a packet sent to the client to update a block with new information
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        CompoundNBT compound = new CompoundNBT();
-        if (mimic != null) {
-            compound.put("mimic", NBTUtil.writeBlockState(mimic));
-        }
-        return new SUpdateTileEntityPacket(pos, 1, compound);
+        return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
     }
 
     //on the client side when the packet is received this method will restore all the server information on the client side
@@ -80,7 +86,7 @@ public class BakedBlockTileEntity extends TileEntity {
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void read(@Nonnull CompoundNBT compound) {
         super.read(compound);
         if (compound.contains("mimic"))
             mimic = NBTUtil.readBlockState(compound.getCompound("mimic"));
@@ -88,7 +94,7 @@ public class BakedBlockTileEntity extends TileEntity {
 
     @Nonnull
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT write(@Nonnull CompoundNBT compound) {
         if (mimic != null)
             compound.put("mimic", NBTUtil.writeBlockState(mimic));
         return super.write(compound);

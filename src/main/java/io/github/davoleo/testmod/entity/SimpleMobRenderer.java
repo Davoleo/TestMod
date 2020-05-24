@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class SimpleMobRenderer extends MobRenderer<SimpleMobEntity, SimpleMobModel> {
 
@@ -24,9 +23,9 @@ public class SimpleMobRenderer extends MobRenderer<SimpleMobEntity, SimpleMobMod
         super(renderManagerIn, new SimpleMobModel(), 0.5F);
     }
 
-    @Nullable
+    @Nonnull
     @Override
-    protected ResourceLocation getEntityTexture(@Nonnull SimpleMobEntity entity) {
+    public ResourceLocation getEntityTexture(@Nonnull SimpleMobEntity entity) {
         return TEXTURE;
     }
 }

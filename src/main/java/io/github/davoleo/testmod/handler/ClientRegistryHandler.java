@@ -12,7 +12,7 @@ import io.github.davoleo.testmod.TestMod;
 import io.github.davoleo.testmod.block.BakedBlockModel;
 import io.github.davoleo.testmod.block.ModBlocks;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -26,7 +26,7 @@ public class ClientRegistryHandler {
     //Bake our block texture into the Atlas
     @SubscribeEvent
     public static void onTextureStitch(TextureStitchEvent.Pre event) {
-        if (!event.getMap().getBasePath().equals("textures"))
+        if (event.getMap().getTextureLocation() != AtlasTexture.LOCATION_BLOCKS_TEXTURE)
             return;
 
         event.addSprite(new ResourceLocation(TestMod.MODID, "block/baked_block"));
@@ -35,9 +35,9 @@ public class ClientRegistryHandler {
     @SubscribeEvent
     public static void onModelBake(ModelBakeEvent event) {
         event.getModelRegistry().put(new ModelResourceLocation(ModBlocks.BAKED_BLOCK.getRegistryName(), ""),
-                new BakedBlockModel(DefaultVertexFormats.BLOCK));
+                new BakedBlockModel());
         event.getModelRegistry().put(new ModelResourceLocation(ModBlocks.BAKED_BLOCK.getRegistryName(), "inventory"),
-                new BakedBlockModel(DefaultVertexFormats.ITEM));
+                new BakedBlockModel());
     }
 
 }
