@@ -35,7 +35,6 @@ public class Config {
     public static ForgeConfigSpec.IntValue generatorTicks;
 
     static {
-
         COMMON_BUILDER.comment("General Settings").push(CATEGORY_GENERAL);
         COMMON_BUILDER.pop();
 

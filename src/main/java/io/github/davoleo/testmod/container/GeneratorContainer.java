@@ -8,7 +8,7 @@
 
 package io.github.davoleo.testmod.container;
 
-import io.github.davoleo.testmod.block.ModBlocks;
+import io.github.davoleo.testmod.handler.RegistrationHandler;
 import io.github.davoleo.testmod.util.TestEnergyStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -30,15 +30,13 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nonnull;
 
-import static io.github.davoleo.testmod.block.ModBlocks.GENERATOR_CONTAINER;
-
 public class GeneratorContainer extends Container {
 
     private TileEntity tileEntity;
     private InvWrapper playerInventory;
 
     public GeneratorContainer(int id, World clientWorld, BlockPos pos, PlayerInventory playerInventory) {
-        super(GENERATOR_CONTAINER, id);
+        super(RegistrationHandler.GENERATOR_CONTAINER.get(), id);
         tileEntity = clientWorld.getTileEntity(pos);
         tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
         this.playerInventory = new InvWrapper(playerInventory);
@@ -97,7 +95,7 @@ public class GeneratorContainer extends Container {
 
     @Override
     public boolean canInteractWith(@Nonnull PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, ModBlocks.GENERATOR_BLOCK);
+        return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, RegistrationHandler.GENERATOR_BLOCK.get());
     }
 
     @Nonnull

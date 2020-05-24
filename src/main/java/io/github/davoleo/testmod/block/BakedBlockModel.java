@@ -34,9 +34,10 @@ import java.util.Random;
 
 public class BakedBlockModel implements IDynamicBakedModel {
 
+    public static final ResourceLocation TEXTURE = new ResourceLocation(TestMod.MODID, "block/baked_block");
+
     private TextureAtlasSprite getTexture() {
-        ResourceLocation name = new ResourceLocation(TestMod.MODID, "block/baked_block");
-        return Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(name);
+        return Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(TEXTURE);
     }
 
     /**

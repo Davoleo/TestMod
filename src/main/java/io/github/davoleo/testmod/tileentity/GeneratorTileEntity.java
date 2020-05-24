@@ -2,6 +2,7 @@ package io.github.davoleo.testmod.tileentity;
 
 import io.github.davoleo.testmod.config.Config;
 import io.github.davoleo.testmod.container.GeneratorContainer;
+import io.github.davoleo.testmod.handler.RegistrationHandler;
 import io.github.davoleo.testmod.util.TestEnergyStorage;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,8 +31,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.github.davoleo.testmod.block.ModBlocks.GENERATOR_TILE_ENTITY;
-
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 22/11/2019 / 22:51
@@ -48,7 +47,7 @@ public class GeneratorTileEntity extends TileEntity implements INamedContainerPr
     private int counter;
 
     public GeneratorTileEntity() {
-        super(GENERATOR_TILE_ENTITY);
+        super(RegistrationHandler.GENERATOR_TE.get());
     }
 
     @Override

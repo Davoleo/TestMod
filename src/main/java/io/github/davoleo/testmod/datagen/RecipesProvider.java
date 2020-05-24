@@ -8,8 +8,7 @@
 
 package io.github.davoleo.testmod.datagen;
 
-import io.github.davoleo.testmod.block.ModBlocks;
-import io.github.davoleo.testmod.item.ModItems;
+import io.github.davoleo.testmod.handler.RegistrationHandler;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.data.*;
 
@@ -24,19 +23,19 @@ public class RecipesProvider extends RecipeProvider {
 
     @Override
     protected void registerRecipes(@Nonnull Consumer<IFinishedRecipe> consumer) {
-        ShapedRecipeBuilder.shapedRecipe(ModBlocks.COPPER_BLOCK)
+        ShapedRecipeBuilder.shapedRecipe(RegistrationHandler.COPPER_BLOCK.get())
                 .patternLine("###")
                 .patternLine("###")
                 .patternLine("###")
-                .key('#', ModItems.copperIngot)
+                .key('#', RegistrationHandler.COPPER_INGOT.get())
                 .setGroup("")
-                .addCriterion("copper_ingot", InventoryChangeTrigger.Instance.forItems(ModItems.copperIngot))
+                .addCriterion("copper_ingot", InventoryChangeTrigger.Instance.forItems(RegistrationHandler.COPPER_INGOT.get()))
                 .build(consumer);
 
-        ShapelessRecipeBuilder.shapelessRecipe(ModItems.copperIngot, 9)
-                .addIngredient(ModBlocks.COPPER_BLOCK)
+        ShapelessRecipeBuilder.shapelessRecipe(RegistrationHandler.COPPER_INGOT.get(), 9)
+                .addIngredient(RegistrationHandler.COPPER_BLOCK.get())
                 .setGroup("")
-                .addCriterion("copper_block", InventoryChangeTrigger.Instance.forItems(ModBlocks.COPPER_BLOCK))
+                .addCriterion("copper_block", InventoryChangeTrigger.Instance.forItems(RegistrationHandler.COPPER_BLOCK.get()))
                 .build(consumer);
     }
 }

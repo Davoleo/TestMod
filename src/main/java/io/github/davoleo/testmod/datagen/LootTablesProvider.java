@@ -8,7 +8,7 @@
 
 package io.github.davoleo.testmod.datagen;
 
-import io.github.davoleo.testmod.block.ModBlocks;
+import io.github.davoleo.testmod.handler.RegistrationHandler;
 import net.minecraft.data.DataGenerator;
 
 public class LootTablesProvider extends BaseLootTablesProvider {
@@ -19,8 +19,8 @@ public class LootTablesProvider extends BaseLootTablesProvider {
 
     @Override
     protected void registerLootTables() {
-        lootTables.put(ModBlocks.COPPER_BLOCK, createStandardTable("copper_block", ModBlocks.COPPER_BLOCK));
-        lootTables.put(ModBlocks.GENERATOR_BLOCK, createStandardTable("generator_block", ModBlocks.GENERATOR_BLOCK));
-        lootTables.put(ModBlocks.BAKED_BLOCK, createStandardTable("baked_block", ModBlocks.BAKED_BLOCK));
+        lootTables.put(RegistrationHandler.COPPER_BLOCK.get(), createStandardTable("copper_block", RegistrationHandler.COPPER_BLOCK.get()));
+        lootTables.put(RegistrationHandler.GENERATOR_BLOCK.get(), createStandardTable("generator_block", RegistrationHandler.GENERATOR_BLOCK.get()));
+        lootTables.put(RegistrationHandler.BAKED_BLOCK.get(), createStandardTable("baked_block", RegistrationHandler.BAKED_BLOCK.get()));
     }
 }

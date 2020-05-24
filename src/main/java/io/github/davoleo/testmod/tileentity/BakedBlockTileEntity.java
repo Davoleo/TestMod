@@ -8,6 +8,7 @@
 
 package io.github.davoleo.testmod.tileentity;
 
+import io.github.davoleo.testmod.handler.RegistrationHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
@@ -24,8 +25,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-import static io.github.davoleo.testmod.block.ModBlocks.BAKED_BLOCK_TILE_ENTITY;
-
 public class BakedBlockTileEntity extends TileEntity {
 
     public static final ModelProperty<BlockState> MIMIC = new ModelProperty<>();
@@ -33,7 +32,7 @@ public class BakedBlockTileEntity extends TileEntity {
     private BlockState mimic;
 
     public BakedBlockTileEntity() {
-        super(BAKED_BLOCK_TILE_ENTITY);
+        super(RegistrationHandler.BAKED_TE.get());
     }
 
     public void setMimic(BlockState mimic) {

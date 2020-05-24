@@ -8,7 +8,7 @@
 
 package io.github.davoleo.testmod.dimension;
 
-import io.github.davoleo.testmod.block.ModBlocks;
+import io.github.davoleo.testmod.handler.RegistrationHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +33,7 @@ public class TestChunkGenerator extends ChunkGenerator<TestChunkGenerator.Config
     @Override
     public void generateSurface(@Nonnull WorldGenRegion region, IChunk chunkIn) {
         BlockState bedrock = Blocks.BEDROCK.getDefaultState();
-        BlockState copper = ModBlocks.COPPER_BLOCK.getDefaultState();
+        BlockState copper = RegistrationHandler.COPPER_BLOCK.get().getDefaultState();
         ChunkPos chunkPos = chunkIn.getPos();
 
         BlockPos.Mutable pos = new BlockPos.Mutable();
