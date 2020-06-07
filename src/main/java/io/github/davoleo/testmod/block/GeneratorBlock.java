@@ -46,8 +46,6 @@ public class GeneratorBlock extends Block {
                 .hardnessAndResistance(2F)
                 .lightValue(14)
         );
-
-        setRegistryName(new ResourceLocation(TestMod.MODID, "generator"));
     }
 
     public Item createItemBlock() {

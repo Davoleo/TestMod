@@ -3,6 +3,7 @@ package io.github.davoleo.testmod;
 import io.github.davoleo.testmod.config.Config;
 import io.github.davoleo.testmod.handler.ClientRegistryHandler;
 import io.github.davoleo.testmod.handler.CommonModSetup;
+import io.github.davoleo.testmod.handler.RegistrationHandler;
 import io.github.davoleo.testmod.proxy.ClientProxy;
 import io.github.davoleo.testmod.proxy.IProxy;
 import io.github.davoleo.testmod.proxy.ServerProxy;
@@ -23,7 +24,7 @@ import org.apache.logging.log4j.Logger;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-@Mod("testmod")
+@Mod(TestMod.MODID)
 public class TestMod {
 
     public static final String MODID = "testmod";
@@ -40,6 +41,8 @@ public class TestMod {
         //Register Mod Configuration
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+
+        RegistrationHandler.init();
 
         //Main Setup Method
         FMLJavaModLoadingContext.get().getModEventBus().addListener(CommonModSetup::init);

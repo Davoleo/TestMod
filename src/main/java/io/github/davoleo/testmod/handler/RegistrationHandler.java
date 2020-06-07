@@ -23,6 +23,7 @@ import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -34,7 +35,7 @@ import net.minecraftforge.registries.ForgeRegistries;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = TestMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RegistrationHandler {
 
     private static final Item.Properties STANDARD_ITEM_PROPERTIES = new Item.Properties().group(TestMod.testTab);
@@ -45,6 +46,16 @@ public class RegistrationHandler {
     private static final DeferredRegister<ContainerType<?>> CONTAINERS = new DeferredRegister<>(ForgeRegistries.CONTAINERS, TestMod.MODID);
     private static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, TestMod.MODID);
     private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, TestMod.MODID);
+
+    public static void init() {
+        BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        //Entities have to go before items because the egg item requires it
+        ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
+    }
 
     public static final RegistryObject<CopperBlock> COPPER_BLOCK = BLOCKS.register("copper_block", CopperBlock::new);
     public static final RegistryObject<Item> COPPER_ITEMBLOCK = ITEMS.register("copper_block", () -> new BlockItem(COPPER_BLOCK.get(), STANDARD_ITEM_PROPERTIES));
@@ -72,6 +83,8 @@ public class RegistrationHandler {
                     .size(1, 1)
                     .setShouldReceiveVelocityUpdates(false)
                     .build("simple_mob"));
+    // TODO: 07/06/2020  
+    //public static final RegistryObject<SimpleMobEgg> SIMPLE_MOB_EGG_ = ITEMS.register("simple_mob_spawn", SimpleMobEgg::new);
     public static final RegistryObject<SpawnEggItem> SIMPLE_MOB_EGG = ITEMS.register("simple_mob_spawn",
             () -> new SpawnEggItem(SIMPLE_MOB.get(), 0x77FFC8, 0x4C5EFF, STANDARD_ITEM_PROPERTIES));
 

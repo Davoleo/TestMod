@@ -42,7 +42,6 @@ public class BakedBlock extends Block {
                 .sound(SoundType.ANVIL)
                 .hardnessAndResistance(2.0F)
         );
-        setRegistryName(TestMod.MODID, "fancy_block");
     }
 
     public Item createItemBlock() {
